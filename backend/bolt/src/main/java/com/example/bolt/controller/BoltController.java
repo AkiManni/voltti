@@ -1,0 +1,249 @@
+package com.example.bolt.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import com.example.bolt.model.Customer;
+import com.example.bolt.model.Manager;
+import com.example.bolt.model.Product;
+import com.example.bolt.model.Restaurant;
+import com.example.bolt.repository.CustomerRepository;
+import com.example.bolt.repository.ManagerRepository;
+import com.example.bolt.repository.ProductRepository;
+import com.example.bolt.repository.RestaurantRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/bolt")
+public class BoltController {
+    @Autowired
+    ManagerRepository ma;
+    @Autowired
+    CustomerRepository cu;
+    @Autowired
+    RestaurantRepository re;
+    @Autowired
+    ProductRepository pr;
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/getCustomer")
+    public List<Customer> getCustomers() {
+        return this.cu.findAll();
+    }
+
+    @GetMapping("/getCustomer/{id}")
+    public Customer getCustomer(@PathVariable("id") String id) {
+        Customer c = this.cu.findById(id).orElse(null);
+        return c; 
+    }
+
+    @PostMapping("/addCustomer")
+    public Customer addCustomers(@RequestBody Customer customer) {
+        Customer c = customer;
+        c.setCustomerID(newID(0));
+        this.cu.save(c);
+        return c;
+    }
+
+    @DeleteMapping("/deleteCustomer/{id}")
+    public String deleteCustomer(@PathVariable("id") String id) {
+        if (this.cu.findById(id).isEmpty()) return "No customer found.";
+        else {
+            this.cu.deleteById(id);
+        }
+        return "Deleted customer " + id + ".";
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/getManager")
+    public List<Manager> getManagers() {
+        return this.ma.findAll();
+    }
+
+    @GetMapping("/getManager/{id}")
+    public Manager getManager(@PathVariable("id") String id) {
+        Manager r = this.ma.findById(id).orElse(null);
+        return r; 
+    }
+
+    @PostMapping("/addManager")
+    public Manager addManager(@RequestBody Manager Manager) {
+        Manager r = Manager;
+        r.setManagerID(newID(1));
+        this.ma.save(r);
+        return r;
+    }
+
+    @PostMapping("/addRestaurantToManager")
+    public String addRestaurantToManager(@RequestBody Map<String, String> variables) {
+        Manager m = this.ma.findById(variables.get("managerID")).orElse(null);
+        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+
+        if (m.equals(null)) return "No manager found.";
+        else if (m.getRestaurantID() != null) return "You already have restaurant.";
+        else if (r.equals(null)) return "No restaurant found.";
+        else {
+            m.setRestaurantID(r.getRestaurantID());
+            this.ma.save(m);
+            return "(͠≖ ͜ʖ͠≖)👌";
+        }
+    }
+
+    @DeleteMapping("/deleteRestaurantFromManager/{managerID}")
+    public String deleteRestaurantFromManager(@PathVariable String managerID) {
+        Manager m = this.ma.findById(managerID).orElse(null);
+
+        if (m.equals(null)) return "No manager found.";
+        else if (m.getRestaurantID().equals(null)) return "No restaurant found.";
+        else {
+            m.setRestaurantID(null);
+            this.ma.save(m);
+            return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
+        }
+    }
+
+    @DeleteMapping("/deleteManager/{id}")
+    public String deleteManager(@PathVariable("id") String id) {
+        if (this.ma.findById(id).isEmpty()) return "No Manager found.";
+        else {
+            this.ma.deleteById(id);
+        }
+        return "Deleted Manager " + id + ".";
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/getRestaurant")
+    public List<Restaurant> getRestaurants() {
+        return this.re.findAll();
+    }
+
+    @GetMapping("/getRestaurant/{id}")
+    public Restaurant getRestaurant(@PathVariable("id") String id) {
+        Restaurant r = this.re.findById(id).orElse(null);
+        return r; 
+    }
+
+    @PostMapping("/addRestaurant")
+    public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
+        Restaurant r = Restaurant;
+        r.setRestaurantID(newID(2));
+        this.re.save(r);
+        return r;
+    }
+
+    @DeleteMapping("/deleteRestaurant/{id}")
+    public String deleteRestaurant(@PathVariable("id") String id) {
+        if (this.re.findById(id).isEmpty()) return "No restaurant found.";
+        else {
+            this.re.deleteById(id);
+        }
+        return "Deleted restaurant " + id + ".";
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    @GetMapping("/getProduct")
+    public List<Product> getProducts() {
+        return this.pr.findAll();
+    }
+
+    @GetMapping("/getProduct/{id}")
+    public Product getProduct(@PathVariable("id") String id) {
+        Product p = this.pr.findById(id).orElse(null);
+        return p; 
+    }
+
+    @PostMapping("/addProduct")
+    public Product addProduct(@RequestBody Product Product) {
+        Product p = Product;
+        p.setProductID(newID(3));
+        this.pr.save(p);
+        return p;
+    }
+
+    // @PostMapping("/addProductToRestaurant")
+    // public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
+    //     Product p = this.pr.findById(variables.get("productID")).orElse(null);
+    //     Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+
+    //     if (r.equals(null)) return "No restaurant found.";
+    //     else if (p.equals(null)) return "No product found.";
+    //     else {
+    //         for (String s : r.getMenus()) {
+    //             if ()
+    //         }
+    //         List<String> menus = r.getMenus();
+    //         menus.add(p.getProductID());
+    //         r.setMenus(menus);
+    //         this.re.save(r);
+    //         return "(͠≖ ͜ʖ͠≖)👌";
+    //     }
+    // }
+
+    // @DeleteMapping("/deleteRestaurantFromManager/{managerID}")
+    // public String deleteRestaurantFromManager(@PathVariable String managerID) {
+    //     Manager m = this.ma.findById(managerID).orElse(null);
+
+    //     if (m.equals(null)) return "No manager found.";
+    //     else if (m.getRestaurantID().equals(null)) return "No restaurant found.";
+    //     else {
+    //         m.setRestaurantID(null);
+    //         this.ma.save(m);
+    //         return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
+    //     }
+    // }
+
+    // @DeleteMapping("/deleteManager/{id}")
+    // public String deleteManager(@PathVariable("id") String id) {
+    //     if (this.ma.findById(id).isEmpty()) return "No Manager found.";
+    //     else {
+    //         this.ma.deleteById(id);
+    //     }
+    //     return "Deleted Manager " + id + ".";
+    // }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    private String newID(int i) {
+        int k = 0;
+        switch(i) {
+            case 0:
+                while (true) {
+                    String j = "C";
+                    if (this.cu.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+                }
+            case 1:
+                while (true) {
+                    String j = "M";
+                    if (this.ma.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+                }
+            case 2:
+                while (true) {
+                    String j = "R";
+                    if (this.re.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+                }
+            case 3:
+                while (true) {
+                    String j = "P";
+                    if (this.pr.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+                }
+            default:
+                return null;
+        }
+    }
+}
