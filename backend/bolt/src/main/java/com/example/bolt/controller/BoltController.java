@@ -172,49 +172,58 @@ public class BoltController {
         return p;
     }
 
-    // @PostMapping("/addProductToRestaurant")
-    // public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
-    //     Product p = this.pr.findById(variables.get("productID")).orElse(null);
-    //     Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+    @PostMapping("/addProductToRestaurant")
+    public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
+        Product p = this.pr.findById(variables.get("productID")).orElse(null);
+        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
-    //     if (r.equals(null)) return "No restaurant found.";
-    //     else if (p.equals(null)) return "No product found.";
-    //     else {
-    //         for (String s : r.getMenus()) {
-    //             if ()
-    //         }
-    //         List<String> menus = r.getMenus();
-    //         menus.add(p.getProductID());
-    //         r.setMenus(menus);
-    //         this.re.save(r);
-    //         return "(͠≖ ͜ʖ͠≖)👌";
-    //     }
-    // }
+        if (r.equals(null)) return "No restaurant found.";
+        else if (p.equals(null)) return "No product found.";
+        else {
+            List<String> menus = r.getMenus();
+            for (String s : menus) {
+                if (s.equals(variables.get("productID"))) return "This product already exists.";
+            }
+            menus.add(p.getProductID());
+            r.setMenus(menus);
+            this.re.save(r);
+            return "(͠≖ ͜ʖ͠≖)👌";
+        }
+    }
 
-    // @DeleteMapping("/deleteRestaurantFromManager/{managerID}")
-    // public String deleteRestaurantFromManager(@PathVariable String managerID) {
-    //     Manager m = this.ma.findById(managerID).orElse(null);
+    @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
+    public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
+        Restaurant r = this.re.findById(restaurantID).orElse(null);
+        Product p = this.pr.findById(productID).orElse(null);
 
-    //     if (m.equals(null)) return "No manager found.";
-    //     else if (m.getRestaurantID().equals(null)) return "No restaurant found.";
-    //     else {
-    //         m.setRestaurantID(null);
-    //         this.ma.save(m);
-    //         return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
-    //     }
-    // }
+        if (r.equals(null)) return "No restaurant found.";
+        else if (p.equals(null)) return "No product found.";
+        else {
+            List<String> menus = r.getMenus();
+            for (String s : menus) {
+                if (s.equals(productID)) {
+                    menus.remove(new String(p.getProductID()));
+                    r.setMenus(menus);
+                    this.re.save(r);
+                    return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
+                }
+            }
+            return "This product doesn't exists in your menu.";
+        }
+    }
 
-    // @DeleteMapping("/deleteManager/{id}")
-    // public String deleteManager(@PathVariable("id") String id) {
-    //     if (this.ma.findById(id).isEmpty()) return "No Manager found.";
-    //     else {
-    //         this.ma.deleteById(id);
-    //     }
-    //     return "Deleted Manager " + id + ".";
-    // }
+    @DeleteMapping("/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable("id") String id) {
+        if (this.pr.findById(id).isEmpty()) return "No product found.";
+        else {
+            this.pr.deleteById(id);
+        }
+        return "Deleted Manager " + id + ".";
+    }
 
     //////////////////////////////////////////////////////////////////////////////////
 
+    //Tarkistaa ja luo uuden tyhjän id:n
     private String newID(int i) {
         int k = 0;
         switch(i) {
