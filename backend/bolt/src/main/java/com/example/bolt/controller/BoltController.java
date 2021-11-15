@@ -1,14 +1,22 @@
 package com.example.bolt.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.example.bolt.model.Customer;
 import com.example.bolt.model.Manager;
+import com.example.bolt.model.Order;
 import com.example.bolt.model.Product;
 import com.example.bolt.model.Restaurant;
+import com.example.bolt.model.Order.status;
 import com.example.bolt.repository.CustomerRepository;
 import com.example.bolt.repository.ManagerRepository;
+import com.example.bolt.repository.OrderRepository;
 import com.example.bolt.repository.ProductRepository;
 import com.example.bolt.repository.RestaurantRepository;
 
@@ -32,6 +40,10 @@ public class BoltController {
     RestaurantRepository re;
     @Autowired
     ProductRepository pr;
+    @Autowired
+    OrderRepository or;
+
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
     //////////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +61,7 @@ public class BoltController {
     @PostMapping("/addCustomer")
     public Customer addCustomers(@RequestBody Customer customer) {
         Customer c = customer;
-        c.setCustomerID(newID(0));
+        c.setCustomerID(generateID(0));
         this.cu.save(c);
         return c;
     }
@@ -79,7 +91,7 @@ public class BoltController {
     @PostMapping("/addManager")
     public Manager addManager(@RequestBody Manager Manager) {
         Manager r = Manager;
-        r.setManagerID(newID(1));
+        r.setManagerID(generateID(1));
         this.ma.save(r);
         return r;
     }
@@ -137,7 +149,7 @@ public class BoltController {
     @PostMapping("/addRestaurant")
     public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
         Restaurant r = Restaurant;
-        r.setRestaurantID(newID(2));
+        r.setRestaurantID(generateID(2));
         this.re.save(r);
         return r;
     }
@@ -167,7 +179,7 @@ public class BoltController {
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
-        p.setProductID(newID(3));
+        p.setProductID(generateID(3));
         this.pr.save(p);
         return p;
     }
@@ -223,8 +235,73 @@ public class BoltController {
 
     //////////////////////////////////////////////////////////////////////////////////
 
+    @GetMapping("/getOrder")
+    public List<Order> getOrders() {
+        return this.or.findAll();
+    }
+
+    @GetMapping("/getOrder/{id}")
+    public Order getOrder(@PathVariable("id") String id) {
+        Order o = this.or.findById(id).orElse(null);
+        return o; 
+    }
+
+    @PostMapping("/addOrder")
+    public Order addOrder(@RequestBody Map<String, String> v) {
+        Order o = new Order(
+            generateID(4),
+            v.get("customerID"),
+            v.get("productID"),
+            dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
+            "",
+            status.placed,
+            "",
+            0
+            );
+        this.or.save(o);
+        return o;
+    }
+
+    @GetMapping("/updateOrder/{id}")
+    public String updateOrder(@PathVariable("id") String id) throws ParseException {
+        Order o = this.or.findById(id).orElse(null);
+
+        switch (o.getOrderStatus()) {
+            case placed:
+                o.setOrderStatus(status.in_preparation);
+                this.or.save(o);
+                return "Order Updated to: " + o.getOrderStatus();
+            case in_preparation:
+                o.setOrderStatus(status.dispatched);
+                this.or.save(o);
+                return "Order Updated to: " + o.getOrderStatus();
+            case dispatched:
+                o.setOrderStatus(status.done);
+                o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
+                o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
+                this.or.save(o);
+                return "Order is finished.";
+            case done:
+                return "Order is already finished.";
+            default:
+                return "No orders found.";
+        }
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+
+    private String getTimeDifference(String orderTime) throws ParseException {
+        long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
+        return String.format(
+            "%02d:%02d:%02d",
+            TimeUnit.MILLISECONDS.toHours(difference),
+            TimeUnit.MILLISECONDS.toMinutes(difference) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(difference)),
+            TimeUnit.MILLISECONDS.toSeconds(difference) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(difference))
+            );
+    }
+
     //Tarkistaa ja luo uuden tyhjän id:n
-    private String newID(int i) {
+    private String generateID(int i) {
         int k = 0;
         switch(i) {
             case 0:
@@ -249,6 +326,12 @@ public class BoltController {
                 while (true) {
                     String j = "P";
                     if (this.pr.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+                }
+            case 4:
+                while (true) {
+                    String j = "O";
+                    if (this.or.findById(j + k).orElse(null) == null) return j + k;
                     else k++;
                 }
             default:
