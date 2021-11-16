@@ -11,8 +11,9 @@ import lombok.Data;
 @Document(collection = "products")
 public class Product {
     public enum type {
-        meal,
-        drink
+        MEAL,
+        DRINK,
+        SNACK
     }
 
     @Id
@@ -21,4 +22,6 @@ public class Product {
     private String photoPath;
     private type foodType;
     private int prepareTime;
+    private float price;
+    private String restaurantID;
 }

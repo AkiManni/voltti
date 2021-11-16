@@ -14,10 +14,17 @@ import lombok.Data;
 @Document(collection = "restaurants")
 public class Restaurant {
     public enum type {
-        cafe,
-        fine,
-        casual,
-        fast
+        CAFE,
+        FINE,
+        CASUAL,
+        FAST
+    }
+    public enum level {
+        €,
+        €€,
+        €€€,
+        €€€€,
+        €€€€€
     }
 
     @Id
@@ -28,8 +35,12 @@ public class Restaurant {
     private String photoPath;
     private type restaurantType;
     private List<String> menus;
+    private float restaurantBalance;
+    private String operatingHours;
+    private level priceLevel;
 
     public Restaurant() {
         this.menus = new ArrayList<>();
     }
 }
+ 

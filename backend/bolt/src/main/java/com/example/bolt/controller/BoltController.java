@@ -14,6 +14,7 @@ import com.example.bolt.model.Order;
 import com.example.bolt.model.Product;
 import com.example.bolt.model.Restaurant;
 import com.example.bolt.model.Order.status;
+import com.example.bolt.model.Restaurant.type;
 import com.example.bolt.repository.CustomerRepository;
 import com.example.bolt.repository.ManagerRepository;
 import com.example.bolt.repository.OrderRepository;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/bolt")
@@ -45,7 +48,7 @@ public class BoltController {
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////CUSTOMER///////////////////////////////////////////
 
     @GetMapping("/getCustomer")
     public List<Customer> getCustomers() {
@@ -75,7 +78,7 @@ public class BoltController {
         return "Deleted customer " + id + ".";
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////MANAGER///////////////////////////////////////////
 
     @GetMapping("/getManager")
     public List<Manager> getManagers() {
@@ -133,7 +136,7 @@ public class BoltController {
         return "Deleted Manager " + id + ".";
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////RESTAURANT///////////////////////////////////////////
 
     @GetMapping("/getRestaurant")
     public List<Restaurant> getRestaurants() {
@@ -146,10 +149,17 @@ public class BoltController {
         return r; 
     }
 
+    @GetMapping(value="/getRestaurantByName/{name}")
+    public Restaurant getRestaurantByName(@PathVariable("name") String name) {
+        name = name.replace("_", " ");
+        return this.re.findByName(name);
+    }
+
     @PostMapping("/addRestaurant")
     public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
         Restaurant r = Restaurant;
         r.setRestaurantID(generateID(2));
+        r.setName(r.getName().replace(" ", "_"));
         this.re.save(r);
         return r;
     }
@@ -163,7 +173,7 @@ public class BoltController {
         return "Deleted restaurant " + id + ".";
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////PRODUCT///////////////////////////////////////////
 
     @GetMapping("/getProduct")
     public List<Product> getProducts() {
@@ -174,7 +184,7 @@ public class BoltController {
     public Product getProduct(@PathVariable("id") String id) {
         Product p = this.pr.findById(id).orElse(null);
         return p; 
-    }
+    }    
 
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
@@ -199,6 +209,8 @@ public class BoltController {
             menus.add(p.getProductID());
             r.setMenus(menus);
             this.re.save(r);
+            p.setRestaurantID(r.getRestaurantID());
+            this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
         }
     }
@@ -233,7 +245,7 @@ public class BoltController {
         return "Deleted Manager " + id + ".";
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////ORDER///////////////////////////////////////////
 
     @GetMapping("/getOrder")
     public List<Order> getOrders() {
@@ -247,17 +259,20 @@ public class BoltController {
     }
 
     @PostMapping("/addOrder")
-    public Order addOrder(@RequestBody Map<String, String> v) {
+    public Order addOrder(@RequestBody Map<String, String> ids) {
+        Product p = this.pr.findById(ids.get("productID")).orElse(null);
+        if (p.equals(null)) return null;
+
         Order o = new Order(
             generateID(4),
-            v.get("customerID"),
-            v.get("productID"),
+            ids.get("customerID"),
+            ids.get("productID"),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
-            status.placed,
+            status.PLACED,
             "",
-            0
-            );
+            5 + p.getPrice()
+        );
         this.or.save(o);
         return o;
     }
@@ -265,30 +280,43 @@ public class BoltController {
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
+        Product p = this.pr.findById(o.getProductID()).orElse(null);
+        Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
-            case placed:
-                o.setOrderStatus(status.in_preparation);
+            case PLACED:
+                o.setOrderStatus(status.IN_PREPARATION);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
-            case in_preparation:
-                o.setOrderStatus(status.dispatched);
+            case IN_PREPARATION:
+                o.setOrderStatus(status.READY_TO_DISPATCH);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
-            case dispatched:
-                o.setOrderStatus(status.done);
+            case READY_TO_DISPATCH:
+                o.setOrderStatus(status.DISPATCHED);
+                this.or.save(o);
+                return "Order Updated to: " + o.getOrderStatus();
+            case DISPATCHED:
+                o.setOrderStatus(status.DELIVERED);
+                this.or.save(o);
+                return "Order Updated to: " + o.getOrderStatus();
+            case DELIVERED:
+                o.setOrderStatus(status.DONE);
                 o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
                 o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
                 this.or.save(o);
+                
+                r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
+                this.re.save(r);
                 return "Order is finished.";
-            case done:
+            case DONE:
                 return "Order is already finished.";
             default:
                 return "No orders found.";
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////EXTRA///////////////////////////////////////////
 
     private String getTimeDifference(String orderTime) throws ParseException {
         long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();

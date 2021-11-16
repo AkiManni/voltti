@@ -11,10 +11,12 @@ import lombok.Data;
 @Document(collection = "orders")
 public class Order {
     public enum status {
-        placed,
-        in_preparation,
-        dispatched,
-        done
+        PLACED,
+        IN_PREPARATION,
+        READY_TO_DISPATCH,
+        DISPATCHED,
+        DELIVERED,
+        DONE
     }
 
     @Id
@@ -25,5 +27,5 @@ public class Order {
     private String orderDelivered;
     private status orderStatus;
     private String totalPrepareTime;
-    private int totalCost;
+    private float totalCost;
 }
