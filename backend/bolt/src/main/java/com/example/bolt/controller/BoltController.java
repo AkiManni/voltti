@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.example.bolt.Register.login.AuthenticationRequest;
+import com.example.bolt.Register.login.AuthenticationResponse;
+import com.example.bolt.Register.login.UserRepository;
 import com.example.bolt.model.Customer;
 import com.example.bolt.model.Manager;
 import com.example.bolt.model.Order;
@@ -20,8 +23,12 @@ import com.example.bolt.repository.ManagerRepository;
 import com.example.bolt.repository.OrderRepository;
 import com.example.bolt.repository.ProductRepository;
 import com.example.bolt.repository.RestaurantRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +42,67 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @RequestMapping("/bolt")
 public class BoltController {
+@Autowired
+private UserRepository userRepository;
+@Autowired
+private AuthenticationManager authenticationManager;
+
+
+
+
+@PostMapping("/luo")
+private ResponseEntity<?> subscribeClient(@RequestBody AuthenticationRequest authenticationRequest){
+    String logincredential = authenticationRequest.getLoginCredential();
+String password = authenticationRequest.getLoginPassword();
+String firstname = authenticationRequest.getFname();
+String lastname = authenticationRequest.getLname();
+String address = authenticationRequest.getAddress();
+String postnum = authenticationRequest.getPostNum();
+
+Customer usermodel = new Customer();
+usermodel.setLoginCredential(logincredential);
+usermodel.setLoginPassword(new BCryptPasswordEncoder().encode(password));
+usermodel.setFname(firstname);
+usermodel.setLname(lastname);
+usermodel.setAddress(address);
+usermodel.setPostNum(postnum);
+try{
+    userRepository.save(usermodel);
+}
+catch(Exception e){
+    return ResponseEntity.ok(new AuthenticationResponse("Virhe käyttäjän luonnissa"));
+
+
+}
+return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
+    }
+
+
+    @PostMapping("/kirjaudu")
+    private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest){
+       
+        String username = authenticationRequest.getLoginCredential();
+        String password = authenticationRequest.getLoginPassword();
+       String address = authenticationRequest.getAddress();
+       
+       try{
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+
+       }
+       
+
+       catch(Exception e){
+        return ResponseEntity.ok(new AuthenticationResponse("vihre"));
+
+       }
+        return ResponseEntity.ok(new AuthenticationResponse("käyttäjä kirjautunut onnistuneesti" + username + "moro" +address));
+
+
+
+        
+    }
+
     @Autowired
     ManagerRepository ma;
     @Autowired

@@ -1,16 +1,6 @@
-package com.example.bolt.model;
+package com.example.bolt.Register.login;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-@Document(collection = "customers")
-public class Customer {
-    @Id
+public class AuthenticationRequest {
     private String customerID;
     private String fname;
     private String lname;
@@ -18,8 +8,7 @@ public class Customer {
     private String postNum;
     private String loginCredential;
     private String loginPassword;
-    public Customer() {
-    }
+
     public String getCustomerID() {
         return this.customerID;
     }
@@ -75,11 +64,4 @@ public class Customer {
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
     }
-
-
-
-
-
-
-
 }
