@@ -3,23 +3,14 @@ package com.example.bolt.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import com.example.bolt.model.Customer;
-import com.example.bolt.model.Manager;
-import com.example.bolt.model.Order;
-import com.example.bolt.model.Product;
-import com.example.bolt.model.Restaurant;
-import com.example.bolt.model.Order.status;
-import com.example.bolt.model.Restaurant.type;
-import com.example.bolt.repository.CustomerRepository;
-import com.example.bolt.repository.ManagerRepository;
-import com.example.bolt.repository.OrderRepository;
-import com.example.bolt.repository.ProductRepository;
-import com.example.bolt.repository.RestaurantRepository;
+import com.example.bolt.model.*;
+import com.example.bolt.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -56,9 +46,8 @@ public class BoltController {
     }
 
     @GetMapping("/getCustomer/{id}")
-    public Customer getCustomer(@PathVariable("id") String id) {
-        Customer c = this.cu.findById(id).orElse(null);
-        return c; 
+    public Customer getCustomer(@PathVariable("id") final String id) {
+        return this.cu.findById(id).orElse(null);
     }
 
     @PostMapping("/addCustomer")
@@ -87,8 +76,7 @@ public class BoltController {
 
     @GetMapping("/getManager/{id}")
     public Manager getManager(@PathVariable("id") String id) {
-        Manager r = this.ma.findById(id).orElse(null);
-        return r; 
+        return this.ma.findById(id).orElse(null);
     }
 
     @PostMapping("/addManager")
@@ -145,16 +133,24 @@ public class BoltController {
 
     @GetMapping("/getRestaurant/{id}")
     public Restaurant getRestaurant(@PathVariable("id") String id) {
-        Restaurant r = this.re.findById(id).orElse(null);
-        return r; 
+        return this.re.findById(id).orElse(null);
     }
 
     @GetMapping(value="/getRestaurantByName/{name}")
     public Restaurant getRestaurantByName(@PathVariable("name") String name) {
-        name = name.replace("_", " ");
         return this.re.findByName(name);
     }
 
+    @GetMapping(value="/getRestaurantByFoodType/{type}")
+    public List<Restaurant> getRestaurantByFoodType(@PathVariable("type") String type) {
+        List<Restaurant> r = new ArrayList<>();
+        List<Product> products = this.pr.findByType(type.toUpperCase());
+        for (Product p : products) {
+            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(this.re.findById(p.getRestaurantID()).orElse(null));
+        }
+        return r;
+    }
+        
     @PostMapping("/addRestaurant")
     public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
         Restaurant r = Restaurant;
@@ -182,14 +178,24 @@ public class BoltController {
 
     @GetMapping("/getProduct/{id}")
     public Product getProduct(@PathVariable("id") String id) {
-        Product p = this.pr.findById(id).orElse(null);
-        return p; 
+        return this.pr.findById(id).orElse(null);
     }    
+
+    @GetMapping(value="/getFoodByName/{name}")
+    public Product getFoodByName(@PathVariable("name") String name) {
+        return this.pr.findByName(name);
+    }
+
+    @GetMapping(value="/getFoodByRestaurant/{id}")
+    public List<Product> getFoodByRestaurant(@PathVariable("id") String id) {
+        return this.pr.findByRestaurant(id);
+    }
 
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
         p.setProductID(generateID(3));
+        p.setName(p.getName().replace(" ", "_"));
         this.pr.save(p);
         return p;
     }
@@ -254,8 +260,7 @@ public class BoltController {
 
     @GetMapping("/getOrder/{id}")
     public Order getOrder(@PathVariable("id") String id) {
-        Order o = this.or.findById(id).orElse(null);
-        return o; 
+        return this.or.findById(id).orElse(null);
     }
 
     @PostMapping("/addOrder")
@@ -269,7 +274,7 @@ public class BoltController {
             ids.get("productID"),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
-            status.PLACED,
+            Order.status.PLACED,
             "",
             5 + p.getPrice()
         );
@@ -285,23 +290,23 @@ public class BoltController {
 
         switch (o.getOrderStatus()) {
             case PLACED:
-                o.setOrderStatus(status.IN_PREPARATION);
+                o.setOrderStatus(Order.status.IN_PREPARATION);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case IN_PREPARATION:
-                o.setOrderStatus(status.READY_TO_DISPATCH);
+                o.setOrderStatus(Order.status.READY_TO_DISPATCH);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case READY_TO_DISPATCH:
-                o.setOrderStatus(status.DISPATCHED);
+                o.setOrderStatus(Order.status.DISPATCHED);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DISPATCHED:
-                o.setOrderStatus(status.DELIVERED);
+                o.setOrderStatus(Order.status.DELIVERED);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DELIVERED:
-                o.setOrderStatus(status.DONE);
+                o.setOrderStatus(Order.status.DONE);
                 o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
                 o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
                 this.or.save(o);

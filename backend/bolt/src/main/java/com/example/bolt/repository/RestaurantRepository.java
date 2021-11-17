@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 public interface RestaurantRepository extends MongoRepository<Restaurant, String> {
 
-    @Query(value = "{name:?0}")
+    @Query(value = "{'name':?0}")
     Restaurant findByName(String name);
     
 }
