@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.text.Document;
+
 import com.example.bolt.Register.login.AuthenticationRequest;
 import com.example.bolt.Register.login.AuthenticationResponse;
 import com.example.bolt.Register.login.UserRepository;
@@ -23,7 +25,11 @@ import com.example.bolt.repository.ManagerRepository;
 import com.example.bolt.repository.OrderRepository;
 import com.example.bolt.repository.ProductRepository;
 import com.example.bolt.repository.RestaurantRepository;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.model.Filters;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,13 +73,26 @@ usermodel.setLname(lastname);
 usermodel.setAddress(address);
 usermodel.setPostNum(postnum);
 try{
+   
+   
+   Customer arvo = userRepository.findByLoginCredential(usermodel.getLoginCredential());
+
+   if (arvo != null){
+
+    return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä on jo olemassa"));
+   }
+    
+   else{
     userRepository.save(usermodel);
+   }
+
 }
 catch(Exception e){
     return ResponseEntity.ok(new AuthenticationResponse("Virhe käyttäjän luonnissa"));
 
 
 }
+
 return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
     }
 
