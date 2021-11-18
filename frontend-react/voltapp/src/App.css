@@ -1,6 +1,6 @@
 .Logo {
   height:90%;
-  padding-right:125px;
+  padding-right:10%;
   margin-top:10px;
   float:right;
   
@@ -11,7 +11,6 @@
   width: 100%; min-width: 700px;
   height: 160px;
   border:1px solid rgb(219, 219, 219);
-  
 }
 
 .searchBar{
@@ -60,5 +59,9 @@
   border:1px solid rgb(219, 219, 219);
   overflow-y: scroll;
   padding-top:10px;
+}
+
+.orderReviewButton {
+  margin-top:10px;
 }
 

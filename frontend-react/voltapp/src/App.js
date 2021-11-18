@@ -164,9 +164,9 @@ class App extends React.Component {
     let shoppingCartQuickview =
     <>
     <div>
-      SHOPPING CART
-      <div className="shoppingCart">TÄSSÄ OLISI TUOTE:</div>
+      <div className="shoppingCart">SHOPPING CART:</div>
     </div>
+    <button className="orderReviewButton">Review Shopping Cart</button>
     </>
 
     let editRestaurantMenuQuickview = 
