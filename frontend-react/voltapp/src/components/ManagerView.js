@@ -83,8 +83,7 @@ let readyToDispatch =
             <td>id</td>
             <td>rId</td>
             <td>foodname</td>
-            <td>price</td>
-            <td>prepareTime</td>
+
             <td></td>
         </tr>
         { props.products.map((product, index) =>
@@ -93,8 +92,6 @@ let readyToDispatch =
             <td>{product.id}</td>
             <td>{product.restaurantId}</td>
             <td>{product.name}</td>
-            <td>{product.price}</td>
-            <td>{product.prepareTime}</td>
             <td><button>Dispatch</button></td>
         </tr>
         )}
@@ -125,31 +122,36 @@ let dispatchedOrders =
 
 return(
 <div>
-
-<button onClick={ props.disableManagerMode }>disable manager</button> Alla oleva näkymä siirretään contentContaineriin.
-
     <div className={ styles.divContainer }>
         
         <div className={ styles.divContainer }>
             <div className={ styles.firstContainer }>
+               <div className={ styles.contentBox }>
                 <b>Orders:</b>
                 { ordersReceived2 }
+                </div> 
             </div>
 
             <div>
                 <div className={styles.secondContainer}>
+                <div className={ styles.contentBox }>
                     <b>Being Prepared:</b>
                     { preparedOrders }
+                    </div>
                 </div>
             </div>
             <div className={ styles.divContainer2 }>
             <div className={styles.thirdContainer}>
+                <div className={ styles.contentBox }>
                 <b>Ready for Dispatch:</b>
                 { readyToDispatch }
+                </div>
             </div>
                 <div className={styles.fourthContainer}>
+                <div className={ styles.contentBox }>   
                     <b>Dispatched orders:</b>
                     { dispatchedOrders }
+                    </div>
                 </div>
             </div>
         </div>

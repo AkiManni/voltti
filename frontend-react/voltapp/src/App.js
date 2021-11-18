@@ -30,6 +30,8 @@ class App extends React.Component {
       defaultBarWithoutSearchActive: false,
       userBarWithoutSearchActive: false,
 
+      containerActive: true,
+
       contentViewActive: true,  // TARVIIKO TÄTÄ?
       searchResultsActive: true,
       editUserActive: false,
@@ -63,7 +65,7 @@ class App extends React.Component {
     <>
     <div className="searchBar">
     Search: <input type="text" onChange={ this.onSearchFieldChange } value={ this.state.productSearchString }/> 
-      <button onClick={() => this.setState({managerModeActive: !this.state.managerModeActive})}>Manager</button>
+      <button onClick={() => this.setState( {containerActive: !this.state.containerActive})}>Manager OrderOverview</button>
     </div>
     </>
 
@@ -222,13 +224,21 @@ class App extends React.Component {
         </div>
       </>
 
+    let elementContainer =
+      <>
+      <div className="elementContainer">
+        { this.state.containerActive? <div>{contentContainer}{sideBarContainer}</div> : <ManagerView disableManagerMode={ () => this.setState({managerModeActive: false})}
+              products= { this.state.products } orders= { this.state.orders }/>
+              }
+      </div>
+      </>
+
       let output = 
       <>
         <div>
           {menuBarContainer}
           <div className="wrapper">
-          {contentContainer}
-          { this.state.sideBarActive ? <div>{sideBarContainer}</div> : <div></div> }
+          { elementContainer }
           </div>
         </div>
       </>

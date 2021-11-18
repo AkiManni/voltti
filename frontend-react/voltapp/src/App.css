@@ -8,9 +8,10 @@
 
 .menuBar {
   background-color: #f5f7fa;
-  width: 100%; min-width: 700px;
+  width: 100vw; min-width: 700px;
   height: 160px;
   border:1px solid rgb(219, 219, 219);
+  margin-bottom: 10px;
 }
 
 .searchBar{
@@ -26,7 +27,6 @@
   overflow-y:scroll;
   width:69%;
   float:left;
-  margin-top: 10px;
   
   padding-top:10px;
   text-align: center;
@@ -38,16 +38,16 @@
   width:30%;
   height:700px;
   float:right;
-  margin-top:10px;
+ 
   padding-top:10px;
   text-align: center;
   border:1px solid rgb(219, 219, 219);
 }
 
 .wrapper {
-  width:100%;
-  position:relative;
-  display:inline;
+  width:100vw;
+  /* position:relative;
+  display:inline; */
 }
 
 .shoppingCart {
@@ -65,3 +65,6 @@
   margin-top:10px;
 }
 
+.elementContainer {
+  width:100vw;
+}
