@@ -268,6 +268,21 @@ public class BoltController {
         return this.or.findById(id).orElse(null);
     }
 
+    @GetMapping(value="/getOrderByCustomerID/{id}")
+    public List<Order> getOrderByCustomerID(@PathVariable("id") String id) {
+        return this.or.findByCustomerID(id);
+    }
+
+    @GetMapping(value="/getOrderByRestaurantID/{id}")
+    public List<Order> getOrderByRestaurantID(@PathVariable("id") String id) {
+        Restaurant r = this.re.findById(id).orElse(null);
+        List<Order> list = new ArrayList<>();
+        for (String s : r.getMenus()) {
+            list.add(this.or.findByProductID(s).orElse(null));
+        }
+        return list;
+    }
+    
     @PostMapping("/addOrder")
     public Order addOrder(@RequestBody Map<String, String> ids) {
         Product p = this.pr.findById(ids.get("productID")).orElse(null);
