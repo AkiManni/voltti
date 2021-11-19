@@ -1,0 +1,61 @@
+{
+  "items": [
+
+    { 
+      "id": 1, 
+      "manufucturer":"Apple", 
+      "type":"Phone", 
+      "name":"iPhone 25", 
+      "price": 499, 
+      "rating":2, 
+      "image": "phone2.png",
+      "qty":1
+    },
+
+    { "id": 2, "manufucturer":"Apple", "type":"Phone", "name":"iPhone SE", "price": 599, "rating":3, "image": "phone3.png","qty":1},
+    { "id": 3, "manufucturer":"Apple", "type":"Computer", "name":"Macbook Pro", "price": 1239, "rating":1, "image": "computer1.png","qty":2},
+    { "id": 4, "manufucturer":"Apple", "type":"Computer", "name":"Macbook Pro 2", "price": 1449, "rating":2, "image": "computer2.png","qty":1},
+    { "id": 5, "manufucturer":"Nokia", "type":"Phone", "name":"3310", "price": 250, "rating": 2, "image": "phone2.png","qty":1},
+    { "id": 6, "manufucturer":"Nokia", "type":"Phone", "name":"3310v2", "price": 550, "rating":3, "image": "phone4.png","qty":3},
+    { "id": 7, "manufucturer":"Nokia", "type":"Phone", "name":"2720 flip", "price": 129, "rating":4, "image": "phone5.png","qty":1},
+    { "id": 8, "manufucturer":"Audi", "type":"Car", "name":"A2", "price": 33000, "rating": 1, "image": "car1.png","qty":1},
+    { "id": 9, "manufucturer":"Audi", "type":"Car", "name":"A3", "price": 22999, "rating":2, "image": "car2.png","qty":4},
+    { "id": 10, "manufucturer":"Audi", "type":"Car", "name":"A5", "price": 1250, "rating":3, "image": "car3.png","qty":1},
+    { "id": 11, "manufucturer":"Audi", "type":"Car", "name":"A7", "price": 12040, "rating":1, "image": "car4.png","qty":1},
+    { "id": 12, "manufucturer":"Lenovo", "type":"Computer", "name":"ThinkPad 22", "price": 249, "rating":3, "image": "computer1.png","qty":3},
+    { "id": 13, "manufucturer":"Lenovo", "type":"Computer", "name":"ThinkPad 26", "price": 359, "rating": 2, "image": "computer2.png","qty":2},
+    { "id": 14, "manufucturer":"Asus", "type":"Computer", "name":"Asus E7", "price": 559, "rating": 4, "image": "computer4.png","qty":1},
+    { "id": 15, "manufucturer":"Logitech", "type":"Mouse", "name":"Logitech G305 ", "price": 75, "rating": 5, "image": "computer1.png","qty":1},
+    { "id": 16, "manufucturer":"Logitech", "type":"Mouse", "name":"Logitech MX518", "price": 125, "rating": 2, "image": "computer2.png","qty":5},
+    { "id": 17, "manufucturer":"Logitech", "type":"Keyboard", "name":"Logitech K400", "price": 40, "rating": 3, "image": "computer7.png","qty":1},
+    { "id": 18, "manufucturer":"Huawei", "type":"Phone", "name":"P30 Lite", "price": 250, "rating": 1, "image": "phone6.png","qty":1},
+    { "id": 19, "manufucturer":"Huawei", "type":"Phone", "name":"P40 Lite", "price": 270, "rating": 2, "image": "phone5.png","qty":2},
+    { "id": 20, "manufucturer":"Samsung", "type":"TV", "name":"65 Tuumainen", "price": 540, "rating": 3, "image": "tv1.png","qty":1},
+    { "id": 21, "manufucturer":"Samsung", "type":"Phone", "name":"XCOVER III", "price": 359, "rating": 4, "image": "phone5.png","qty":3},
+    { "id": 22, "manufucturer":"Panasonic", "type":"TV", "name":"65 Tuumainen Parempi", "price": 769, "rating": 5, "image": "tv2.png","qty":1},
+    { "id": 23, "manufucturer":"Salora", "type":"TV", "name":"24 kuvaputki", "price": 559, "rating": 4, "image": "tv3.png","qty":1},
+    { "id": 24, "manufucturer":"UPO", "type":"Washingmachine", "name":"Pesukone 1", "price": 339, "rating": 3, "image": "wmachine1.png","qty":4},
+    { "id": 25, "manufucturer":"Zanussi", "type":"Washingmachine", "name":"Pesukone 2", "price": 229, "rating": 1, "image": "wmachine2.png","qty":1},
+    { "id": 26, "manufucturer":"Whirpool", "type":"Washingmachine", "name":"Pesukone 3", "price": 333, "rating": 2, "image": "wmachine3.png","qty":5},
+    { "id": 27, "manufucturer":"Moccamaster", "type":"Coffeemaker", "name":"Moccamaster Kahvinkeittäjä II", "price": 124, "rating": 5, "image": "coffeemaker2.png","qty":2},
+    { "id": 28, "manufucturer":"Hewlett & Packard", "type":"Coffeemaker", "name":"HP Coffee Max", "price": 123, "rating": 4, "image": "coffeemaker1.png","qty":3},
+    { "id": 29, "manufucturer":"OBH Nordica", "type":"Coffeemaker", "name":"Coffee Turbo X2", "price": 122, "rating": 4, "image": "coffeemaker3.png","qty":1},
+    { "id": 30, "manufucturer":"Lada", "type":"Car", "name":"Lada A100", "model":"A100","price": 100, "rating": 5, "image": "car5.png","qty":1},
+    { "id": 31, "manufucturer":"Tesla", "type":"Car", "name":"Tsap Tesla-auto", "price": 49999, "rating": 2, "image": "car6.png","qty":2},
+    { "id": 32, "manufucturer":"Renault", "type":"Car", "name":"Omega Auto", "price": 22999, "rating": 1, "image": "car4.png","qty":2},
+    { "id": 33, "manufucturer":"Xiaomi", "type":"Phone", "name":"Xi Xi Phone", "price": 222, "rating": 3, "image": "phone1.png","qty":1},
+    { "id": 34, "manufucturer":"Peugeot", "type":"Car", "name":"Pösö 206", "price": 22000, "rating": 4, "image": "car1.png","qty":1},
+    { "id": 35, "manufucturer":"Acer", "type":"Computer", "name":"Läppäri 2.0", "price": 2200, "rating": 5, "image": "computer1.png","qty":3},
+    { "id": 36, "manufucturer":"Acer", "type":"Computer", "name":"Läppäri 2.0K", "price": 1230, "rating": 3, "image": "computer2.png","qty":1},
+    { "id": 37, "manufucturer":"LG", "type":"TV", "name":"70 tuumaa suuri TV", "price": 999, "rating": 2, "image": "tv5.png","qty":2},
+    { "id": 38, "manufucturer":"LG", "type":"TV", "name":"14 Pieni TV", "price": 119, "rating": 1, "image": "tv4.png","qty":2},
+    { "id": 39, "manufucturer":"Philips", "type":"TV", "name":"40 Talous TV", "price": 229, "rating": 2, "image": "tv3.png","qty":1},
+    { "id": 40, "manufucturer":"Sony", "type":"Phone", "name":"Xperia THIS", "price": 559, "rating": 3, "image": "phone6.png","qty":4}
+  
+    
+  ]
+}
+
+
+
+

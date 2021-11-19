@@ -1,0 +1,70 @@
+.divContainer{
+    
+    display:flex;
+    height:700px;
+    width:100vw;
+    
+}
+
+.divContainer2{
+    display:flex;
+    height:700px;
+}
+
+
+.firstContainer{
+    text-align:center;
+    margin-right:10px;
+    margin-left:2px;
+    float: left;
+    border:1px solid rgb(219, 219, 219);
+    width: 24.5vw;
+    height:100%;
+    background-color: #f5f7fa;
+    
+}
+
+.secondContainer{
+    text-align:center;
+    float:left;
+    border:1px solid rgb(219, 219, 219);
+    width: 24.5vw;
+    height:100%;
+    background-color: #f5f7fa;
+    margin-right:10px;  
+}
+
+.thirdContainer{
+    text-align:center;
+    float:left;
+    margin-right:10px;
+    border:1px solid rgb(219, 219, 219);
+    width: 25vw;
+    height:100%;
+    background-color: #f5f7fa;
+}
+
+.fourthContainer{
+    text-align:center;
+    float:right;
+    border:1px solid rgb(219, 219, 219);
+    width: 25vw;
+    height:100%;
+    background-color: #f5f7fa;
+}
+
+.contentBox {
+    width:92%;
+    height:94%;
+    margin-top:10px;
+    margin-left:4%;
+    background-color: #f0f0f0;
+    border:1px solid rgb(219, 219, 219);
+    overflow-y: scroll;
+    padding-top:10px;
+    
+}
+
+table{
+    margin:auto;
+}

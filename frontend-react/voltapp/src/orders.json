@@ -1,0 +1,58 @@
+{
+    "orders": 
+    [
+        { 
+
+        "id": 1, 
+        "customerId": 1,
+        "restaurantId": 1,
+        "customerName": "Jack Bauer",
+        "Address":"New yorkerstreet 2",
+        "postNumber": 28956,
+        "productsOrdered:":
+        [
+        {
+            "id":1,
+            "restaurantId":1,
+            "name":"GongBao Chicken",
+            "price": 12.30,
+            "prepareTime": 40,
+            "foodType":"fastfood"
+        },
+        {
+            "id": 1,
+            "restaurantId":1,
+            "name": "Pebis",
+            "price": 5.00,
+            "prepareTime": 0,
+            "foodType": "softdrink"
+        }
+        ],
+        "totalCost": 17.30,
+        "orderStatus": "Ordered"
+        },
+        {
+
+        "id": 2, 
+        "customerId": 2,
+        "restaurantId": 2,
+        "customerName": "Steve Bob",
+        "Address":"Arlington 22",
+        "postNumber": 456,
+        "productsOrdered:":
+        [
+            {
+            "id": 2,
+            "restaurantId":2,
+            "name": "ShishKebab",
+            "price": 13.00,
+            "prepareTime": 20,
+            "foodType": "fastfood"
+            }
+        ],
+        "totalCost": 13.00,
+        "orderStatus": "Ordered"
+        }
+    ]
+
+}
