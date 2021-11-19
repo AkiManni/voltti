@@ -25,7 +25,7 @@ public class Order {
     private String productID;
     private String orderTime;
     private String orderDelivered;
-    public status orderStatus;
+    private status orderStatus;
     private String totalPrepareTime;
     private float totalCost;
 }

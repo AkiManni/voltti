@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/bolt")
 public class BoltController {
@@ -186,9 +185,15 @@ public class BoltController {
         return this.pr.findByName(name);
     }
 
-    @GetMapping(value="/getFoodByRestaurant/{id}")
-    public List<Product> getFoodByRestaurant(@PathVariable("id") String id) {
-        return this.pr.findByRestaurant(id);
+    @GetMapping(value="/getFoodByRestaurantID/{id}")
+    public List<Product> getFoodByRestaurantID(@PathVariable("id") String id) {
+        return this.pr.findByRestaurantID(id);
+    }
+
+    @GetMapping(value="/getFoodByRestaurantName/{name}")
+    public List<Product> getFoodByRestaurantName(@PathVariable("name") String name) {
+        Restaurant r = this.re.findByName(name);
+        return this.pr.findByRestaurantID(r.getRestaurantID());
     }
 
     @PostMapping("/addProduct")
