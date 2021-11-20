@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +13,9 @@ import javax.swing.text.Document;
 
 import com.example.bolt.Register.login.AuthenticationRequest;
 import com.example.bolt.Register.login.AuthenticationResponse;
+import com.example.bolt.Register.login.JwtUtil;
 import com.example.bolt.Register.login.UserRepository;
+import com.example.bolt.Register.login.AuthenticationRequest.role;
 import com.example.bolt.model.Customer;
 import com.example.bolt.model.Manager;
 import com.example.bolt.model.Order;
@@ -42,6 +45,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import io.jsonwebtoken.Jwt;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -64,7 +70,8 @@ String firstname = authenticationRequest.getFname();
 String lastname = authenticationRequest.getLname();
 String address = authenticationRequest.getAddress();
 String postnum = authenticationRequest.getPostNum();
-
+role userRole = authenticationRequest.getUserRole();
+//EnumSet roles = authenticationRequest.EnumSet.of
 Customer usermodel = new Customer();
 usermodel.setLoginCredential(logincredential);
 usermodel.setLoginPassword(new BCryptPasswordEncoder().encode(password));
@@ -72,6 +79,7 @@ usermodel.setFname(firstname);
 usermodel.setLname(lastname);
 usermodel.setAddress(address);
 usermodel.setPostNum(postnum);
+usermodel.setUserRole(userRole);
 try{
    
    
@@ -115,7 +123,8 @@ return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
         return ResponseEntity.ok(new AuthenticationResponse("vihre"));
 
        }
-        return ResponseEntity.ok(new AuthenticationResponse("käyttäjä kirjautunut onnistuneesti" + username + "moro" +address));
+       final String jwt = JwtUtil.generateToken(username);
+        return ResponseEntity.ok(new AuthenticationResponse("käyttäjä kirjautunut onnistuneesti " + "käyttäjänimellä --> " +username + " token ---> " + jwt));
 
 
 

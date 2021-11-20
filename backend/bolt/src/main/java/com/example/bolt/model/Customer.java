@@ -1,5 +1,7 @@
 package com.example.bolt.model;
 
+
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,6 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Document(collection = "customers")
 public class Customer {
+
     @Id
     private String customerID;
     private String fname;
@@ -18,6 +21,12 @@ public class Customer {
     private String postNum;
     private String loginCredential;
     private String loginPassword;
+    private role userRole;
+    public enum role {
+        ADMIN,
+        CUSTOMER
+         }
+        
     public Customer() {
     }
     public String getCustomerID() {
@@ -31,7 +40,6 @@ public class Customer {
     public String getFname() {
         return this.fname;
     }
-
     public void setFname(String fname) {
         this.fname = fname;
     }
@@ -74,6 +82,8 @@ public class Customer {
 
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
+    }
+    public void setUserRole(com.example.bolt.Register.login.AuthenticationRequest.role useRole) {
     }
 
 

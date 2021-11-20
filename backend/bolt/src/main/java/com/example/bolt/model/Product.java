@@ -10,17 +10,16 @@ import lombok.Data;
 @AllArgsConstructor
 @Document(collection = "products")
 public class Product {
-    public enum type {
-        MEAL,
-        DRINK,
-        SNACK
+    public enum role {
+   ADMIN,
+   CUSTOMER
     }
 
     @Id
     private String productID;
     private String name;
     private String photoPath;
-    private type foodType;
+    private role userRole;
     private int prepareTime;
     private float price;
     private String restaurantID;

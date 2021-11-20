@@ -1,14 +1,22 @@
 package com.example.bolt.Register.login;
 
+
+
 public class AuthenticationRequest {
     private String customerID;
+    private role userRole;
     private String fname;
     private String lname;
     private String address;
     private String postNum;
     private String loginCredential;
     private String loginPassword;
-
+   
+    public enum role {
+        ADMIN,
+        CUSTOMER
+         }
+         
     public String getCustomerID() {
         return this.customerID;
     }
@@ -64,4 +72,16 @@ public class AuthenticationRequest {
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
     }
+
+  
+
+
+    public role getUserRole() {
+        return this.userRole;
+    }
+
+    public void setUserRole(role userRole) {
+        this.userRole = userRole;
+    }
+
 }
