@@ -4,121 +4,100 @@ import styles from './ManagerView.module.css'
 export default function ManagerView(props){
 
 
+
+
+
+const moveToPreparation = (orderId) => {
+            props.moveToPreparation(orderId);
+
+            clearInterval(prepareTimer);
+        }
+
+const setToDispatched = (orderId) => {
+            props.setToDispatched(orderId);
+            clearInterval(prepareTimer);
+        }
+
+
+var prepareTimer =  setInterval(function() {
+
+            props.prepareTimer();
+        
+            clearInterval(prepareTimer);
+        
+          }, 1000);
+        
+    
+//  "id": 1, 
+//         "customerId": 1,
+//         "restaurantId": 1,
+//         "customerName": "Jack Bauer",
+//         "Address":"New yorkerstreet 2",
+//         "postNumber": 28956,
+//         "totalCost": 17.30,
+//         "orderPlacedAt":null,
+//         "orderPreparedAt":null,
+//         "orderDispatchedAt":null,
+//         "orderDeliveredAt":null,
+//         "orderDoneAt":null,
+//         "prepareTime": 40,
+//         "deliveryTime": 30,
+//         "orderStatus": "PLACED" 
+//                 "productsOrdered:":
+//                 [
+//                     {
+//                     "id": 2,
+//                     "restaurantId":2,
+//                     "name": "ShishKebab",
+//                     "price": 13.00,
+//                     "prepareTime": 20,
+//                     "foodType": "fastfood"
+//                     }
+//                 ],
+
+
+
 let ordersReceived = 
     
-    <table>
-        <tr>
-            
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-            <td>price</td>
-            <td>prepareTime</td>
-            <td></td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td>{product.price}</td>
-            <td>{product.prepareTime}</td>
-            <td><button>{'>>'}</button></td>
-        </tr>
-        )}
-    </table>
+
+        props.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <><ol><b>Order {orderItem.id}. {orderItem.customerName}</b></ol> <ul>Nested Object Mappaus:</ul><ol>TUOTE 1</ol><ol>TUOTE 2</ol><ol>TUOTE 3</ol> <hr></hr><ol><b>Total of:</b> {orderItem.totalCost}€ <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol> </>
+        </div>
+        )
 
 
-
-let ordersReceived2 = 
-            <>
-     
-     { props.orders.map((order, index) => 
-    
-        <table key={index}>
-        <tr>{ order.id }</tr>
-        <td>{ order.customerId + " " + order.customerName + " "}</td> 
-
-        {/* { { order.(productsOrdered).map((product, i) => 
-            <li key={i}>
-                { product.id + ". " + product.name }
-                { product.price + "€" }
-            </li>
-            
-        )} } */}
-
-        <td>{ order.totalCost + "€ "}</td>
-        <td><button>Prepare</button></td>
-        </table>)} 
-
-          
-            </>
 let preparedOrders = 
+        
+        props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ul><b>Order {orderItem.id}. - {orderItem.customerName}</b></ul>
+        <ol>TUOTE 1</ol><ol>TUOTE 2</ol><ol>TUOTE 3</ol>
+        <hr></hr>
+        <ul><b>Prepared in:</b> {orderItem.prepareTime}s</ul>
+        </div>
+        //updateOrderInPreparation
 
-    <table>
-        <tr>
-            <td></td>
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-            <td>price</td>
-            <td>prepareTime</td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            <td></td>
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td>{product.price}</td>
-            <td>{product.prepareTime}</td>
-        </tr>
-        )}
-    </table>
+        )
+        
 
 let readyToDispatch =
     
-    <table>
-        <tr>
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-
-            <td></td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td><button>Dispatch</button></td>
-        </tr>
-        )}
-    </table>
+        props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ol><b>Order {orderItem.id}. Ready To Deliver</b></ol>
+        <ol>{orderItem.Address}, {orderItem.postNumber} </ol> <hr></hr><ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
+        </div>
+        )
 
 let dispatchedOrders = 
     
-    <table>
-    <tr>
-        <td></td>
-        <td>id</td>
-        <td>rId</td>
-        <td>foodname</td>
-        <td>price</td>
-        <td>prepareTime</td>
-    </tr>
-    { props.products.map((product, index) =>
-    <tr key ={index}>
-        <td></td>
-        <td>{product.id}</td>
-        <td>{product.restaurantId}</td>
-        <td>{product.name}</td>
-        <td>{product.price}</td>
-        <td>{product.prepareTime}</td>
-    </tr>
-    )}
-    </table>
+        props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ul><b>Order {orderItem.id}.</b></ul> <ol> {orderItem.Address}, {orderItem.postNumber} </ol><hr></hr> <ol><b>Delivered in:</b> {orderItem.deliveryTime}s</ol>
+        </div>
+        )
+
 
 return(
 <div>
@@ -126,30 +105,34 @@ return(
         
         <div className={ styles.divContainer }>
             <div className={ styles.firstContainer }>
+                <u>Orders:</u>
                <div className={ styles.contentBox }>
-                <b>Orders:</b>
-                { ordersReceived2 }
+                { ordersReceived }
+                
                 </div> 
             </div>
 
             <div>
                 <div className={styles.secondContainer}>
+                <u>Being Prepared:</u>
                 <div className={ styles.contentBox }>
-                    <b>Being Prepared:</b>
+                    
                     { preparedOrders }
                     </div>
                 </div>
             </div>
             <div className={ styles.divContainer2 }>
             <div className={styles.thirdContainer}>
+            <u>Ready for Dispatch:</u>
                 <div className={ styles.contentBox }>
-                <b>Ready for Dispatch:</b>
+                
                 { readyToDispatch }
                 </div>
             </div>
                 <div className={styles.fourthContainer}>
+                <u>Dispatched orders:</u>
                 <div className={ styles.contentBox }>   
-                    <b>Dispatched orders:</b>
+                    
                     { dispatchedOrders }
                     </div>
                 </div>
