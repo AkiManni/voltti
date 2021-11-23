@@ -292,10 +292,8 @@ public class BoltController {
             generateID(4),
             ids.get("customerID"),
             ids.get("productID"),
-            dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
-            "",
             Order.status.PLACED,
-            "",
+            new StatusTiming(dateFormat.format(Calendar.getInstance().getTime())),
             5 + p.getPrice()
         );
         this.or.save(o);
