@@ -23,9 +23,7 @@ public class Order {
     private String orderID;
     private String customerID;
     private String productID;
-    private String orderTime;
-    private String orderDelivered;
     private status orderStatus;
-    private String totalPrepareTime;
+    private StatusTiming times;
     private float totalCost;
 }
