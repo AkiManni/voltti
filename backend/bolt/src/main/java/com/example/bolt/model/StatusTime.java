@@ -3,7 +3,7 @@ package com.example.bolt.model;
 import lombok.Data;
 
 @Data
-public class StatusTiming {
+public class StatusTime {
     private String placedTime;
     private String inPreparationTime;
     private String readyToDispathTime;
@@ -13,7 +13,7 @@ public class StatusTiming {
     private String totalTime;
 
 
-    public StatusTiming(String placedTime) {
+    public StatusTime(String placedTime) {
         this.placedTime = placedTime;
     }
 }

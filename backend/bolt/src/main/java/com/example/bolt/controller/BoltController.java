@@ -35,8 +35,6 @@ public class BoltController {
     @Autowired
     OrderRepository or;
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
-
     ///////////////////////////////////////CUSTOMER///////////////////////////////////////////
 
     @GetMapping("/getCustomer")
@@ -293,7 +291,7 @@ public class BoltController {
             ids.get("customerID"),
             ids.get("productID"),
             Order.status.PLACED,
-            new StatusTiming(dateFormat.format(Calendar.getInstance().getTime())),
+            new StatusTime(getTime()),
             5 + p.getPrice()
         );
         this.or.save(o);
@@ -303,30 +301,39 @@ public class BoltController {
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
+        StatusTime s = o.getTimes();
         Product p = this.pr.findById(o.getProductID()).orElse(null);
         Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
             case PLACED:
                 o.setOrderStatus(Order.status.IN_PREPARATION);
+                s.setInPreparationTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case IN_PREPARATION:
                 o.setOrderStatus(Order.status.READY_TO_DISPATCH);
+                s.setReadyToDispathTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case READY_TO_DISPATCH:
                 o.setOrderStatus(Order.status.DISPATCHED);
+                s.setDispatchedTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DISPATCHED:
                 o.setOrderStatus(Order.status.DELIVERED);
+                s.setDeliveredTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DELIVERED:
                 o.setOrderStatus(Order.status.DONE);
-                o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
-                o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
+                s.setDoneTime(getTime());
+                s.setTotalTime(getTimeDifference(s.getPlacedTime()));
                 this.or.save(o);
                 
                 r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
@@ -339,8 +346,10 @@ public class BoltController {
         }
     }
 
-    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+    ///////////////////////////////////////CLOCK///////////////////////////////////////////
 
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
+    
     private String getTimeDifference(String orderTime) throws ParseException {
         long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
         return String.format(
@@ -351,39 +360,50 @@ public class BoltController {
             );
     }
 
+    private String getTime() {
+        return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+
     //Tarkistaa ja luo uuden tyhjän id:n
     private String generateID(int i) {
         int k = 0;
         switch(i) {
             case 0:
+                k = (int) this.cu.count();
                 while (true) {
                     String j = "C";
                     if (this.cu.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 1:
+                k = (int) this.ma.count();
                 while (true) {
                     String j = "M";
                     if (this.ma.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 2:
+                k = (int) this.re.count();
                 while (true) {
                     String j = "R";
                     if (this.re.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 3:
+                k = (int) this.pr.count();
                 while (true) {
                     String j = "P";
                     if (this.pr.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 4:
+                k = (int) this.or.count();
                 while (true) {
                     String j = "O";
                     if (this.or.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             default:
                 return null;
