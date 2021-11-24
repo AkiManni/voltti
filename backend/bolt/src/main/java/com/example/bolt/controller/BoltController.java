@@ -4,12 +4,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.text.Document;
+
 
 import com.example.bolt.Register.login.AuthenticationRequest;
 import com.example.bolt.Register.login.AuthenticationResponse;
@@ -22,17 +21,15 @@ import com.example.bolt.model.Order;
 import com.example.bolt.model.Product;
 import com.example.bolt.model.Restaurant;
 import com.example.bolt.model.Order.status;
-import com.example.bolt.model.Restaurant.type;
 import com.example.bolt.repository.CustomerRepository;
 import com.example.bolt.repository.ManagerRepository;
 import com.example.bolt.repository.OrderRepository;
 import com.example.bolt.repository.ProductRepository;
 import com.example.bolt.repository.RestaurantRepository;
-import com.mongodb.client.MongoCursor;
-import com.mongodb.client.model.Filters;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,14 +43,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.jsonwebtoken.Jwt;
+import netscape.javascript.JSException;
 
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/bolt")
 public class BoltController {
+    
 @Autowired
 private UserRepository userRepository;
 @Autowired
@@ -111,7 +110,7 @@ return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
         String username = authenticationRequest.getLoginCredential();
         String password = authenticationRequest.getLoginPassword();
        String address = authenticationRequest.getAddress();
-       
+       JSONObject jsonObject = new JSONObject();
        try{
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
@@ -119,12 +118,17 @@ return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
        }
        
 
-       catch(Exception e){
-        return ResponseEntity.ok(new AuthenticationResponse("vihre"));
-
+       catch(JSONException e){
+        //return ResponseEntity.ok(new AuthenticationResponse("virhe springbootin puolella, käyttäjätiedot eivät ole oikein"));
+        jsonObject.put("exception", e.getMessage());
+        return ResponseEntity.ok(new AuthenticationResponse("virhe springbootin puolella, käyttäjätiedot eivät ole oikein👌"));
        }
+  
        final String jwt = JwtUtil.generateToken(username);
-        return ResponseEntity.ok(new AuthenticationResponse("käyttäjä kirjautunut onnistuneesti " + "käyttäjänimellä --> " +username + " token ---> " + jwt));
+       jsonObject.put("token", jwt);
+       jsonObject.put("name", authenticationRequest.getLoginCredential());
+        //return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(jsonObject.toString());
 
 
 
@@ -155,6 +159,11 @@ return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu"));
     public Customer getCustomer(@PathVariable("id") String id) {
         Customer c = this.cu.findById(id).orElse(null);
         return c; 
+    }
+
+    @RequestMapping("/hello")
+    public String hello(){
+        return  "Hei vain";
     }
 
     @PostMapping("/addCustomer")
