@@ -40,6 +40,17 @@
   padding-top:10px;
 }
 
+.ManagerOrderHistoryListContainer {
+  width:90%;
+  height:500px;
+  margin-top:10px;
+  margin-left:5%;
+  background-color: #f0f0f0;
+  border:1px solid rgb(219, 219, 219);
+  overflow-y: scroll;
+  padding-top:10px;
+}
+
 .orderReviewButton {
   margin-top:10px;
 }
@@ -48,36 +59,32 @@
   width:100vw;
 }
 
-.Logo {
-    height:90%;
-    margin-right:10%;
-    margin-top:10px;
-    
-    
-  }
-  
-  .menuBar {
-    background-color: #f5f7fa;
-    width: 100vw; min-width: 800px;
-    height: 160px;
-    border:1px solid rgb(219, 219, 219);
-    margin-bottom: 10px;
-    
-  }
-  
-  .defaultSearchBar{
-    float:left;
-    margin-top:120px;
-    margin-left:40px;
-    
-  }
-  
-  .defaultSearchBarWithoutSearch{
-    float:left;
-    margin-top:120px;
-    margin-left:40px;
-  }
-  
-  .menuButton {
-    margin-left: 10px;
-  }
+.OrderHistoryList{
+  text-align: left;
+  padding-left:2vw;
+  margin-top:10px;
+}
+
+.OrderHistoryListItems{
+  padding-bottom:5px;
+}
+
+.orderStatusOnGoing{
+  color:rgba(57, 170, 4, 0.973);
+}
+
+.orderStatusPlaced{
+  color:rgba(255, 0, 0, 0.973);
+  text-decoration: underline overline dotted red;
+}
+
+.orderStatusDelivered{
+  color:rgba(92, 92, 92, 0.973);
+}
+
+.orderStatusDone{
+  color:rgba(68, 68, 68, 0.973);
+  text-decoration:line-through;
+  text-decoration-thickness: 3px;
+  text-decoration-color: red;
+}

@@ -22,6 +22,14 @@ export default function MenuBar(props){
         props.managerActivate();
     }
 
+    const managerOrderOverviewActivate = () => {
+        props.managerOrderOverviewActivate();
+    }
+
+    const managerOrderHistoryActivate = () => {
+        props.managerOrderHistoryActivate();
+    }
+
     let defaultUserBar = 
     <>
     <div className={styles.defaultSearchBar}>
@@ -61,8 +69,8 @@ export default function MenuBar(props){
     let managerBar =
     <>
     <div className={styles.defaultSearchBar}>
-    <button className={styles.menuButton} onClick={() => this.setState( {containerActive: !this.state.containerActive})}>Orders</button> 
-    <button className={styles.menuButton}>Order History </button>
+    <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
+    <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
     <button className={styles.menuButton}>Edit Restaurant Info</button> 
     <button className={styles.menuButton}>Edit Restaurant Menu</button> 
     <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
@@ -76,13 +84,6 @@ export default function MenuBar(props){
     </div>
     </>
 
-    let testBar =
-    <>
-    <div className={styles.defaultSearchBar}>
-    <button>Default User</button><button>Customer</button><button>Manager</button>
-    </div>
-    </>
-
     let menuBarContainer =
     <>
         <div className= {styles.menuBar} >
@@ -93,7 +94,6 @@ export default function MenuBar(props){
         { props.defaultBarWithoutSearchActive? <div>{ defaultUserBarWithoutSearchBar }</div> : <></> }
         { props.managerBarActive ? <div>{ managerBar }</div> : <></> }
         { props.managerEditBarActive ? <div>{ managerEditBar }</div> : <></> }
-        { props.testBarActive ? <div>{ testBar }</div> : <></>}
         <img className= {styles.Logo} src={"voltLogo.png"} align="right"/>
         </div>
     </>

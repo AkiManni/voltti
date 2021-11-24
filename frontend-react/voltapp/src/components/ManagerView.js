@@ -7,23 +7,12 @@ export default function ManagerView(props){
 
 const moveToPreparation = (orderId) => {
             props.moveToPreparation(orderId);
-
-            clearInterval(prepareTimer);
         }
 
 const setToDispatched = (orderId) => {
             props.setToDispatched(orderId);
-            clearInterval(prepareTimer);
         }
 
-
-var prepareTimer =  setInterval(function() {
-
-            props.prepareTimer();
-        
-            clearInterval(prepareTimer);
-        
-          }, 1000);
         
 const getSum = (arr, key) => {
             return arr.reduce((acc, cur) => acc + Number(cur[key]), 0)
@@ -56,7 +45,6 @@ let preparedOrders =
         </div>
 
         )
-        
 
 let readyToDispatch =
     
