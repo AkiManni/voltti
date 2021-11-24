@@ -1,32 +1,4 @@
-.Logo {
-  height:90%;
-  margin-right:10%;
-  margin-top:10px;
-  
-  
-}
 
-.menuBar {
-  background-color: #f5f7fa;
-  width: 100vw; min-width: 800px;
-  height: 160px;
-  border:1px solid rgb(219, 219, 219);
-  margin-bottom: 10px;
-  
-}
-
-.defaultSearchBar{
-  float:left;
-  margin-top:120px;
-  margin-left:40px;
-  
-}
-
-.defaultSearchBarWithoutSearch{
-  float:left;
-  margin-top:120px;
-  margin-left:40px;
-}
 
 .contentContainer {
   background-color:#f5f7fa;
@@ -62,6 +34,8 @@
   margin-left:5%;
   background-color: #f0f0f0;
   border:1px solid rgb(219, 219, 219);
+  -ms-overflow-style: none;
+  scrollbar-width:none;
   overflow-y: scroll;
   padding-top:10px;
 }
@@ -74,6 +48,36 @@
   width:100vw;
 }
 
-.menuButton {
-  margin-left: 10px;
-}
+.Logo {
+    height:90%;
+    margin-right:10%;
+    margin-top:10px;
+    
+    
+  }
+  
+  .menuBar {
+    background-color: #f5f7fa;
+    width: 100vw; min-width: 800px;
+    height: 160px;
+    border:1px solid rgb(219, 219, 219);
+    margin-bottom: 10px;
+    
+  }
+  
+  .defaultSearchBar{
+    float:left;
+    margin-top:120px;
+    margin-left:40px;
+    
+  }
+  
+  .defaultSearchBarWithoutSearch{
+    float:left;
+    margin-top:120px;
+    margin-left:40px;
+  }
+  
+  .menuButton {
+    margin-left: 10px;
+  }

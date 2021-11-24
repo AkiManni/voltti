@@ -15,6 +15,33 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 1,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 2,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
         "prepareTime": 55,
         "deliveryTime": 30,
         "orderStatus": "PLACED"
@@ -33,7 +60,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 15,
+        "productsOrdered":
+            [
+                {
+                "id": 1,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 4,
+                    "restaurantId":3,
+                    "name": "Pecan Pie",
+                    "price": 7.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 5,
+                        "restaurantId":3,
+                        "name": "Pepsi",
+                        "price": 3.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+            ],
+            "prepareTime": 15,
         "deliveryTime": 30,
         "orderStatus": "PLACED"
         },
@@ -51,7 +105,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 40,
+        "productsOrdered":
+            [
+                {
+                "id": 6,
+                "restaurantId":3,
+                "name": "Beer",
+                "price": 5.00,
+                "prepareTime": 20,
+                "foodType": "alcohol"
+                },
+                {
+                    "id": 7,
+                    "restaurantId":3,
+                    "name": "Hamburger",
+                    "price": 16.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 8,
+                        "restaurantId":3,
+                        "name": "Vodka",
+                        "price": 7.00,
+                        "prepareTime": 20,
+                        "foodType": "alcohol"
+                        }
+            ],
+            "prepareTime": 40,
         "deliveryTime": 30,
         "orderStatus": "PLACED"
         },
@@ -69,7 +150,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 40,
+        "productsOrdered":
+            [
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                {
+                    "id": 7,
+                    "restaurantId":3,
+                    "name": "Hamburger",
+                    "price": 16.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 9,
+                        "restaurantId":3,
+                        "name": "Milk",
+                        "price": 2.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+            ],
+            "prepareTime": 40,
         "deliveryTime": 30,
         "orderStatus": "READY_TO_DISPATCH"
         },
@@ -87,7 +195,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 10,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 10,
         "deliveryTime": 30,
         "orderStatus": "READY_TO_DISPATCH"
         },
@@ -105,7 +240,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 15,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 15,
         "deliveryTime": 30,
         "orderStatus": "READY_TO_DISPATCH"
         },
@@ -123,7 +285,34 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 10,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 10,
         "deliveryTime": 30,
         "orderStatus": "READY_TO_DISPATCH"
         },
@@ -141,7 +330,18 @@
         "orderDispatchedAt":null,
         "orderDeliveredAt":null,
         "orderDoneAt":null,
-        "prepareTime": 20,
+        "productsOrdered":
+            [
+                {
+                    "id": 9,
+                    "restaurantId":3,
+                    "name": "Milk",
+                    "price": 2.00,
+                    "prepareTime": 20,
+                    "foodType": "softdrink"
+                    }
+            ],
+            "prepareTime": 20,
         "deliveryTime": 30,
         "orderStatus": "PLACED"
         },
@@ -159,6 +359,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 30,
             "deliveryTime": 25,
             "orderStatus": "PLACED"
@@ -177,6 +404,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 20,
             "deliveryTime": 30,
             "orderStatus": "PLACED"
@@ -195,6 +449,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 40,
             "deliveryTime": 30,
             "orderStatus": "PLACED"
@@ -213,6 +494,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 30,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"
@@ -231,6 +539,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 15,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"
@@ -249,6 +584,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 20,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"
@@ -267,6 +629,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 30,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"
@@ -285,6 +674,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 10,
             "deliveryTime": 10,
             "orderStatus": "READY_TO_DISPATCH"
@@ -303,6 +719,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 20,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"
@@ -321,6 +764,33 @@
             "orderDispatchedAt":null,
             "orderDeliveredAt":null,
             "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
             "prepareTime": 15,
             "deliveryTime": 30,
             "orderStatus": "READY_TO_DISPATCH"

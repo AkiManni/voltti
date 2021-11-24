@@ -98,3 +98,7 @@ hr{
 ul:not(:last-child) {
     line-height: 5px;
   }
+
+ol li{
+    list-style-type: none;
+}
