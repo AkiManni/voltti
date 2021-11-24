@@ -8,14 +8,17 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Document(collection = "customers")
-public class Customer {
+@Document(collection = "user")
+public class User {
     @Id
-    private String customerID;
+    private String userID;
     private String fname;
     private String lname;
     private String address;
     private String postNum;
     private String loginCredential;
     private String loginPassword;
+
+    private boolean isManager;
+    private Restaurant restaurant;
 }
