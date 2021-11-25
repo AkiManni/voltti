@@ -4,6 +4,7 @@ import products from './products.json'
 import orders from './orders.json'
 import ManagerView from './components/ManagerView'
 import MenuBar from './components/MenuBar'
+import Orderview from './components/Orderview'
 
 import SearchView from './components/SearchView';
 import data from './data.json'
@@ -28,6 +29,8 @@ class App extends React.Component {
       actionString:"MAIN",
 
       intervalId:"",
+
+      overviewId:1,
 
       menuBarActive: true,
       defaultUserBarActive: true,
@@ -56,6 +59,21 @@ class App extends React.Component {
     }
 
   }
+ 
+
+  
+
+  // MENUBAR COMMANDS
+
+  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN"}) }
+
+  managerActivate = () =>{ this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"}) }
+
+  managerOrderOverviewActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERS", orderviewActive:false, managerOrderHistoryActive:false })}
+
+  managerOrderHistoryActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
+
+  defaultActivate = () =>{ this.setState( {actionDone:false, role:"", actionString:"MAIN", orderviewActive:false, managerOrderHistoryActive:false }) } 
 
 
   moveToPreparation = (orderId) => {
@@ -78,77 +96,53 @@ class App extends React.Component {
       this.setState({ orders: anotherCopyOfOrders })
       clearInterval(this.intervalTimerId);
     }
-    
-    
-    prepareTimer = () => {
 
-      let newOrders = [...this.state.orders]
-      
-      for(var i in newOrders){
-        if(newOrders[i].orderStatus === 'IN_PREPARATION'){
-          newOrders[i].prepareTime--
+  prepareTimer = () => {
+
+        let newOrders = [...this.state.orders]
+        
+        for(var i in newOrders){
+          if(newOrders[i].orderStatus === 'IN_PREPARATION'){
+            newOrders[i].prepareTime--
+          }
+          if(newOrders[i].orderStatus === 'DISPATCHED'){
+            newOrders[i].deliveryTime--
+          }
+          if(newOrders[i].prepareTime === 0 && newOrders[i].orderStatus === 'IN_PREPARATION'){
+            newOrders[i].orderStatus = 'READY_TO_DISPATCH'
+          }
+          if(newOrders[i].deliveryTime === 0 && newOrders[i].orderStatus === 'DISPATCHED'){
+            //newOrders[i].orderStatus = 'DELIVERED'
+            newOrders[i].orderStatus = 'PLACED'
+            newOrders[i].prepareTime = 15
+            newOrders[i].deliveryTime = 15
+          }
         }
-        if(newOrders[i].orderStatus === 'DISPATCHED'){
-          newOrders[i].deliveryTime--
-        }
-        if(newOrders[i].prepareTime === 0 && newOrders[i].orderStatus === 'IN_PREPARATION'){
-          newOrders[i].orderStatus = 'READY_TO_DISPATCH'
-        }
-        if(newOrders[i].deliveryTime === 0 && newOrders[i].orderStatus === 'DISPATCHED'){
-          //newOrders[i].orderStatus = 'DELIVERED'
-          newOrders[i].orderStatus = 'PLACED'
-          newOrders[i].prepareTime = 15
-          newOrders[i].deliveryTime = 15
-        }
+
+        this.setState({
+          orders:newOrders
+        });
+  }
+
+  componentDidMount(){
+      this.state.intervalId = setInterval(() => {
+        this.prepareTimer()
+      }, 1000);
       }
-  
-      this.setState({
-        orders:newOrders
-      });
+
+  componentWillUnmount(){
+      clearInterval(this.state.intervalId)
     }
-    
-  
-    onSearchFieldChange = (event) => {
-  
+
+  onSearchFieldChange = (event) => {
       console.log('Keyboard event');
       console.log(event.target.value);
       this.setState({ productSearchString: event.target.value });
     }
-
     
-  
-  
-  // MENUBAR COMMANDS
-
-  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN"}) }
-
-  managerActivate = () =>{ this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"}) }
-
-  managerOrderOverviewActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERS"})}
-
-  managerOrderHistoryActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
-
-  defaultActivate = () =>{ this.setState( {actionDone:false, role:"", actionString:"MAIN" }) } 
-  
-
-  componentDidMount(){
-    this.state.intervalId = setInterval(() => {
-      this.prepareTimer()
-    }, 1000);
-    }
-
-    componentWillUnmount(){
-      clearInterval(this.state.intervalId)
-    }
 
   render() 
   {
-
-    
-
-    
-    
-    
 
         // CONTENT CONTAINER ELEMENTS - PITÄÄ MIETTIÄ LISÄTÄÄNKÖ TOTEUTUKSET OMAAN LUOKKAAN?
 
@@ -193,12 +187,18 @@ class App extends React.Component {
     </div>
     </>
 
+
+
+
     let managerOrderHistoryOverview = 
     <>
     <div>
-        TÄHÄN MAPPAUS VIEREISELTÄ LISTALTA VALITUSTA TILAUKSESTA
+      
+            
     </div>
     </>
+
+
 
     let managerOrderHistoryList = 
     <>
@@ -208,38 +208,44 @@ class App extends React.Component {
             <div className="OrderHistoryList">
               {this.state.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <b className="orderStatusPlaced">{orderItem.orderStatus}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusPlaced">{orderItem.orderStatus}</b><br/><i>---Review and Confirm arrived---</i> <br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
               
               {this.state.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <br/><b className="orderStatusOnGoing">{orderItem.orderStatus}</b> <b>Ready in:</b> <b className="orderStatusOnGoing">{orderItem.prepareTime}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusOnGoing">IN PREPARATION</b> <b>Ready in:</b> <b className="orderStatusOnGoing">{orderItem.prepareTime}</b><br/><i>---Cooking Takes Time---</i> <br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
 
               {this.state.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <b className="orderStatusOnGoing">{orderItem.orderStatus}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusRDT">READY TO DISPATCH</b><br/><i>---Waiting Courier to Pick up---</i> <br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
 
               {this.state.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <br/><b className="orderStatusOnGoing">{orderItem.orderStatus}</b> <b>Delivered in:</b> <b className="orderStatusOnGoing">{orderItem.deliveryTime}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusOnGoing">{orderItem.orderStatus}</b> <b>Delivered in:</b> <b className="orderStatusOnGoing">{orderItem.deliveryTime}</b><br/><i>---Voltman Is Delivering---</i> <br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
 
               {this.state.orders.filter(order => order.orderStatus === 'DELIVERED' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <b className="orderStatusDelivered">{orderItem.orderStatus}</b> <br/><i>---Waiting Customer to Confirm---</i><br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusDelivered">{orderItem.orderStatus}</b> <br/><i>---Waiting Customer to Confirm---</i><br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
 
               {this.state.orders.filter(order => order.orderStatus === 'DONE' && order.restaurantId === 3).map((orderItem, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button>View Order</button> <b>Order: {orderItem.id}.</b> <b className="orderStatusDone">{orderItem.orderStatus}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} 
+              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusDone">{orderItem.orderStatus}</b> <br/>
+              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
               </div>)}
 
           </div>
@@ -283,7 +289,7 @@ class App extends React.Component {
         { this.state.editRestaurantActive ? <div>{ editRestaurantForm }</div> : <></>}
         { this.state.editRestaurantMenuActive ? <div>{ searchProductsByRestaurant }</div> : <></>}
         { this.state.managerOrderHistoryActive ? <div>{managerOrderHistoryOverview}</div> : <></>}
-
+        { this.state.orderviewActive? <Orderview orders={this.state.orders} overviewId={this.state.overviewId}/> : <></>}
         </div>
       </>
     
@@ -343,166 +349,198 @@ class App extends React.Component {
 
 
     
-  {(() => {
+      {(() => {
 
-  // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
-  switch(this.state.role){
-    case "CUSTOMER":
-        switch(this.state.actionString){
-          case "MAIN":
-            if(this.state.actionDone === false){
-              return this.setState({
-                defaultUserModeActive: false, 
-                defaultUserBarActive: false,
-                defaultUserBarWithoutSearchBar: false,
-                managerModeActive: false,
-                customerBarActive: true ,
-                sideBarActive: true,
-                shoppingCartQuickviewActive: true, 
+      // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
+        switch(this.state.role){
+          case "CUSTOMER":
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserModeActive: false, 
+                      defaultUserBarActive: false,
+                      defaultUserBarWithoutSearchBar: false,
+                      managerModeActive: false,
+                      customerBarActive: true ,
+                      sideBarActive: true,
+                      shoppingCartQuickviewActive: true, 
 
-                actionDone:true
-              });
-              break;
-          }
-          case "ORDERHISTORY":
-            if(this.state.actionDone === false){
-              return this.setState({
+                      actionDone:true
+                    });
+                }
+                case "ORDERHISTORY":
+                  if(this.state.actionDone === false){
+                    return this.setState({
 
-              actionDone:true
-              });
-              break;
-            }
+                    actionDone:true
+                    });
+                  }
 
-          case "EDITCUSTOMER":
-            if(this.state.actionDone === false){
-              return this.setState({
+                case "EDITCUSTOMER":
+                  if(this.state.actionDone === false){
+                    return this.setState({
 
-              actionDone:true
-              });
-              break;
-            }
+                    actionDone:true
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserModeActive: false, 
+                      defaultUserBarActive: false,
+                      defaultUserBarWithoutSearchBar: false,
+                      managerModeActive: false,
+                      customerBarActive: true ,
+                      sideBarActive: true,
+                      shoppingCartQuickviewActive: true, 
 
-        }
-      
-    case "MANAGER":
-        switch(this.state.actionString){
-          case "MAIN":
-            if(this.state.actionDone === false){
-            return this.setState({
-                defaultUserBarActive: false,
-                defaultModeActive: false,
-                customerModeActive: false,
-                customerBarActive: false,
-                defaultBarWithoutSearchActive: false,
-                customerEditBarActive: false,
-                userBarWithoutSearchActive: false,
-                containerActive: false,
-                managerBarActive: true,
-                actionDone:true
-            });
-            break;
-          }
-          case "ORDERS":
-            if(this.state.actionDone === false){
-              return this.setState({
-                defaultUserBarActive: false,
-                defaultModeActive: false,
-                customerModeActive: false,
-                customerBarActive: false,
-                defaultBarWithoutSearchActive: false,
-                customerEditBarActive: false,
-                userBarWithoutSearchActive: false,
-                containerActive: false,
-                managerBarActive: true,
-                actionDone:true
-              });
-              break;
-            }
+                      actionDone:true
+                    });
+                }
 
-          case "ORDERHISTORY":
-            if(this.state.actionDone === false){
-              return this.setState({
-                defaultUserBarActive: false,
-                defaultModeActive: false,
-                customerModeActive: false,
-                customerBarActive: false,
-                defaultBarWithoutSearchActive: false,
-                customerEditBarActive: false,
-                userBarWithoutSearchActive: false,
-                containerActive: true,
-                shoppingCartQuickviewActive: false, 
-                managerOrderHistoryActive: true,
-                searchResultsActive: false,
-                managerBarActive: true,
-                actionDone:true
-              });
-
-              break;
-            }
-
-          case "EDITCREATERESTAURANT":
-            if(this.state.actionDone === false){
-              return this.setState({
-
-              actionDone:true
-              });
-              break;
-            }
-
-          case "EDITCREATERESTAURANTMENU":
-            if(this.state.actionDone === false){
-              return this.setState({
-
-              actionDone:true
-              });
-              break;
-            }
-
-        }
-
-    default:
-        switch(this.state.actionString){
-          case "MAIN":
-            if(this.state.actionDone === false){
-            return this.setState({ 
-              customerModeActive: false,
-              managerModeActive: false,
-              managerBarActive: false,
-              customerBarActive: false ,
-              sideBarActive: true,
-              containerActive: true,
-              defaultUserBarActive: true,
-              shoppingCartQuickviewActive: true, 
-              searchResultsActive: true,
-              actionDone:true
-              });
-              break;
-            }
+              }
             
-          case "LOGIN":
-            if(this.state.actionDone === false){
-              return this.setState({
+          case "MANAGER":
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                  return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+                  });
+                }
+                case "ORDERS":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+                    });
+                  }
 
-              actionDone:true
-              });
-              break;
+                case "ORDERHISTORY":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: true,
+                      searchResultsActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+                    });
+                  }
+
+                case "EDITCREATERESTAURANT":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+                    });
+                  }
+
+                case "EDITCREATERESTAURANTMENU":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                        defaultUserBarActive: false,
+                        defaultModeActive: false,
+                        customerModeActive: false,
+                        customerBarActive: false,
+                        defaultBarWithoutSearchActive: false,
+                        customerEditBarActive: false,
+                        userBarWithoutSearchActive: false,
+                        containerActive: false,
+                        managerBarActive: true,
+                        actionDone:true
+                    });
+                  }
+
+              }
+
+          default:
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                  return this.setState({ 
+                    customerModeActive: false,
+                    managerModeActive: false,
+                    managerBarActive: false,
+                    customerBarActive: false ,
+                    sideBarActive: true,
+                    containerActive: true,
+                    defaultUserBarActive: true,
+                    shoppingCartQuickviewActive: true, 
+                    searchResultsActive: true,
+                    actionDone:true
+                    });
+                  }
+                  
+                case "LOGIN":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+                    });
+                  }
+
+                case "REGISTER":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({ 
+                      customerModeActive: false,
+                      managerModeActive: false,
+                      managerBarActive: false,
+                      customerBarActive: false ,
+                      sideBarActive: true,
+                      containerActive: true,
+                      defaultUserBarActive: true,
+                      shoppingCartQuickviewActive: true, 
+                      searchResultsActive: true,
+                      actionDone:true
+                      });
+                    }
+
+              }
             }
+        })()}
 
-          case "REGISTER":
-            if(this.state.actionDone === false){
-              return this.setState({
-
-              actionDone:true
-              });
-              break;
-            }
-
-        }
-      }
-  })()}
-
-    { output }
-    
+      { output }
+        
     </>
     )
   }

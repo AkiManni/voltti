@@ -1,0 +1,35 @@
+.orderDetailsContainer{
+
+    text-align:left;
+    padding-left:5vw;
+    margin-top:3vw;
+    height: 1000px;
+}
+
+
+.orderOList{
+    padding-left:inherit;
+}
+
+.orderStatusOnGoing{
+    color:rgba(57, 170, 4, 0.973);
+  }
+  
+  .orderStatusPlaced{
+    color: #1F3D96
+  }
+  
+  .orderStatusDelivered{
+    color:rgba(57, 170, 4, 0.973);
+  }
+  
+  .orderStatusDone{
+    color:rgba(68, 68, 68, 0.973);
+    text-decoration:line-through;
+    text-decoration-thickness: 3px;
+    text-decoration-color: red;
+  }
+  
+  .orderStatusRDT{
+    color:#1F3D96
+  }

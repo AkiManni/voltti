@@ -29,7 +29,7 @@ let ordersReceived =
         
         
 
-        <hr></hr><ol><b>Total of:</b> { getSum(orderItem.productsOrdered, 'price')}€ <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol>
+        <hr className="hrManager"/><ol><b>Total of:</b> { getSum(orderItem.productsOrdered, 'price')}€ <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol>
         </div>
         )
 
@@ -40,7 +40,7 @@ let preparedOrders =
         <div className={styles.orderDetailsContainer} key ={index}>
         <ul><b>Order {orderItem.id}. - {orderItem.customerName}</b></ul>
         {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}. - {item.name} - {item.price}€</li></ol>)}
-        <hr></hr>
+        <hr className="hrManager"/>
         <ul><b>Prepared in:</b> {orderItem.prepareTime}s</ul>
         </div>
 
@@ -51,7 +51,7 @@ let readyToDispatch =
         props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
         <ol><b>Order {orderItem.id}. Ready To Deliver</b></ol>
-        <ol>{orderItem.Address}, {orderItem.postNumber} </ol> <hr></hr><ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
+        <ol>To Address:</ol><ol>{orderItem.address}, {orderItem.postNumber} </ol> <hr className="hrManager"/><ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
         </div>
         )
 
@@ -59,7 +59,7 @@ let dispatchedOrders =
     
         props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
-        <ul><b>Order {orderItem.id}.</b></ul> <ol> {orderItem.Address}, {orderItem.postNumber} </ol><hr></hr> <ol><b>Delivered in:</b> {orderItem.deliveryTime}s</ol>
+        <ul><b>Order {orderItem.id}.</b></ul> <ol>To Address:</ol><ol> {orderItem.address}, {orderItem.postNumber} </ol><hr className="hrManager"/> <ol><b>Delivered in:</b> {orderItem.deliveryTime}s</ol>
         </div>
         )
 
