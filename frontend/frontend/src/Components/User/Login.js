@@ -26,7 +26,7 @@ const Login = (props) => {
     dispatch(authenticateUser(user.loginCredential, user.loginPassword, setCookie, removeCookie))
       .then((response) => {
         console.log(response.data);
-        return props.history.push("/home");
+        return props.history.push("/");
       })
       .catch((error) => {
         //jos kirjautuminen ei onnistunut
@@ -88,6 +88,7 @@ const Login = (props) => {
         Reset
       </Button>
       <Button
+      style={{marginLeft: '10px'} }
         class="btn btn-primary my-1"
         size="sm"
         type="button"

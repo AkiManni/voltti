@@ -14,7 +14,6 @@ import com.example.bolt.Register.login.AuthenticationRequest;
 import com.example.bolt.Register.login.AuthenticationResponse;
 import com.example.bolt.Register.login.JwtUtil;
 import com.example.bolt.Register.login.UserRepository;
-import com.example.bolt.Register.login.AuthenticationRequest.role;
 import com.example.bolt.model.Customer;
 import com.example.bolt.model.Manager;
 import com.example.bolt.model.Order;
@@ -69,7 +68,7 @@ String firstname = authenticationRequest.getFname();
 String lastname = authenticationRequest.getLname();
 String address = authenticationRequest.getAddress();
 String postnum = authenticationRequest.getPostNum();
-role userRole = authenticationRequest.getUserRole();
+Boolean ismanager = authenticationRequest.getIsmanager();
 //EnumSet roles = authenticationRequest.EnumSet.of
 Customer usermodel = new Customer();
 usermodel.setLoginCredential(logincredential);
@@ -78,7 +77,8 @@ usermodel.setFname(firstname);
 usermodel.setLname(lastname);
 usermodel.setAddress(address);
 usermodel.setPostNum(postnum);
-usermodel.setUserRole(userRole);
+usermodel.setIsmanager(ismanager);
+
 try{
    
    

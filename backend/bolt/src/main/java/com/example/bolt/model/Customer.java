@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Document(collection = "customers")
+@Document(collection = "user")
 public class Customer {
 
     @Id
@@ -21,11 +21,20 @@ public class Customer {
     private String postNum;
     private String loginCredential;
     private String loginPassword;
-    private role userRole;
-    public enum role {
+    private boolean ismanager;
+
+    public boolean getIsmanager() {
+        return this.ismanager;
+    }
+
+    public void setIsmanager(boolean b) {
+        this.ismanager = b;
+    }
+    //private role userRole;
+    /*public enum role {
         ADMIN,
         CUSTOMER
-         }
+         }*/
         
     public Customer() {
     }
@@ -83,8 +92,7 @@ public class Customer {
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
     }
-    public void setUserRole(com.example.bolt.Register.login.AuthenticationRequest.role useRole) {
-    }
+   
 
 
 
