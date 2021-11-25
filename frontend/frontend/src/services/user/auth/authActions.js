@@ -1,10 +1,13 @@
 import * as AT from "./authTypes";
 import axios from "axios";
 //määritetään springbootin localhost osoite
+import Cookies from 'js-cookie';
+
 const AUTH_URL = "http://localhost:8080/bolt/kirjaudu";
 
-export const authenticateUser = (loginCredential, loginPassword) => async (dispatch) => {
-  dispatch(loginRequest());
+
+export const authenticateUser = (loginCredential, loginPassword, setCookie) => async (dispatch) =>  {
+  //const [authenticateUser, setauthenticateUser] = useState([]);
   
   //axios post kirjautumisyritys annettuun osoitteeseen
   try {
@@ -18,8 +21,22 @@ export const authenticateUser = (loginCredential, loginPassword) => async (dispa
 
     //tallennetaan jwt paikalliseen localstorageen
     localStorage.setItem("jwtToken", response.data.token);
-    console.log("Jwt tokenin asettaminen localstoreen", response.data.token);
-    console.log(localStorage.getItem("jwtToken"));
+    sessionStorage.setItem("jwtToken", response.data.token);
+   
+    //setCookie('jwtToken', response.data.token,1);
+ setCookie('jwtToken', response.data.token,{
+authenticateUser: 3600,
+     path: "/"
+    
+    
+   })
+   console.log("Jwt tokenin asettaminen cookieseiin", Cookies.get('jwtToken'));
+
+  //  console.log("Jwt tokenin asettaminen sessionstorageen", response.data.token);
+   // console.log("Jwt tokenin asettaminen localstoreen", response.data.token);
+
+    //console.log(localStorage.getItem("jwtToken"));
+  //  console.log(sessionStorage.getItem("jwtToken"));
     //isLoggedIn muuttuu falsesta trueksi
     dispatch(success({ username: response.data.name, isLoggedIn: true }));
     return Promise.resolve(response);
@@ -32,13 +49,14 @@ export const authenticateUser = (loginCredential, loginPassword) => async (dispa
 };
 
 
-
 //käyttäjän uloskirjautuminen ja jwtTokenin tuhoaminen
 export const logoutUser = () => {
+  Cookies.remove("jwtToken");
   return (dispatch) => {
     dispatch(logoutRequest());
 
-    localStorage.removeItem("jwtToken");
+    
+    
     dispatch(success({ username: "", isLoggedIn: false }));
   };
 };

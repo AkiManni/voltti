@@ -6,7 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
 import store from './services/store';
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+import { CookiesProvider } from 'react-cookie';
+ReactDOM.render(<Provider store={store}>
+    <CookiesProvider>
+        <App />
+            </CookiesProvider></Provider>, document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

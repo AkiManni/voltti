@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../services/index";
 import { Form, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
+import { useCookies } from "react-cookie";
 const Login = (props) => {
   const [error, setError] = useState();
   const [show, setShow] = useState(true);
@@ -13,7 +14,7 @@ const Login = (props) => {
   };
 
   const [user, setUser] = useState(initialState);
-
+  const [cookies, setCookie, removeCookie] = useCookies(["jwtToken"]);
   const credentialChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
@@ -22,14 +23,14 @@ const Login = (props) => {
   const dispatch = useDispatch();
 //tässä ottaa tiedot vastaan ja menee authenticateUseriin ja sieltä palauttelee tiedot
   const validateUser = () => {
-    dispatch(authenticateUser(user.loginCredential, user.loginPassword))
+    dispatch(authenticateUser(user.loginCredential, user.loginPassword, setCookie, removeCookie))
       .then((response) => {
         console.log(response.data);
         return props.history.push("/home");
       })
       .catch((error) => {
         //jos kirjautuminen ei onnistunut
-        console.log("virhe👌");
+        console.log("virhe👌" +error);
         setShow(true);
         resetLoginForm();
         setError("  Invalid loginCredential and loginPassword");

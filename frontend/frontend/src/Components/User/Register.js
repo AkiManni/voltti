@@ -1,23 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Row,
-  Col,
-//  Card,
-  Form,
-  InputGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPhone,
-  faEnvelope,
-  faLock,
-  faUndo,
-  faUserPlus,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+
 import { registerUser } from "../../services/index";
 //import MyToast from "../MyToast";
 

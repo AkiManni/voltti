@@ -1,15 +1,7 @@
-import logo from './logo.svg';
 
-import { Container, Row, Col } from "react-bootstrap";
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavigationBar from "./Components/NavigationBar";
-//import UserList from "./components/User/UserList";
-//import Register from "./Components/User/Register";
 import Login from "./Components/User/Login";
-import { Provider } from 'react-redux';
 import Navbar from "./Components/User/Navbar";
-import SimpleForm from "./Components/User/SimpleForm";
-import { Alert } from "react-bootstrap";
 import Register from "./Components/User/Register";
 import Home from './Components/Home';
 function App() {
