@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row } from "react-bootstrap";
+import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row , Alert} from "react-bootstrap";
 import { registerUser } from "../../services/index";
-//import MyToast from "../MyToast";
-import { Registercss } from "../Registercss.css";
+import MyToast from "../MyToast";
 
 const Register = (props) => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
 
   const initialState = {
-    name: "",
-    email: "",
-    password: "",
-    mobile: "",
+    fname: "",
+    lname: "",
+    address: "",
+    postNum: "",
+    loginCredential: "",
+    loginPassword: "",
+    ismanager: null
   };
 
   const [user, setUser] = useState(initialState);
 
   const userChange = (event) => {
+    
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
@@ -44,7 +47,9 @@ const Register = (props) => {
   const resetRegisterForm = () => {
     setUser(initialState);
   };
-  // <MyToast show={show} message={message} type={"success"} />
+
+
+  <MyToast show={show} message={message} type={"success"} />
   return (
     <Form>
    <Form.Text className="p-3 mb-2 bg-dark text-white d-flex p-2" >
@@ -52,68 +57,86 @@ const Register = (props) => {
         </Form.Text>
       <Row style={{marginTop: '20px'}}>
         <Col >
-          <Form.Control placeholder="First name" Input type="text" />
-        </Col>
-        <Col>
-          <Form.Control placeholder="Last name" Input type="text" />
-        </Col>
-      </Row>
-      <Form.Group className="mb-3" controlId="address" style={{marginTop: '20px'}}>
         <Form.Control required
           autoComplete="off"
           type="text"
+          value = {user.fname}
+          onChange={userChange}
+          name="fname"
+          className={"bg-white text-dark"}
+          placeholder="Enter firstname" />
+        </Col>
+        <Col>
+             <Form.Control required
+          autoComplete="off"
+          type="text"
+          value = {user.lname}
+          onChange={userChange}
+          name="lname"
+          className={"bg-white text-dark"}
+          placeholder="Enter lastname" />
+        </Col>
+      </Row>
+      <Form.Group className="mb-3" controlId="address" style={{marginTop: '20px'}} >
+        <Form.Control required
+          autoComplete="off"
+          type="text"
+          value = {user.address}
+          onChange={userChange}
           name="address"
-          // value={user.loginCredential}
-          //onChange={credentialChange}
           className={"bg-white text-dark"}
           placeholder="Enter address" />
       </Form.Group>
 
-
-
-
-      <Form.Group className="mb-3" controlId="Postnumber" style={{marginTop: '20px'}}>
+      <Form.Group className="mb-3" controlId="postNum" style={{marginTop: '20px'}}>
         <Form.Control required
           autoComplete="off"
-          type="text"
-          name="Postnumber"
-          // value={user.loginCredential}
-          //onChange={credentialChange}
+          type="number"
+          name="postNum"
+          value={user.postNum}
+          onChange={userChange}
           className={"bg-white text-dark"}
-          placeholder="Enter Postnumber" />
+          placeholder="Enter Postal code" />
+     
       </Form.Group>
 
 
 
-      <Form.Group className="mb-3" controlId="formLoginCredential" style={{marginTop: '20px'}}>
+
+
+      <Form.Group className="mb-3" controlId="loginCredential" style={{marginTop: '20px'}}>
         <Form.Control required
           autoComplete="off"
           type="text"
           name="loginCredential"
-          // value={user.loginCredential}
-          //onChange={credentialChange}
+          value={user.loginCredential}
+          onChange={userChange}
           className={"bg-white text-dark"}
           placeholder="Enter loginCredential" />
      
       </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formLoginCredential" style={{marginTop: '20px'}}>
-        <Form.Control required
+      <Form.Group className="mb-3" controlId="loginPassword" style={{marginTop: '20px'}}>
+      <Form.Control required
           autoComplete="off"
-          type="text"
-          name="loginCredential"
-          // value={user.loginCredential}
-          //onChange={credentialChange}
+          type="password"
+          aria-describedby="passwordHelpBlock"
+          name="loginPassword"
+          value={user.loginPassword}
+          onChange={userChange}
           className={"bg-white text-dark"}
           placeholder="Enter Password" />
-     
-
+<small id="passwordHelpBlock" class="form-text text-muted">
+  Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces, special characters, or emoji.
+</small>
       </Form.Group>
  
-      <select class="form-select" aria-label="Default select example">
+      <select class="form-select" aria-label="Default select example"  value={user.ismanager}
+          onChange={userChange}   name="ismanager">
   <option selected>Select your role</option>
-  <option value="1">Manager</option>
-  <option value="2">User</option>
+  <option value={true}>Manager</option>
+  <option value={false}>User</option>
+  
 </select>
 
 <Button
@@ -122,12 +145,15 @@ const Register = (props) => {
         size="sm"
         type="button"
         variant="success"
-        //onClick={validateUser}
-        //disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
-      >
+        onClick={saveUser}
+        //onClick={console.log(userChange.ismanager)}
+       //disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
+       disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
+    >
         Register
       </Button>{" "}
-    </Form>
+   
+</Form>
 
   );
 };

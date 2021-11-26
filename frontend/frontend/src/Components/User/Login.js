@@ -70,7 +70,7 @@ const Login = (props) => {
         <Form.Label>Password</Form.Label>
         <Form.Control required
           autoComplete="off"
-          type="loginPassword"
+          type="password"
           name="loginPassword"
           value={user.loginPassword}
           onChange={credentialChange}
@@ -88,7 +88,7 @@ const Login = (props) => {
         Reset
       </Button>
       <Button
-      style={{marginLeft: '10px'} }
+      style={{marginLeft: '20px'} }
         class="btn btn-primary my-1"
         size="sm"
         type="button"
