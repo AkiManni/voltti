@@ -1,0 +1,20 @@
+.enterUser {
+    width: 200px;
+}
+
+.enterUrl {
+    width: 400px;
+}
+
+.restaurantRegisterContainer{
+    text-align:left !important;
+    margin-left: 10vw;
+    margin-top:10% !important;
+    height:750px;
+}
+
+.restaurantImage{
+    width: 100; 
+    height: 100; 
+    border-Radius: 100/ 2;
+}

@@ -49,11 +49,11 @@ export default function Orderview(props){
                 <b>Address:</b> <br/>
                 { order.address }, {order.postNumber}<br/>
                 <br/>
-                <b>Order Placed:</b> <br/>{ order.orderPlacedAt } DD/MM/YYYY<br/>
-                <b>Order Prepared:</b> <br/>{ order.orderPreparedAt } DD/MM/YYYY<br/>
-                <b>Order Dispatched:</b> <br/>{ order.orderDispatchedAt } DD/MM/YYYY<br/>
-                <b>Order Delivered:</b> <br/>{ order.orderDeliveredAt } DD/MM/YYYY<br/>
-                <b>Order Confirmed Done:</b> <br/>{ order.orderDoneAt } DD/MM/YYYY<br/>
+                <b>Order Placed:</b> <br/>{ order.orderPlacedAt } hh/mm/ss DD/MM/YYYY<br/>
+                <b>Order Prepared:</b> <br/>{ order.orderPreparedAt } hh/mm/ss DD/MM/YYYY<br/>
+                <b>Order Dispatched:</b> <br/>{ order.orderDispatchedAt } hh/mm/ss DD/MM/YYYY<br/>
+                <b>Order Delivered:</b> <br/>{ order.orderDeliveredAt } hh/mm/ss DD/MM/YYYY<br/>
+                <b>Order Confirmed Done:</b> <br/>{ order.orderDoneAt } hh/mm/ss DD/MM/YYYY<br/>
                 <br/>
                 <b>Products Ordered:</b>
                 {order.productsOrdered.map((product, i) => 

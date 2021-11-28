@@ -30,6 +30,14 @@ export default function MenuBar(props){
         props.managerOrderHistoryActivate();
     }
 
+    const createRestaurantActive = () => {
+        props.createRestaurantActive();
+    }
+
+    const editRestaurantMenuActive = () => {
+        props.editRestaurantMenuActive();
+    }
+
     let defaultUserBar = 
     <>
     <div className={styles.defaultSearchBar}>
@@ -71,8 +79,9 @@ export default function MenuBar(props){
     <div className={styles.defaultSearchBar}>
     <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
     <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
+    <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
     <button className={styles.menuButton}>Edit Restaurant Info</button> 
-    <button className={styles.menuButton}>Edit Restaurant Menu</button> 
+    <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
     <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
     </div>
     </>
@@ -94,7 +103,7 @@ export default function MenuBar(props){
         { props.defaultBarWithoutSearchActive? <div>{ defaultUserBarWithoutSearchBar }</div> : <></> }
         { props.managerBarActive ? <div>{ managerBar }</div> : <></> }
         { props.managerEditBarActive ? <div>{ managerEditBar }</div> : <></> }
-        <img className= {styles.Logo} src={"voltLogo.png"} align="right"/>
+        <img className= {styles.Logo} src={"voltLogo.png"} align="right" alt="default"/>
         </div>
     </>
 

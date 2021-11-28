@@ -1,10 +1,13 @@
 import React from 'react';
 import './App.css';
-import products from './products.json'
-import orders from './orders.json'
-import ManagerView from './components/ManagerView'
-import MenuBar from './components/MenuBar'
-import Orderview from './components/Orderview'
+import products from './products.json';
+import orders from './orders.json';
+import ManagerView from './components/ManagerView';
+import MenuBar from './components/MenuBar';
+import MenuView from './components/MenuView';
+import Orderview from './components/Orderview';
+import CreateRestaurant from './components/CreateRestaurant';
+import AddMenuItem from './components/AddMenuItem';
 
 import SearchView from './components/SearchView';
 import data from './data.json'
@@ -32,6 +35,11 @@ class App extends React.Component {
 
       overviewId:1,
 
+      user: {
+        restaurantId:3,
+        restaurantType:"CAFE"
+      },
+
       menuBarActive: true,
       defaultUserBarActive: true,
       defaultBarWithoutSearchActive: false,
@@ -50,10 +58,11 @@ class App extends React.Component {
       editRestaurantMenuActive: false,
       managerOrderHistoryActive: false,
       orderviewActive: false,
+      createRestaurant: false,
 
       sideBarActive: true,
       shoppingCartQuickviewActive: true,
-      editRestaurantQuickviewActive: false,
+      editRestaurantMenuQuickviewActive: false,
       showUserOrderHistoryActive: false,
       showRestaurantOrderHistoryActive: false
     }
@@ -65,15 +74,27 @@ class App extends React.Component {
 
   // MENUBAR COMMANDS
 
-  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN"}) }
+  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN", createRestaurantActive: false}) }
 
-  managerActivate = () =>{ this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"}) }
+  managerActivate = () => { this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"}) }
 
-  managerOrderOverviewActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERS", orderviewActive:false, managerOrderHistoryActive:false })}
+  managerOrderOverviewActivate = () => {this.setState( {actionDone:false, actionString:"ORDERS", orderviewActive:false, managerOrderHistoryActive:false })}
 
-  managerOrderHistoryActivate = () =>{this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
+  managerOrderHistoryActivate = () => {this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
 
-  defaultActivate = () =>{ this.setState( {actionDone:false, role:"", actionString:"MAIN", orderviewActive:false, managerOrderHistoryActive:false }) } 
+  defaultActivate = () => { this.setState( {actionDone:false, role:"", actionString:"MAIN", orderviewActive:false, managerOrderHistoryActive:false, createRestaurantActive: false }) } 
+
+  createRestaurantActive = () => { this.setState( {actionDone:false, role:"MANAGER", actionString:"EDITCREATERESTAURANT"})}
+
+  editRestaurantMenuActive = () => { this.setState( {actionDone:false, role:"MANAGER",actionString:"EDITCREATERESTAURANTMENU"})}
+
+  addNewRestaurant = (newRestaurantName, newAddress, newPostNumber, 
+    newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel) => { 
+    console.log(newRestaurantName, newAddress, newPostNumber, 
+      newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel)
+    console.log("nämä pitäisi lähettää eteenpäin.")
+
+    }
 
 
   moveToPreparation = (orderId) => {
@@ -125,9 +146,9 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-      this.state.intervalId = setInterval(() => {
+      this.setState({intervalId: setInterval(() => {
         this.prepareTimer()
-      }, 1000);
+      }, 1000)})
       }
 
   componentWillUnmount(){
@@ -139,7 +160,50 @@ class App extends React.Component {
       console.log(event.target.value);
       this.setState({ productSearchString: event.target.value });
     }
+
+  deleteItem = itemId => {
+
+  let newItems = [...this.state.items]
+
+      let index = newItems.map((item) => item.id).indexOf(itemId);
+      
+        newItems.splice(index, 1);
+      
+        console.log("Instead doing this, this should send itemId to Spring Boot and pop the item with that id off from the database.")
+
+  this.setState({items:newItems})
     
+  }
+
+  addNewMenuItem = (newFoodName, newDescription,
+    newMenuItemUrl, newPrepareTime, newPrice) => { 
+
+    let newItems = [...this.state.items];
+
+    let numberArray = [];
+
+    for(var i in newItems){
+      numberArray.push(i.id)
+    }
+
+    let id=Math.max(...numberArray);
+
+    newItems.push({
+      id: id+1,
+      restaurantId: this.state.user.restaurantId, 
+      foodName:newFoodName,
+      category: this.state.user.restaurantType,
+      description: newDescription,
+      photoPath: newMenuItemUrl,
+      prepareTime: newPrepareTime, 
+      price: newPrice
+    })
+
+    this.setState({
+      items:newItems
+    });
+    
+  }
 
   render() 
   {
@@ -152,9 +216,9 @@ class App extends React.Component {
       PRODUCTS:
           <SearchView
           items={ this.state.items.filter((item) => 
-            (item.manufucturer.includes(this.state.productSearchString)||
-            (item.type.includes(this.state.productSearchString))||
-            (item.name.includes(this.state.productSearchString)))) }
+            (item.category.toLowerCase().includes(this.state.productSearchString.toLowerCase())||
+            //(item.restaurantId.includes(this.state.productSearchString))||
+            (item.foodName.toLowerCase().includes(this.state.productSearchString.toLowerCase())))) }
           />
     </div>
     </>
@@ -183,11 +247,18 @@ class App extends React.Component {
     let searchProductsByRestaurant = 
     <>
     <div>
-        TÄNNE PITÄÄ LAITTAA VASTAAVA SEARCHVIEW - PAITSI FILTER BY RESTAURANT_ID
+        <MenuView items={ this.state.items.filter((item) => 
+            (item.restaurantId === this.state.user.restaurantId))}
+        deleteItem ={ this.deleteItem }/>
     </div>
     </>
 
-
+    let createRestaurantView = 
+    <>
+    <div>
+      
+    </div>
+    </>
 
 
     let managerOrderHistoryOverview = 
@@ -206,46 +277,46 @@ class App extends React.Component {
           ORDER HISTORY:
       
             <div className="OrderHistoryList">
-              {this.state.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === this.state.user.restaurantId ).map((item,index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
-              <br/><b>Status: </b><b className="orderStatusPlaced">{orderItem.orderStatus}</b><br/><i>---Review and Confirm arrived---</i> <br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusPlaced">{item.orderStatus}</b><br/><i>---Review and Confirm arrived---</i> <br/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
               
-              {this.state.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === this.state.user.restaurantId).map((item,index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
-              <br/><b>Status: </b><b className="orderStatusOnGoing">IN PREPARATION</b> <b>Ready in:</b> <b className="orderStatusOnGoing">{orderItem.prepareTime}</b><br/><i>---Cooking Takes Time---</i> <br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusOnGoing">IN PREPARATION</b> <b>Ready in:</b> <b className="orderStatusOnGoing">{item.prepareTime}</b><br/><i>---Cooking Takes Time---</i> <br/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
 
-              {this.state.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === this.state.user.restaurantId).map((item, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
               <br/><b>Status: </b><b className="orderStatusRDT">READY TO DISPATCH</b><br/><i>---Waiting Courier to Pick up---</i> <br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
 
-              {this.state.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === this.state.user.restaurantId).map((item, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
-              <br/><b>Status: </b><b className="orderStatusOnGoing">{orderItem.orderStatus}</b> <b>Delivered in:</b> <b className="orderStatusOnGoing">{orderItem.deliveryTime}</b><br/><i>---Voltman Is Delivering---</i> <br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusOnGoing">{item.orderStatus}</b> <b>Delivered in:</b> <b className="orderStatusOnGoing">{item.deliveryTime}</b><br/><i>---Voltman Is Delivering---</i> <br/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
 
-              {this.state.orders.filter(order => order.orderStatus === 'DELIVERED' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'DELIVERED' && order.restaurantId === this.state.user.restaurantId).map((item, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
-              <br/><b>Status: </b><b className="orderStatusDelivered">{orderItem.orderStatus}</b> <br/><i>---Waiting Customer to Confirm---</i><br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusDelivered">{item.orderStatus}</b> <br/><i>---Waiting Customer to Confirm---</i><br/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
 
-              {this.state.orders.filter(order => order.orderStatus === 'DONE' && order.restaurantId === 3).map((orderItem, index) => 
+              {this.state.orders.filter(order => order.orderStatus === 'DONE' && order.restaurantId === this.state.user.restaurantId).map((item, index) => 
             <div className="OrderHistoryListItems" key ={index}>
-              <button onClick={() => this.setState({ overviewId: orderItem.id, orderviewActive: true })}>View Order</button> <b>Order: {orderItem.id}.</b> 
-              <br/><b>Status: </b><b className="orderStatusDone">{orderItem.orderStatus}</b> <br/>
-              DD/MM/YYYY - {orderItem.customerName} <hr className="hrList"/>
+              <button onClick={() => this.setState({ overviewId: item.id, orderviewActive: true })}>View Order</button> <b>Order: {item.id}.</b> 
+              <br/><b>Status: </b><b className="orderStatusDone">{item.orderStatus}</b> <br/>
+              DD/MM/YYYY - {item.customerName} <hr className="hrList"/>
               </div>)}
 
           </div>
@@ -272,7 +343,7 @@ class App extends React.Component {
     let editRestaurantMenuQuickview = 
     <>
     <div>
-
+          <AddMenuItem addNewMenuItem={this.addNewMenuItem}/>
     </div>
     </>
     
@@ -290,6 +361,7 @@ class App extends React.Component {
         { this.state.editRestaurantMenuActive ? <div>{ searchProductsByRestaurant }</div> : <></>}
         { this.state.managerOrderHistoryActive ? <div>{managerOrderHistoryOverview}</div> : <></>}
         { this.state.orderviewActive? <Orderview orders={this.state.orders} overviewId={this.state.overviewId}/> : <></>}
+        { this.state.createRestaurant? <CreateRestaurant addNewRestaurant = { this.addNewRestaurant } defaultActivate = {this.defaultActivate} /> : <> </>}
         </div>
       </>
     
@@ -297,7 +369,7 @@ class App extends React.Component {
       <>
         <div className="sideBar">
         { this.state.shoppingCartQuickviewActive? <div>{ shoppingCartQuickview }</div> : <></>}
-        { this.state.editRestaurantQuickviewActive? <div>{ editRestaurantMenuQuickview }</div> : <></>}
+        { this.state.editRestaurantMenuQuickviewActive? <div>{ editRestaurantMenuQuickview }</div> : <></>}
         { this.state.managerOrderHistoryActive? <div>{managerOrderHistoryList}</div> : <></>}
         </div>
       </>
@@ -311,6 +383,8 @@ class App extends React.Component {
             products= { this.state.products } 
             orders= { this.state.orders }/>
             }
+
+      
     </div>
     </>
 
@@ -328,11 +402,13 @@ class App extends React.Component {
           managerEditBarActive={this.state.managerEditBarActive}
           onSearchFieldChange={this.onSearchFieldChange}
 
+          createRestaurantActive={this.createRestaurantActive}
           managerActivate={this.managerActivate}
           customerActivate={this.customerActivate}
           defaultActivate={this.defaultActivate}
           managerOrderOverviewActivate={ this.managerOrderOverviewActivate }
           managerOrderHistoryActivate={ this.managerOrderHistoryActivate}
+          editRestaurantMenuActive = {this.editRestaurantMenuActive}
           />
           {()=> {this.renderSwitch()}}
 
@@ -367,6 +443,10 @@ class App extends React.Component {
                       shoppingCartQuickviewActive: true, 
 
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                 }
                 case "ORDERHISTORY":
@@ -374,6 +454,10 @@ class App extends React.Component {
                     return this.setState({
 
                     actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
@@ -382,6 +466,10 @@ class App extends React.Component {
                     return this.setState({
 
                     actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
                 default:
@@ -396,6 +484,10 @@ class App extends React.Component {
                       shoppingCartQuickviewActive: true, 
 
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                 }
 
@@ -416,6 +508,10 @@ class App extends React.Component {
                       containerActive: false,
                       managerBarActive: true,
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                   });
                 }
                 case "ORDERS":
@@ -431,6 +527,10 @@ class App extends React.Component {
                       containerActive: false,
                       managerBarActive: true,
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
@@ -450,22 +550,58 @@ class App extends React.Component {
                       searchResultsActive: false,
                       managerBarActive: true,
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
                 case "EDITCREATERESTAURANT":
                   if(this.state.actionDone === false){
                     return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: false,
+                      searchResultsActive: false,
+                      managerBarActive: true,
+                      createRestaurant: true,
 
-                    actionDone:true
+                      actionDone:true
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
                 case "EDITCREATERESTAURANTMENU":
                   if(this.state.actionDone === false){
                     return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: false,
+                      searchResultsActive: false,
+                      managerBarActive: true,   /////////////////////////////////////////////////
 
-                    actionDone:true
+                      editRestaurantMenuActive:true,
+                      editRestaurantMenuQuickviewActive: true,
+                      
+                      actionDone:true
+
+                    ,createRestaurant: false
                     });
                   }
                 default:
@@ -481,6 +617,10 @@ class App extends React.Component {
                         containerActive: false,
                         managerBarActive: true,
                         actionDone:true
+
+                        ,createRestaurant: false
+                        ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
@@ -501,6 +641,10 @@ class App extends React.Component {
                     shoppingCartQuickviewActive: true, 
                     searchResultsActive: true,
                     actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
                   
@@ -509,6 +653,10 @@ class App extends React.Component {
                     return this.setState({
 
                     actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
@@ -517,6 +665,10 @@ class App extends React.Component {
                     return this.setState({
 
                     actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                     });
                   }
                 default:
@@ -532,6 +684,10 @@ class App extends React.Component {
                       shoppingCartQuickviewActive: true, 
                       searchResultsActive: true,
                       actionDone:true
+
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
                       });
                     }
 
