@@ -1,14 +1,9 @@
-.name
+.presentationModeGrid
 {
-  font-weight: 700;
-  margin-top: 20px;
-  margin-bottom: 5px;
-  font-size: 18px;
+  display: flex;
+  flex-wrap: wrap;
 }
-.author
-{
-  color: #333333
-}
+
 .product
 {
   width: 33.33%;
@@ -24,4 +19,12 @@
   border-top-right-radius: 50% 50%;
   border-bottom-right-radius: 50% 50%;
   border-bottom-left-radius: 50% 50%;
+}
+
+.name
+{
+  font-weight: 700;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-size: 18px;
 }

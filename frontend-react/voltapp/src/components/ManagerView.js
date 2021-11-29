@@ -43,9 +43,7 @@ let preparedOrders =
         <hr className="hrManager"/>
         <ul><b>Prepared in:</b> {orderItem.prepareTime}s</ul>
         </div>
-
         )
-
 let readyToDispatch =
     
         props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) =>
@@ -72,8 +70,9 @@ return(
             <div className={ styles.firstContainer }>
                 <u>Orders:</u>
                <div className={ styles.contentBox }>
+                   
                 { ordersReceived }
-                
+
                 </div> 
             </div>
 
