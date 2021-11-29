@@ -71,7 +71,7 @@ public class BoltController {
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-        else if (!u.isManager()) return "This feature is not allowed for customers.";
+        else if (!u.isIsmanager()) return "This feature is not allowed for customers.";
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {
@@ -262,13 +262,14 @@ public class BoltController {
         Order o = new Order(
             generateID(4),
             ids.get("userID"),
-            ids.get("productID"),
+            new ArrayList<>(),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
             Order.status.PLACED,
             "",
             5 + p.getPrice()
         );
+        o.addProducts(p.getProductID());
         this.or.save(o);
         return o;
     }
@@ -276,8 +277,6 @@ public class BoltController {
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
-        Product p = this.pr.findById(o.getProductID()).orElse(null);
-        Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
             case PLACED:
@@ -302,8 +301,12 @@ public class BoltController {
                 o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
                 this.or.save(o);
                 
-                r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
-                this.re.save(r);
+                for (String products : o.getProducts()) {
+                    Product p = this.pr.findById(products).orElse(null);
+                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+                    r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
+                    this.re.save(r);
+                }
                 return "Order is finished.";
             case DONE:
                 return "Order is already finished.";
