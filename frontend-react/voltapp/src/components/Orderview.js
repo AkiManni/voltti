@@ -14,17 +14,17 @@ export default function Orderview(props){
         
         switch(text) {
             case "PLACED":
-                return <b className="orderStatusPlaced">PLACED</b>
+                return <b className={styles.orderStatusPlaced}>PLACED</b>
             case "IN_PREPARATION":
-                return <b className="orderStatusOnGoing">IN PREPARATION</b>
+                return <b className={styles.orderStatusOnGoing}>IN PREPARATION</b>
             case "READY_TO_DISPATCH":
-                return <b className="orderStatusRDT">READY TO DISPATCH</b>
+                return <b className={styles.orderStatusRDT}>READY TO DISPATCH</b>
             case "DISPATCHED":
-                return <b className="orderStatusOnGoing">DISPATCHED</b>
+                return <b className={styles.orderStatusOnGoing}>DISPATCHED</b>
             case "DELIVERED":
-                return <b className="orderStatusDelivered">DELIVERED</b> 
+                return <b className={styles.orderStatusDelivered}>DELIVERED</b> 
             case "DONE":
-                return <b className="orderStatusDone">DONE</b>
+                return <b className={styles.orderStatusDone}>DONE</b>
             default:
                 return null;
                 
@@ -49,18 +49,18 @@ export default function Orderview(props){
                 <b>Address:</b> <br/>
                 { order.address }, {order.postNumber}<br/>
                 <br/>
-                <b>Order Placed:</b> <br/>{ order.orderPlacedAt } hh/mm/ss DD/MM/YYYY<br/>
-                <b>Order Prepared:</b> <br/>{ order.orderPreparedAt } hh/mm/ss DD/MM/YYYY<br/>
-                <b>Order Dispatched:</b> <br/>{ order.orderDispatchedAt } hh/mm/ss DD/MM/YYYY<br/>
-                <b>Order Delivered:</b> <br/>{ order.orderDeliveredAt } hh/mm/ss DD/MM/YYYY<br/>
-                <b>Order Confirmed Done:</b> <br/>{ order.orderDoneAt } hh/mm/ss DD/MM/YYYY<br/>
+                <b>Order Placed:</b> <br/><text className={styles.orderTime}>{ order.orderPlacedAt } hh/mm/ss DD/MM/YYYY</text><br/>
+                <b>Order Prepared:</b> <br/><text className={styles.orderTime}>{ order.orderPreparedAt } </text><br/>
+                <b>Order Dispatched:</b> <br/><text className={styles.orderTime}>{ order.orderDispatchedAt } </text><br/>
+                <b>Order Delivered:</b> <br/><text className={styles.orderTime}>{ order.orderDeliveredAt } </text><br/>
+                <b>Order Confirmed Done:</b> <br/><text className={styles.orderTime}>{ order.orderDoneAt } </text><br/>
                 <br/>
                 <b>Products Ordered:</b>
                 {order.productsOrdered.map((product, i) => 
-                <dl key={i}><dt>{product.id}. - {product.name} - {product.price}€</dt></dl>
+                <dl key={i}><dt><b>{product.id}.</b> {product.name} <b>-</b> {product.price} €</dt></dl>
                 )}
                 <br/>
-                <b>Total Payment:</b> { getSum(order.productsOrdered, 'price')}€          
+                <b>Total Payment:</b> <b className={styles.orderStatusOnGoing}>{ getSum(order.productsOrdered, 'price')} </b><b>€</b>          
             </div>
         )}
         </div>

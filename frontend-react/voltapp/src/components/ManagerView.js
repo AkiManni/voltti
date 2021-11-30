@@ -24,12 +24,11 @@ let ordersReceived =
 
         props.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
-        <ol><b>Order {orderItem.id}. {orderItem.customerName}</b></ol> 
-        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}. - {item.name} - {item.price}€</li></ol>)}
-        
-        
+        <ol><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>{orderItem.customerName}</b></ol> 
+        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}.  {item.name} - {item.price} €</li></ol>)}
 
-        <hr className="hrManager"/><ol><b>Total of:</b> { getSum(orderItem.productsOrdered, 'price')}€ <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol>
+        <hr className={styles.hrManager}/><ol><b className={styles.orderStatusOnGoing}>Total of: </b> 
+        <b>{ getSum(orderItem.productsOrdered, 'price')} €</b> <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol>
         </div>
         )
 
@@ -38,18 +37,19 @@ let preparedOrders =
         
         props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
-        <ul><b>Order {orderItem.id}. - {orderItem.customerName}</b></ul>
-        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}. - {item.name} - {item.price}€</li></ol>)}
-        <hr className="hrManager"/>
-        <ul><b>Prepared in:</b> {orderItem.prepareTime}s</ul>
+        <ul><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Items Prepared: </b></ul>
+        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}.  {item.name} - {item.price}€</li></ol>)}
+        <hr className={styles.hrManager}/>
+        <ul><b>Prepared in:</b> <b className={styles.orderStatusOnGoing}>{orderItem.prepareTime}</b> <b>s</b></ul>
         </div>
         )
 let readyToDispatch =
     
         props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
-        <ol><b>Order {orderItem.id}. Ready To Deliver</b></ol>
-        <ol>To Address:</ol><ol>{orderItem.address}, {orderItem.postNumber} </ol> <hr className="hrManager"/><ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
+        <ol><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Ready To Deliver To:</b></ol>
+        <ol className={styles.orderAddressHighlight}>{orderItem.address} , {orderItem.postNumber} </ol> <hr className={styles.hrManager}/>
+        <ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
         </div>
         )
 
@@ -57,7 +57,9 @@ let dispatchedOrders =
     
         props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) =>
         <div className={styles.orderDetailsContainer} key ={index}>
-        <ul><b>Order {orderItem.id}.</b></ul> <ol>To Address:</ol><ol> {orderItem.address}, {orderItem.postNumber} </ol><hr className="hrManager"/> <ol><b>Delivered in:</b> {orderItem.deliveryTime}s</ol>
+        <ul><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Is Being Delivered To:</b> </ul> 
+        <ol className={styles.orderAddressHighlight}> {orderItem.address} , {orderItem.postNumber} </ol><hr className={styles.hrManager}/> 
+        <ol><b>Delivered in:</b> <b className={styles.orderStatusOnGoing}>{orderItem.deliveryTime}</b> <b>s</b></ol>
         </div>
         )
 
