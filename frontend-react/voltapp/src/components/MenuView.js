@@ -25,7 +25,7 @@ export default function SearchView(props) {
                 <div>From restaurant: { item.restaurantId}</div>
                 <div>{ item.category }</div>
                 <div>{ item.description }</div>
-                <div>${ item.price }</div>
+                <div>{ item.price } €</div>
                 </div>
                 )}
         </div>

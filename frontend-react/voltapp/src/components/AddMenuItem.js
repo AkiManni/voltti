@@ -34,7 +34,7 @@ export default function AddMenuItem(props) {
             <div><br/>Prepare Time: <br/><input type="text" minLength = "11" placeholder="10, 15, 25 etc." className={ styles.enterUser }
                 onChange={ (event) => setNewPrepareTime(event.target.value) }></input> seconds</div>
             <div>Price: <br/><input type="number" placeholder="10"minLength = "5" maxLength = "5" className={styles.enterUser}
-                onChange={ (event) => setPrice(event.target.value)}></input> $</div>
+                onChange={ (event) => setPrice(event.target.value)}></input> €</div>
             <div><br/><button onClick={ addNewMenuItem }>Rekisteröi</button></div>
             
         </div>  

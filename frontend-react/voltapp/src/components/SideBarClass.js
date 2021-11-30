@@ -1,6 +1,6 @@
 import React from 'react'
 
-class MenuBar extends React.Component {
+class SideBar extends React.Component {
 
     constructor(props){
         super(props);
@@ -18,4 +18,4 @@ class MenuBar extends React.Component {
       }
     }
     
-    export default MenuBar;
+    export default SideBar;

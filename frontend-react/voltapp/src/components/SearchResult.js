@@ -1,8 +1,13 @@
+
 import React from 'react';
 import styles from './SearchResult.module.css';
 
 export default function SearchResult(props) {
 
+  const addToOrder = (id,restaurantId,foodName,photoPath,price,prepareTime) => {
+    props.addToOrder(id,restaurantId,foodName,
+      photoPath,price,prepareTime);
+  }
 
   return (
     <div className={ styles.product }>
@@ -15,9 +20,11 @@ export default function SearchResult(props) {
           <div><u>filter joka näyttää tuotteen ravintolan nimen</u></div></b> */}
           <div>{ props.category }</div>
           <div>{ props.description }</div>
-          <div>${ props.price }</div>
-          <div><button>Add to Shopping Cart</button></div>
+          <div>{ props.price } €</div>
+          <div><button onClick={() => addToOrder(props.id, props.restaurantId, props.foodName, props.photoPath, props.price, props.prepareTime )}>Add to Shopping Cart</button></div>
         </div>
     </div>
   )
 }
+
+
