@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Document(collection = "restaurants")
+@Document(collection = "restaurant")
 public class Restaurant {
     public enum type {
         CAFE,
@@ -34,13 +34,17 @@ public class Restaurant {
     private String postNum;
     private String photoPath;
     private type restaurantType;
-    private List<String> menus;
+    private List<Product> menus;
     private float restaurantBalance;
     private String operatingHours;
     private level priceLevel;
 
     public Restaurant() {
         this.menus = new ArrayList<>();
+    }
+
+    public void addMenus(Product p) {
+        this.menus.add(p);
     }
 }
  

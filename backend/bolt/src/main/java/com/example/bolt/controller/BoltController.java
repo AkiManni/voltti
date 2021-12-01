@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import com.example.bolt.model.*;
@@ -26,13 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/bolt")
 public class BoltController {
     @Autowired
-    UserRepository us;
+    private UserRepository us;
     @Autowired
-    RestaurantRepository re;
+    private RestaurantRepository re;
     @Autowired
-    ProductRepository pr;
+    private ProductRepository pr;
     @Autowired
-    OrderRepository or;
+    private OrderRepository or;
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
@@ -71,13 +70,13 @@ public class BoltController {
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-        else if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+        if (!u.isIsmanager()) return "This feature is not allowed for customers.";
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {
             u.setRestaurant(r);
             this.us.save(u);
-            return "(͠≖ ͜ʖ͠≖)👌";
+            return u.toString();
         }
     }
 
@@ -90,7 +89,7 @@ public class BoltController {
         else {
             u.setRestaurant(null);
             this.us.save(u);
-            return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
+            return u.toString();
         }
     }
 
@@ -184,14 +183,13 @@ public class BoltController {
         if (r == null) return "No restaurant found.";
         else if (p == null) return "No product found.";
         else {
-            List<String> menus = r.getMenus();
-            for (String s : menus) {
-                if (s == variables.get("productID")) return "This product already exists.";
+            List<Product> menus = r.getMenus();
+            for (Product item : menus) {
+                if (item == p) return "This product already exists.";
             }
-            menus.add(p.getProductID());
-            r.setMenus(menus);
-            this.re.save(r);
+            r.addMenus(p);
             p.setRestaurantID(r.getRestaurantID());
+            this.re.save(r);
             this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
         }
@@ -204,18 +202,18 @@ public class BoltController {
 
         if (r == null) return "No restaurant found.";
         else if (p == null) return "No product found.";
-        else {
-            List<String> menus = r.getMenus();
-            for (String s : menus) {
-                if (s == productID) {
-                    menus.remove(new String(p.getProductID()));
-                    r.setMenus(menus);
-                    this.re.save(r);
-                    return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
-                }
+        List<Product> menus = r.getMenus();
+        for (Product item : menus) {
+            if (item.equals(p)) {
+                menus.remove(p);
+                r.setMenus(menus);
+                p.setRestaurantID(null);
+                this.pr.save(p);
+                this.re.save(r);
+                return r.toString();
             }
-            return "This product doesn't exists in your menu.";
         }
+        return "This product doesn't exists in your menu.";
     }
 
     @DeleteMapping("/deleteProduct/{id}")
@@ -240,18 +238,13 @@ public class BoltController {
     }
 
     @GetMapping(value="/getOrderByUserID/{id}")
-    public Optional<Order> getOrderByUserID(@PathVariable("id") String id) {
-        return this.or.findById(id);
+    public List<Order> getOrderByUserID(@PathVariable("id") String id) {
+        return this.or.findByUserID(id);
     }
 
-    @GetMapping(value="/getOrderByRestaurantID/{id}")
-    public List<Order> getOrderByRestaurantID(@PathVariable("id") String id) {
-        Restaurant r = this.re.findById(id).orElse(null);
-        List<Order> list = new ArrayList<>();
-        for (String s : r.getMenus()) {
-            list.add(this.or.findByProductID(s).orElse(null));
-        }
-        return list;
+    @GetMapping(value="/getOrdersByRestaurantID/{id}")
+    public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
+        return this.or.findByRestaurantID(id);
     }
     
     @PostMapping("/addOrder")
@@ -262,6 +255,7 @@ public class BoltController {
         Order o = new Order(
             generateID(4),
             ids.get("userID"),
+            p.getRestaurantID(),
             new ArrayList<>(),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
@@ -269,7 +263,7 @@ public class BoltController {
             "",
             5 + p.getPrice()
         );
-        o.addProducts(p.getProductID());
+        o.addProducts(p);
         this.or.save(o);
         return o;
     }
@@ -301,8 +295,8 @@ public class BoltController {
                 o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
                 this.or.save(o);
                 
-                for (String products : o.getProducts()) {
-                    Product p = this.pr.findById(products).orElse(null);
+                for (Product products : o.getProducts()) {
+                    Product p = products;
                     Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
                     r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
                     this.re.save(r);

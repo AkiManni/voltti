@@ -25,7 +25,8 @@ public class Order {
     @Id
     private String orderID;
     private String userID;
-    private List<String> products;
+    private String restaurantID;
+    private List<Product> products;
     private String orderTime;
     private String orderDelivered;
     private status orderStatus;
@@ -36,7 +37,7 @@ public class Order {
       this.products = new ArrayList<>();
     }
 
-    public void addProducts(String string) {
-      this.products.add(string);
+    public void addProducts(Product product) {
+      this.products.add(product);
     }
 }
