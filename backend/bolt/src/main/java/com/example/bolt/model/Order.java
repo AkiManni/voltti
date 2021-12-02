@@ -1,5 +1,8 @@
 package com.example.bolt.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,7 +11,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Document(collection = "orders")
+@Document(collection = "order")
 public class Order {
     public enum status {
         PLACED,
@@ -21,11 +24,20 @@ public class Order {
 
     @Id
     private String orderID;
-    private String customerID;
-    private String productID;
+    private String userID;
+    private String restaurantID;
+    private List<Product> products;
     private String orderTime;
     private String orderDelivered;
     private status orderStatus;
     private String totalPrepareTime;
     private float totalCost;
+
+    public Order() {
+      this.products = new ArrayList<>();
+    }
+
+    public void addProducts(Product product) {
+      this.products.add(product);
+    }
 }

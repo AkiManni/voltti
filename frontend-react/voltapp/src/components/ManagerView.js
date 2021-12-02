@@ -4,121 +4,65 @@ import styles from './ManagerView.module.css'
 export default function ManagerView(props){
 
 
+
+const moveToPreparation = (orderId) => {
+            props.moveToPreparation(orderId);
+        }
+
+const setToDispatched = (orderId) => {
+            props.setToDispatched(orderId);
+        }
+
+        
+const getSum = (arr, key) => {
+            return arr.reduce((acc, cur) => acc + Number(cur[key]), 0)
+         }
+
+
 let ordersReceived = 
     
-    <table>
-        <tr>
-            
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-            <td>price</td>
-            <td>prepareTime</td>
-            <td></td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td>{product.price}</td>
-            <td>{product.prepareTime}</td>
-            <td><button>{'>>'}</button></td>
-        </tr>
-        )}
-    </table>
+
+        props.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ol><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>{orderItem.customerName}</b></ol> 
+        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}.  {item.name} - {item.price} €</li></ol>)}
+
+        <hr className={styles.hrManager}/><ol><b className={styles.orderStatusOnGoing}>Total of: </b> 
+        <b>{ getSum(orderItem.productsOrdered, 'price')} €</b> <button onClick={() => moveToPreparation(orderItem.id)}>Prepare</button></ol>
+        </div>
+        )
 
 
-
-let ordersReceived2 = 
-            <>
-     
-     { props.orders.map((order, index) => 
-    
-        <table key={index}>
-        <tr>{ order.id }</tr>
-        <td>{ order.customerId + " " + order.customerName + " "}</td> 
-
-        {/* { { order.(productsOrdered).map((product, i) => 
-            <li key={i}>
-                { product.id + ". " + product.name }
-                { product.price + "€" }
-            </li>
-            
-        )} } */}
-
-        <td>{ order.totalCost + "€ "}</td>
-        <td><button>Prepare</button></td>
-        </table>)} 
-
-          
-            </>
 let preparedOrders = 
-
-    <table>
-        <tr>
-            <td></td>
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-            <td>price</td>
-            <td>prepareTime</td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            <td></td>
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td>{product.price}</td>
-            <td>{product.prepareTime}</td>
-        </tr>
-        )}
-    </table>
-
+        
+        props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ul><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Items Prepared: </b></ul>
+        {orderItem.productsOrdered.map((item,i) => <ol key={i}><li>{item.id}.  {item.name} - {item.price}€</li></ol>)}
+        <hr className={styles.hrManager}/>
+        <ul><b>Prepared in:</b> <b className={styles.orderStatusOnGoing}>{orderItem.prepareTime}</b> <b>s</b></ul>
+        </div>
+        )
 let readyToDispatch =
     
-    <table>
-        <tr>
-            <td>id</td>
-            <td>rId</td>
-            <td>foodname</td>
-
-            <td></td>
-        </tr>
-        { props.products.map((product, index) =>
-        <tr key ={index}>
-            
-            <td>{product.id}</td>
-            <td>{product.restaurantId}</td>
-            <td>{product.name}</td>
-            <td><button>Dispatch</button></td>
-        </tr>
-        )}
-    </table>
+        props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ol><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Ready To Deliver To:</b></ol>
+        <ol className={styles.orderAddressHighlight}>{orderItem.address} , {orderItem.postNumber} </ol> <hr className={styles.hrManager}/>
+        <ol><button onClick={() => setToDispatched(orderItem.id)}>Dispatch</button></ol>
+        </div>
+        )
 
 let dispatchedOrders = 
     
-    <table>
-    <tr>
-        <td></td>
-        <td>id</td>
-        <td>rId</td>
-        <td>foodname</td>
-        <td>price</td>
-        <td>prepareTime</td>
-    </tr>
-    { props.products.map((product, index) =>
-    <tr key ={index}>
-        <td></td>
-        <td>{product.id}</td>
-        <td>{product.restaurantId}</td>
-        <td>{product.name}</td>
-        <td>{product.price}</td>
-        <td>{product.prepareTime}</td>
-    </tr>
-    )}
-    </table>
+        props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantId === 3).map((orderItem, index) =>
+        <div className={styles.orderDetailsContainer} key ={index}>
+        <ul><b className={styles.orderHighlight}>Order {orderItem.id}.</b> <b>Is Being Delivered To:</b> </ul> 
+        <ol className={styles.orderAddressHighlight}> {orderItem.address} , {orderItem.postNumber} </ol><hr className={styles.hrManager}/> 
+        <ol><b>Delivered in:</b> <b className={styles.orderStatusOnGoing}>{orderItem.deliveryTime}</b> <b>s</b></ol>
+        </div>
+        )
+
 
 return(
 <div>
@@ -126,30 +70,35 @@ return(
         
         <div className={ styles.divContainer }>
             <div className={ styles.firstContainer }>
+                <u>Orders:</u>
                <div className={ styles.contentBox }>
-                <b>Orders:</b>
-                { ordersReceived2 }
+                   
+                { ordersReceived }
+
                 </div> 
             </div>
 
             <div>
                 <div className={styles.secondContainer}>
+                <u>Being Prepared:</u>
                 <div className={ styles.contentBox }>
-                    <b>Being Prepared:</b>
+                    
                     { preparedOrders }
                     </div>
                 </div>
             </div>
             <div className={ styles.divContainer2 }>
             <div className={styles.thirdContainer}>
+            <u>Ready for Dispatch:</u>
                 <div className={ styles.contentBox }>
-                <b>Ready for Dispatch:</b>
+                
                 { readyToDispatch }
                 </div>
             </div>
                 <div className={styles.fourthContainer}>
+                <u>Dispatched orders:</u>
                 <div className={ styles.contentBox }>   
-                    <b>Dispatched orders:</b>
+                    
                     { dispatchedOrders }
                     </div>
                 </div>
@@ -160,44 +109,3 @@ return(
 </div>   
     );
 }
-
-
-
-
-
-// switch(props.orderStatus){
-//     case "PLACED":
-        
-//         "ASETA propsit JOISSA ( props.orderStatus === PLACED ),  1 <Diviin> "
-//         "Luo nappi propsien tulostusten perään, jolla tilauksen status vaihdetaan IN_PREPARATION"
-//         "jos nappia painetaan REACT-SETSTATE -> SPRINGBOOT --> .PUT props.[id].orderstatus = IN_PREPARATION"
-//         break;
-
-//     case "IN_PREPARATION":
-        
-//         "ASETA propsit JOISSA ( props.orderStatus === IN_PREPARATION ),  2 <Diviin> "
-//         "PUT Vaihda"
-//         "Check if ( totalPrepareTime == 0 ),"
-//         break;
-
-//     case "READY_TO_DISPATCH":
-        
-//         "ASETA propsit JOISSA ( props.orderStatus === READY_TO_DISPATCH ),  3 <Diviin> "
-//         break;
-
-//     case "DISPATCHED":
-        
-//         "ASETA propsit JOISSA ( props.orderStatus === DISPATCHED ),  4 <Diviin> "
-//         break;
-
-//     case "AT_DESTINATION":
-//         "ASETA propsit JOISSA ( props.orderStatus === DISPATCHED ),  4 <Diviin> "
-//         break;
-
-//     case "DONE":
-//             break;
-
-//     default: 
-//         break;
-
-// }

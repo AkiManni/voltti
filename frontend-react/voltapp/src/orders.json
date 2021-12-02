@@ -5,54 +5,875 @@
 
         "id": 1, 
         "customerId": 1,
-        "restaurantId": 1,
+        "restaurantId": 3,
         "customerName": "Jack Bauer",
-        "Address":"New yorkerstreet 2",
-        "postNumber": 28956,
-        "productsOrdered:":
-        [
-        {
-            "id":1,
-            "restaurantId":1,
-            "name":"GongBao Chicken",
-            "price": 12.30,
-            "prepareTime": 40,
-            "foodType":"fastfood"
-        },
-        {
-            "id": 1,
-            "restaurantId":1,
-            "name": "Pebis",
-            "price": 5.00,
-            "prepareTime": 0,
-            "foodType": "softdrink"
-        }
-        ],
+        "address":"New yorkerstreet 12",
+        "postNumber": 3956,
         "totalCost": 17.30,
-        "orderStatus": "Ordered"
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 1,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 2,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+        "prepareTime": 55,
+        "deliveryTime": 30,
+        "orderStatus": "PLACED"
         },
         {
 
         "id": 2, 
         "customerId": 2,
-        "restaurantId": 2,
+        "restaurantId": 3,
         "customerName": "Steve Bob",
-        "Address":"Arlington 22",
-        "postNumber": 456,
-        "productsOrdered:":
-        [
-            {
-            "id": 2,
-            "restaurantId":2,
-            "name": "ShishKebab",
-            "price": 13.00,
+        "address":"Arlington 22",
+        "postNumber": 6236,
+        "totalCost": 63.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 1,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 4,
+                    "restaurantId":3,
+                    "name": "Pecan Pie",
+                    "price": 7.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 5,
+                        "restaurantId":3,
+                        "name": "Pepsi",
+                        "price": 3.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+            ],
+            "prepareTime": 15,
+        "deliveryTime": 30,
+        "orderStatus": "PLACED"
+        },
+        {
+
+        "id": 3, 
+        "customerId": 3,
+        "restaurantId": 3,
+        "customerName": "Cynthia Mint",
+        "address":"Wowisle 62",
+        "postNumber": 21146,
+        "totalCost": 43.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 6,
+                "restaurantId":3,
+                "name": "Beer",
+                "price": 5.00,
+                "prepareTime": 20,
+                "foodType": "alcohol"
+                },
+                {
+                    "id": 7,
+                    "restaurantId":3,
+                    "name": "Hamburger",
+                    "price": 16.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 8,
+                        "restaurantId":3,
+                        "name": "Vodka",
+                        "price": 7.00,
+                        "prepareTime": 20,
+                        "foodType": "alcohol"
+                        }
+            ],
+            "prepareTime": 10,
+        "deliveryTime": 10,
+        "orderStatus": "PLACED"
+        },
+        {
+
+        "id": 4, 
+        "customerId": 4,
+        "restaurantId": 3,
+        "customerName": "Tim Masters",
+        "address":"Hansonvalley 7",
+        "postNumber": 5956,
+        "totalCost": 11.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                {
+                    "id": 7,
+                    "restaurantId":3,
+                    "name": "Hamburger",
+                    "price": 16.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 9,
+                        "restaurantId":3,
+                        "name": "Milk",
+                        "price": 2.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+            ],
+            "prepareTime": 40,
+        "deliveryTime": 30,
+        "orderStatus": "READY_TO_DISPATCH"
+        },
+        {
+
+        "id": 5, 
+        "customerId": 5,
+        "restaurantId": 3,
+        "customerName": "Ross Morley",
+        "address":"Winside 62",
+        "postNumber": 47766,
+        "totalCost": 22.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 10,
+        "deliveryTime": 30,
+        "orderStatus": "READY_TO_DISPATCH"
+        },
+        {
+
+        "id": 6, 
+        "customerId": 6,
+        "restaurantId": 3,
+        "customerName": "Keith Munn",
+        "address":"Valley 3",
+        "postNumber": 41111,
+        "totalCost": 35.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 15,
+        "deliveryTime": 30,
+        "orderStatus": "READY_TO_DISPATCH"
+        },
+        {
+
+        "id": 7, 
+        "customerId": 7,
+        "restaurantId": 3,
+        "customerName": "Jimmy Clenn",
+        "address":"Britton 3",
+        "postNumber": 18416,
+        "totalCost": 45.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 10,
+        "deliveryTime": 30,
+        "orderStatus": "READY_TO_DISPATCH"
+        },
+        {
+
+        "id": 8, 
+        "customerId": 8,
+        "restaurantId": 3,
+        "customerName": "Ruth Ayslinger",
+        "address":"WaltStreet 8",
+        "postNumber": 1156,
+        "totalCost": 17.00,
+        "orderPlacedAt":null,
+        "orderPreparedAt":null,
+        "orderReadyToDispatchAt":null,
+        "orderDispatchedAt":null,
+        "orderDeliveredAt":null,
+        "orderDoneAt":null,
+        "productsOrdered":
+            [
+                {
+                    "id": 9,
+                    "restaurantId":3,
+                    "name": "Milk",
+                    "price": 2.00,
+                    "prepareTime": 20,
+                    "foodType": "softdrink"
+                    }
+            ],
             "prepareTime": 20,
-            "foodType": "fastfood"
+        "deliveryTime": 30,
+        "orderStatus": "PLACED"
+        },
+        { 
+
+            "id": 9, 
+            "customerId": 9,
+            "restaurantId": 3,
+            "customerName": "Jack Bauer",
+            "address":"New yorkerstreet 12",
+            "postNumber": 21116,
+            "totalCost": 17.30,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 30,
+            "deliveryTime": 25,
+            "orderStatus": "PLACED"
+            },
+            {
+    
+            "id": 10, 
+            "customerId": 10,
+            "restaurantId": 3,
+            "customerName": "Dunn Mann",
+            "address":"Yesplace 1",
+            "postNumber": 25656,
+            "totalCost": 63.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 20,
+            "deliveryTime": 30,
+            "orderStatus": "PLACED"
+            },
+            {
+    
+            "id": 11, 
+            "customerId": 11,
+            "restaurantId": 1,
+            "customerName": "Cynthia Mint",
+            "address":"Wowisle 62",
+            "postNumber": 12456,
+            "totalCost": 43.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 40,
+            "deliveryTime": 30,
+            "orderStatus": "PLACED"
+            },
+            {
+    
+            "id": 12, 
+            "customerId": 12,
+            "restaurantId": 3,
+            "customerName": "Violet Blue",
+            "address":"Hansonvalley 7",
+            "postNumber": 51156,
+            "totalCost": 11.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 30,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 13, 
+            "customerId": 13,
+            "restaurantId": 3,
+            "customerName": "Ross Morley",
+            "address":"Winside 62",
+            "postNumber": 4876,
+            "totalCost": 22.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 15,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 14, 
+            "customerId": 14,
+            "restaurantId": 2,
+            "customerName": "Keith Munn",
+            "address":"Valley 3",
+            "postNumber": 4666,
+            "totalCost": 35.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 20,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 15, 
+            "customerId": 15,
+            "restaurantId": 3,
+            "customerName": "Aretha Doolittle",
+            "address":"Britton 3",
+            "postNumber": 18456,
+            "totalCost": 45.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 30,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 16, 
+            "customerId": 16,
+            "restaurantId": 3,
+            "customerName": "Ruth Ayslinger",
+            "address":"Wilconson 33",
+            "postNumber": 1556,
+            "totalCost": 17.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 10,
+            "deliveryTime": 10,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 17, 
+            "customerId": 17,
+            "restaurantId": 3,
+            "customerName": "Bert Maxter",
+            "address":"Ire 2",
+            "postNumber": 126,
+            "totalCost": 45.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 20,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 18, 
+            "customerId": 18,
+            "restaurantId": 3,
+            "customerName": "Janice Molly",
+            "address":"Scottish-ire 9",
+            "postNumber": 1826,
+            "totalCost": 45.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+            [
+                {
+                "id": 2,
+                "restaurantId":3,
+                "name": "ShishKebab",
+                "price": 13.00,
+                "prepareTime": 20,
+                "foodType": "fastfood"
+                },
+                {
+                    "id": 1,
+                    "restaurantId":3,
+                    "name": "Margherita Pizza",
+                    "price": 11.00,
+                    "prepareTime": 20,
+                    "foodType": "fastfood"
+                    },
+                    {
+                        "id": 3,
+                        "restaurantId":3,
+                        "name": "Spaghetti",
+                        "price": 9.00,
+                        "prepareTime": 20,
+                        "foodType": "fastfood"
+                        }
+            ],
+            "prepareTime": 15,
+            "deliveryTime": 30,
+            "orderStatus": "READY_TO_DISPATCH"
+            },
+            {
+    
+            "id": 19, 
+            "customerId": 19,
+            "restaurantId": 3,
+            "customerName": "Bob Smith",
+            "address":"Streetadress 1",
+            "postNumber": 43215,
+            "totalCost": 17.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+                [
+                    {
+                        "id": 9,
+                        "restaurantId":3,
+                        "name": "Milk",
+                        "price": 2.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+                ],
+                "prepareTime": 20,
+            "deliveryTime": 30,
+            "orderStatus": "DELIVERED"
+            },
+            {
+    
+            "id": 20, 
+            "customerId": 20,
+            "restaurantId": 3,
+            "customerName": "Matt Donut",
+            "address":"Sweetville 6",
+            "postNumber": 7367,
+            "totalCost": 25.00,
+            "orderPlacedAt":null,
+            "orderPreparedAt":null,
+            "orderReadyToDispatchAt":null,
+            "orderDispatchedAt":null,
+            "orderDeliveredAt":null,
+            "orderDoneAt":null,
+            "productsOrdered":
+                [
+                    {
+                        "id": 9,
+                        "restaurantId":3,
+                        "name": "Milk",
+                        "price": 2.00,
+                        "prepareTime": 20,
+                        "foodType": "softdrink"
+                        }
+                ],
+                "prepareTime": 20,
+            "deliveryTime": 30,
+            "orderStatus": "DONE"
             }
-        ],
-        "totalCost": 13.00,
-        "orderStatus": "Ordered"
-        }
     ]
 
 }
+

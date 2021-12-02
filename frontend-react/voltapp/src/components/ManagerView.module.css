@@ -3,7 +3,7 @@
     display:flex;
     height:700px;
     width:100vw;
-    
+        
 }
 
 .divContainer2{
@@ -12,12 +12,14 @@
 }
 
 
+
 .firstContainer{
+    padding-top:10px;
     text-align:center;
     margin-right:10px;
     margin-left:2px;
     float: left;
-    border:1px solid rgb(219, 219, 219);
+    border:1px solid rgb(220, 220, 220);
     width: 24.5vw;
     height:100%;
     background-color: #f5f7fa;
@@ -25,9 +27,10 @@
 }
 
 .secondContainer{
+    padding-top:10px;
     text-align:center;
     float:left;
-    border:1px solid rgb(219, 219, 219);
+    border:1px solid rgb(221, 221, 221);
     width: 24.5vw;
     height:100%;
     background-color: #f5f7fa;
@@ -35,36 +38,94 @@
 }
 
 .thirdContainer{
+    padding-top:10px;
     text-align:center;
     float:left;
     margin-right:10px;
-    border:1px solid rgb(219, 219, 219);
+    border:1px solid rgb(220, 220, 220);
     width: 25vw;
     height:100%;
     background-color: #f5f7fa;
 }
 
 .fourthContainer{
+    padding-top:10px;
     text-align:center;
     float:right;
-    border:1px solid rgb(219, 219, 219);
+    border:1px solid rgb(220, 220, 220);
     width: 25vw;
     height:100%;
     background-color: #f5f7fa;
 }
 
 .contentBox {
+    text-align:left;
     width:92%;
-    height:94%;
+    height:90%;
     margin-top:10px;
     margin-left:4%;
-    background-color: #f0f0f0;
-    border:1px solid rgb(219, 219, 219);
+    background-color: #f1f1f16e;
+    -ms-overflow-style: none;
+    scrollbar-width:none;
     overflow-y: scroll;
-    padding-top:10px;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: inset 0 2px 2px -2px rgb(219, 219, 219);
     
+
+    box-shadow: inset -1px 1px 3px 1px rgba(219,219,219, 0.3);
+    /* border-right: 1px solid rgba(219, 219, 219, .3); */
+    border-left: 1px solid rgba(219, 219, 219, .3);
+    border-bottom: 1px solid rgba(219, 219, 219, 0.3);
+}
+
+.orderDetailsContainer{
+    border:1px solid rgb(219, 219, 219);
+    background-color: #f0f0f0;
+    margin-bottom:10px;
+    box-shadow: 0 4px 2px -2px rgb(219, 219, 219);
+    
+    border-radius: 10px 10px 10px 10px;
 }
 
 table{
     margin:auto;
 }
+
+hr{
+    margin-left:10px;
+    margin-right:10px;
+    margin-bottom:-10px;
+    margin-top: -10px;
+    color: rgb(219, 219, 219);
+}
+
+
+ol li{
+    list-style-type: none;
+}
+
+.orderStatusOnGoing{
+    color:rgba(57, 170, 4, 0.973);
+  }
+  
+.orderStatusPlaced{
+    color: #1F3D96;
+  }
+  
+.orderStatusDelivered{
+    color:rgba(57, 170, 4, 0.973);
+  }
+  
+.orderStatusRDT{
+    color:#1F3D96;
+  }
+
+.orderHighlight{
+    color:#1F3D96;
+}
+
+.orderAddressHighlight{
+    /* color:rgb(131, 130, 130); */
+    color:#242424be;
+}
+

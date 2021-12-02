@@ -1,0 +1,32 @@
+.Logo {
+    height:90%;
+    margin-right:11vw !important;
+    margin-top:10px;
+    
+  }
+  
+  .menuBar {
+    background-color: #f5f7fa;
+    width: 100vw; min-width: 800px;
+    height: 160px;
+    border:1px solid rgb(219, 219, 219);
+    margin-bottom: 10px;
+    
+  }
+  
+  .defaultSearchBar{
+    float:left;
+    margin-top:120px;
+    margin-left:40px;
+    
+  }
+  
+  .defaultSearchBarWithoutSearch{
+    float:left;
+    margin-top:120px;
+    margin-left:40px;
+  }
+  
+  .menuButton {
+    margin-left: 10px;
+  }

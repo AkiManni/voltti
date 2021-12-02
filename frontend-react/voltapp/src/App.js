@@ -1,10 +1,16 @@
 import React from 'react';
 import './App.css';
-import products from './products.json'
-import orders from './orders.json'
-import ManagerView from './components/ManagerView'
+import products from './products.json';
+import orders from './orders.json';
+import tempOrder from './tempOrder.json';
+import ManagerView from './components/ManagerView';
+import MenuBar from './components/MenuBar';
+import ContentContainer from './components/ContentContainer';
+import SideBar from './components/SideBar';
 
-import SearchView from './components/SearchView';
+
+
+
 import data from './data.json'
 
 class App extends React.Component {
@@ -14,6 +20,7 @@ class App extends React.Component {
     this.state = {
       products: products.products,
       orders: orders.orders,
+      tempOrder: tempOrder.order,
       managerModeActive:false,
       defaultUserModeActive: true,
       customerModeActive: false,
@@ -21,240 +28,649 @@ class App extends React.Component {
       items: data.items,
       productSearchString: "",
 
+
+      actionDone:false,
+      role:"",
+      actionString:"MAIN",
+
+      intervalId:"",
+
+      overviewId:1,
+
+      user: {
+      
+      },
+
+      restaurant: {
+        
+      },
+
       menuBarActive: true,
       defaultUserBarActive: true,
+      defaultBarWithoutSearchActive: false,
       customerBarActive: false,
       customerEditBarActive: false,
+      userBarWithoutSearchActive: false,
       managerBarActive: false,
       managerEditBarActive: false,
-      defaultBarWithoutSearchActive: false,
-      userBarWithoutSearchActive: false,
 
       containerActive: true,
 
-      contentViewActive: true,  // TARVIIKO TÄTÄ?
       searchResultsActive: true,
       editUserActive: false,
       registerUserActive: false,
       editRestaurantActive: false,
       editRestaurantMenuActive: false,
-      managerOrderviewActive: false,
+      managerOrderHistoryActive: false,
       orderviewActive: false,
+      createRestaurant: false,
 
       sideBarActive: true,
-      shoppingCartQuickviewActive: true,   // MUOKATTU
-      editRestaurantQuickviewActive: false
+      shoppingCartQuickviewActive: true,
+      editRestaurantMenuQuickviewActive: false,
+      showUserOrderHistoryActive: false,
+      showRestaurantOrderHistoryActive: false
     }
 
   }
+ 
+
+  // MENUBAR COMMANDS
+
+  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN", createRestaurantActive: false, 
+  user: 
+    { 
+      userId: 3,
+      firstName: "Cynthia",
+      surName: "Myth",
+      address: "Wowisle 62",
+      postNumber: 21146,
+      isManager: false
+    }
+
+  })}
+
+  managerActivate = () => { this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN",
+  
+    user: 
+    { 
+      userId: 3,
+      firstName: "Cynthia",
+      surName: "Myth",
+      address: "Wowisle 62",
+      postNumber: 21146,
+      isManager: true
+    },
+    
+    restaurant: 
+    {
+      restaurantId:3,
+      restaurantType:"CAFE"
+    }
+
+  })}
+
+  managerOrderOverviewActivate = () => {this.setState( {actionDone:false, actionString:"ORDERS", orderviewActive:false, managerOrderHistoryActive:false })}
+
+  managerOrderHistoryActivate = () => {this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
+
+  defaultActivate = () => { this.setState( {actionDone:false, role:"", actionString:"MAIN", orderviewActive:false, managerOrderHistoryActive:false, createRestaurantActive: false, user: {userId: null,
+    firstName: null,
+    surName: null,
+    address: null,
+    postNumber: null,
+    isManager: false} }) } 
+
+  createRestaurantActive = () => { this.setState( {actionDone:false, role:"MANAGER", actionString:"EDITCREATERESTAURANT"})}
+
+  editRestaurantMenuActive = () => { this.setState( {actionDone:false, role:"MANAGER",actionString:"EDITCREATERESTAURANTMENU"})}
+
+  addNewRestaurant = (newRestaurantName, newAddress, newPostNumber, 
+    newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel) => { 
+    console.log(newRestaurantName, newAddress, newPostNumber, 
+      newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel)
+    console.log("nämä pitäisi lähettää eteenpäin.")
+
+    }
+
+
+  moveToPreparation = (orderId) => {
+
+    let copyOfOrders = [...this.state.orders]
+  
+    copyOfOrders[orderId-1].orderStatus = "IN_PREPARATION"
+
+    copyOfOrders[orderId-1].orderPreparedAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+
+    this.setState({ orders: copyOfOrders })
+  
+    clearInterval(this.intervalTimerId);
+    }
+  
+  setToDispatched = (orderId) => {
+
+      let anotherCopyOfOrders = [...this.state.orders]
+  
+      anotherCopyOfOrders[orderId-1].orderStatus = 'DISPATCHED'
+
+      anotherCopyOfOrders[orderId-1].orderDispatchedAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+  
+      this.setState({ orders: anotherCopyOfOrders })
+      clearInterval(this.intervalTimerId);
+    }
+
+  prepareTimer = () => {
+
+        let newOrders = [...this.state.orders]
+        
+        for(var i in newOrders){
+          if(newOrders[i].orderStatus === 'IN_PREPARATION'){
+            newOrders[i].prepareTime--
+          }
+          if(newOrders[i].orderStatus === 'DISPATCHED'){
+            newOrders[i].deliveryTime--
+          }
+          if(newOrders[i].prepareTime === 0 && newOrders[i].orderStatus === 'IN_PREPARATION'){
+            newOrders[i].orderStatus = 'READY_TO_DISPATCH'
+            
+          }
+          if(newOrders[i].deliveryTime === 0 && newOrders[i].orderStatus === 'DISPATCHED'){
+            newOrders[i].orderStatus = 'DELIVERED'
+            newOrders[i].orderDeliveredAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+          }
+        }
+
+        this.setState({
+          orders:newOrders
+        });
+  }
+
+  componentDidMount(){
+      this.setState({intervalId: setInterval(() => {
+        this.prepareTimer()
+      }, 1000)})
+      }
+
+  componentWillUnmount(){
+      clearInterval(this.state.intervalId)
+    }
 
   onSearchFieldChange = (event) => {
+      console.log('Keyboard event');
+      console.log(event.target.value);
+      this.setState({ productSearchString: event.target.value });
+    }
 
-    console.log('Keyboard event');
-    console.log(event.target.value);
-    this.setState({ productSearchString: event.target.value });
+  deleteItem = itemId => {
+
+  let newItems = [...this.state.items]
+
+      let index = newItems.map((item) => item.id).indexOf(itemId);
+      
+        newItems.splice(index, 1);
+      
+        console.log("Instead doing this, this should send itemId to Spring Boot and pop the item with that id off from the database.")
+
+  this.setState({items:newItems})
+    
+  }
+
+  addNewMenuItem = (newFoodName, newDescription,
+    newMenuItemUrl, newPrepareTime, newPrice) => { 
+
+    let newItems = [...this.state.items];
+
+    var id = Math.max.apply(Math, newItems.map(function(o) { return o.id; }))
+
+    
+
+    newItems.push({
+      id: ++id,
+      restaurantId: this.state.restaurant.restaurantId, 
+      foodName:newFoodName,
+      category: this.state.restaurant.restaurantType,
+      description: newDescription,
+      photoPath: newMenuItemUrl,
+      prepareTime: newPrepareTime, 
+      price: newPrice
+    })
+
+    this.setState({
+      items:newItems
+    });
+    
+  }
+
+  confirmOrder = () => {
+    let newOrders = [...this.state.orders]
+        
+        for(var i in newOrders){
+
+          if(newOrders[i].customerId === this.state.user.userId && newOrders[i].orderStatus === 'DELIVERED'){
+            newOrders[i].orderStatus = 'DONE'
+            newOrders[i].orderDoneAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
+
+        console.log("This should be handled differently via Spring or AXIOS.")
+
+          this.setState({orders:newOrders});
+          }
+        }
+  }
+
+  overviewChange = id => { 
+    this.setState({overviewId: id, orderviewActive:true})
+  }
+
+//   getSumTotal = (arr, key) => {
+//     return arr.reduce((acc, cur) => acc + Number(cur[key]), 0)
+//  }
+//  { getSumTotal(this.state.tempOrder, 'price')}
+
+  addToOrder = (id,restaurantId,foodName,photoPath,price,prepareTime) => {
+
+    let newTemplateOfOrder = [...this.state.tempOrder]
+    var actionDone = false
+    let idcheck
+    
+    if(!newTemplateOfOrder.findIndex(index => index.id === id) && actionDone === false)
+      {
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
+        newTemplateOfOrder[idcheck].quantity += 1
+        actionDone = true;
+      }
+
+    if(!newTemplateOfOrder.findIndex(index => index.id === id) === false && newTemplateOfOrder.findIndex(index => index.id === id) === -1 && actionDone === false)
+      {
+        newTemplateOfOrder.push({"id":id,"restaurantId":restaurantId,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
+        actionDone = true;
+      }
+    if(newTemplateOfOrder.findIndex(index => index.id === id) >=0 && actionDone === false)
+      {
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
+        newTemplateOfOrder[idcheck].quantity += 1
+        actionDone = true;
+      }
+
+    this.setState({tempOrder:newTemplateOfOrder})
   }
 
   render() 
   {
 
-
-    // MENUBARIN ELEMENTTIEN TOTEUTUS - PITÄÄ MIETTIÄ VIEDÄÄNKÖ TOTEUTUKSET OMAAN LUOKKAAN JA KUTSUTAAN SITTEN RENDERIN SISÄLLÄ?
-
-    let defaultUserBar = 
-    <>
-    <div className="searchBar">
-    Search: <input type="text" onChange={ this.onSearchFieldChange } value={ this.state.productSearchString }/> 
-      <button onClick={() => this.setState( {containerActive: !this.state.containerActive})}>Manager OrderOverview</button>
-    </div>
-    </>
-
-    let defaultUserBarWithoutSearchBar = 
-    <>
-    <div>
-        
-    </div>
-    </>
-
-    let customerBar =
-    <>
-    <div>
-        
-    </div>
-    </>
-
-    let customerBarWithoutSearchBar = 
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let managerBar =
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let managerEditBar = 
-    <>
-    <div>
-
-    </div>
-    </>
-
-        // CONTENT CONTAINER ELEMENTS - PITÄÄ MIETTIÄ LISÄTÄÄNKÖ TOTEUTUKSET OMAAN LUOKKAAN?
-
-    let searchResults = 
-    <>
-    <div>
-      IHASTELKAA MUN TUOTTEITA:
-          <SearchView
-          items={ this.state.items.filter((item) => 
-            (item.manufucturer.includes(this.state.productSearchString)||
-            (item.type.includes(this.state.productSearchString))||
-            (item.name.includes(this.state.productSearchString)))) }
-          />
-    </div>
-    </>
-
-    let editUserForm =
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let registerForm =
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let editRestaurantForm =
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let searchProductsByRestaurant = 
-    <>
-    <div>
-        TÄNNE PITÄÄ LAITTAA VASTAAVA SEARCHVIEW - PAITSI FILTER BY RESTAURANT_ID
-    </div>
-    </>
-
-    let managerOrderOverview = 
-    <>
-    <div>
-
-    </div>
-    </>
-
-    let orderOverview = 
-    <>
-    <div>
-
-    </div>
-    </>
-
-        // SIDEBAR CONTENT ELEMENTS - PITÄÄ MIETTIÄ LISÄTÄÄNKÖ TOTEUTUKSET OMAAN LUOKKAAN?
-
-    let shoppingCartQuickview =
-    <>
-    <div>
-      <div className="shoppingCart">SHOPPING CART:</div>
-    </div>
-    <button className="orderReviewButton">Review Shopping Cart</button>
-    </>
-
-    let editRestaurantMenuQuickview = 
-    <>
-    <div>
-
-    </div>
-    </>
-    
-
-    
-
-
-
-      
-
-      // NÄKYMIEN TOTEUTUKSEN EHTOLAUSEKKEET SAI TOTEUTETTUA JSX:N KANSSA TERNARY OPERAATTORILLA
-    let menuBarContainer =
-      <>
-        <div className= "menuBar" >
-
-          { this.state.defaultUserBarActive ? <div>{ defaultUserBar }</div> : <></> }
-          { this.state.customerBarActive ? <div>{ customerBar }</div> : <></> }
-          { this.state.customerEditBarActive ? <div>{customerBarWithoutSearchBar}</div> : <></> }
-          { this.state.defaultBarWithoutSearchActive? <div>{ defaultUserBarWithoutSearchBar }</div> : <></> }
-          { this.state.managerBarActive ? <div>{ managerBar }</div> : <></> }
-          { this.state.managerEditBarActive ? <div>{ managerEditBar }</div> : <></> }
-
-        <img className= "Logo" src={"voltLogo.png"} align="right"/>
-        </div>
-      </>
-
-    let contentContainer =
-      <>
-        <div className="contentContainer">
-
-        { this.state.searchResultsActive ? <div>{ searchResults }</div> : <></>}
-        { this.state.editUserActive ? <div>{ editUserForm }</div> : <></>}
-        { this.state.registerUserActive ? <div>{ registerForm }</div> : <></>}
-        { this.state.editRestaurantActive ? <div>{ editRestaurantForm }</div> : <></>}
-        { this.state.editRestaurantMenuActive ? <div>{ searchProductsByRestaurant }</div> : <></>}
-        { this.state.managerOrderviewActive ? <div>{ managerOrderOverview }</div> : <></>}
-        { this.state.orderviewActive? <div>{ orderOverview }</div> : <></>}
-
-        </div>
-      </>
-    
-    let sideBarContainer =
-      <>
-        <div className="sideBar">
-        { this.state.shoppingCartQuickviewActive? <div>{ shoppingCartQuickview }</div> : <></>}
-        { this.state.editRestaurantQuickviewActive? <div>{ editRestaurantMenuQuickview }</div> : <></>}
-        </div>
-      </>
-
     let elementContainer =
-      <>
-      <div className="elementContainer">
-        { this.state.containerActive? <div>{contentContainer}{sideBarContainer}</div> : <ManagerView disableManagerMode={ () => this.setState({managerModeActive: false})}
-              products= { this.state.products } orders= { this.state.orders }/>
-              }
-      </div>
-      </>
+    <>
+    <div className="elementContainer">
+      { this.state.containerActive ?
 
-      let output = 
+      <div>
+        <ContentContainer
+          items = { this.state.items}
+          restaurant = { this.state.restaurant}
+          orders={this.state.orders} 
+          overviewId={this.state.overviewId}
+          searchResultsActive = {this.state.searchResultsActive}
+          editUserActive = { this.state.editUserActive }
+          registerUserActive = { this.state.registerUserActive }
+          editRestaurantActive = { this.state.editRestaurantActive }
+          editRestaurantMenuActive = { this.state.editRestaurantMenuActive }
+          managerOrderHistoryActive = { this.state.managerOrderHistoryActive }
+          orderviewActive = { this.state.orderviewActive}
+          createRestaurant = { this.state.createRestaurant}
+          productSearchString = { this.state.productSearchString}
+          deleteItem ={ this.deleteItem }
+          addToOrder ={ this.addToOrder }
+          addNewRestaurant={ this.addNewRestaurant}
+          defaultActivate={ this.defaultActivate}    
+        />
+
+        <SideBar
+          orders = { this.state.orders }
+          user = { this.state.user }
+          restaurant = {this.state.restaurant}
+          tempOrder = {this.state.tempOrder}
+          shoppingCartQuickviewActive= {this.state.shoppingCartQuickviewActive}
+          editRestaurantMenuQuickviewActive= {this.state.editRestaurantMenuQuickviewActive }
+          managerOrderHistoryActive= {this.state.managerOrderHistoryActive}
+          addNewMenuItem={this.addNewMenuItem}
+          overviewChange={this.overviewChange}
+          confirmOrder={this.confirmOrder}
+        />
+      </div>
+
+      : 
+
+        <ManagerView 
+          moveToPreparation={ this.moveToPreparation } 
+          setToDispatched = { this.setToDispatched } 
+          products= { this.state.products } 
+          orders= { this.state.orders }/>
+
+          }
+    </div>
+    </>
+
+    let output = 
       <>
         <div>
-          {menuBarContainer}
+          <MenuBar
+          menuBarActive={this.state.menuBarActive}
+          defaultUserBarActive={this.state.defaultUserBarActive}
+          defaultBarWithoutSearchActive={this.state.defaultBarWithoutSearchActive}
+          customerBarActive={this.state.customerBarActive}
+          customerEditBarActive={this.state.customerEditBarActive}
+          userBarWithoutSearchActive={this.state.userBarWithoutSearchActive}
+          managerBarActive={this.state.managerBarActive}
+          managerEditBarActive={this.state.managerEditBarActive}
+          onSearchFieldChange={this.onSearchFieldChange}
+
+          createRestaurantActive={this.createRestaurantActive}
+          managerActivate={this.managerActivate}
+          customerActivate={this.customerActivate}
+          defaultActivate={this.defaultActivate}
+          managerOrderOverviewActivate={ this.managerOrderOverviewActivate }
+          managerOrderHistoryActivate={ this.managerOrderHistoryActivate}
+          editRestaurantMenuActive = {this.editRestaurantMenuActive}
+          />
+          {()=> {this.renderSwitch()}}
+
+          
           <div className="wrapper">
           { elementContainer }
           </div>
         </div>
       </>
 
-    if(this.state.managerModeActive){
-      
-      output = <ManagerView
-              disableManagerMode={ () => this.setState({managerModeActive: false})}
-              products= { this.state.products }
-              orders= { this.state.orders }
-              />;
-    }
 
   return (
     <>
-    { output }
+
+
+    
+      {(() => {
+
+      // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
+        switch(this.state.role){
+          case "CUSTOMER":
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserModeActive: false, 
+                      defaultUserBarActive: false,
+                      defaultUserBarWithoutSearchBar: false,
+                      managerModeActive: false,
+                      customerBarActive: true ,
+                      sideBarActive: true,
+                      shoppingCartQuickviewActive: true, 
+
+                      actionDone:true
+
+                      ,orderviewActive:false
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                }
+                case "ORDERHISTORY":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+                case "EDITCUSTOMER":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+
+                    ,orderviewActive:false
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserModeActive: false, 
+                      defaultUserBarActive: false,
+                      defaultUserBarWithoutSearchBar: false,
+                      managerModeActive: false,
+                      customerBarActive: true ,
+                      sideBarActive: true,
+                      shoppingCartQuickviewActive: true, 
+
+                      actionDone:true
+
+                      ,orderviewActive:false
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                }
+
+              }
+            
+          case "MANAGER":
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                  return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+
+                      ,orderviewActive:false
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                  });
+                }
+                case "ORDERS":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+
+                      ,orderviewActive:false
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+                case "ORDERHISTORY":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: true,
+                      searchResultsActive: false,
+                      managerBarActive: true,
+                      actionDone:true
+
+                      ,orderviewActive:true
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+                case "EDITCREATERESTAURANT":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: false,
+                      searchResultsActive: false,
+                      managerBarActive: true,
+                      createRestaurant: true,
+
+                      orderviewActive:false
+                      ,actionDone:true
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+                case "EDITCREATERESTAURANTMENU":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                      defaultUserBarActive: false,
+                      defaultModeActive: false,
+                      customerModeActive: false,
+                      customerBarActive: false,
+                      defaultBarWithoutSearchActive: false,
+                      customerEditBarActive: false,
+                      userBarWithoutSearchActive: false,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      managerOrderHistoryActive: false,
+                      searchResultsActive: false,
+                      managerBarActive: true   /////////////////////////////////////////////////
+
+                      ,orderviewActive:false
+                      ,editRestaurantMenuActive:true
+                      ,editRestaurantMenuQuickviewActive: true
+                      
+                      ,actionDone:true
+
+                    ,createRestaurant: false
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({
+                        defaultUserBarActive: false,
+                        defaultModeActive: false,
+                        customerModeActive: false,
+                        customerBarActive: false,
+                        defaultBarWithoutSearchActive: false,
+                        customerEditBarActive: false,
+                        userBarWithoutSearchActive: false,
+                        containerActive: false,
+                        managerBarActive: true,
+                        actionDone:true
+
+                        ,orderviewActive:false
+                        ,createRestaurant: false
+                        ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+              }
+
+          default:
+              switch(this.state.actionString){
+                case "MAIN":
+                  if(this.state.actionDone === false){
+                  return this.setState({ 
+                    customerModeActive: false,
+                    managerModeActive: false,
+                    managerBarActive: false,
+                    customerBarActive: false ,
+                    sideBarActive: true,
+                    containerActive: true,
+                    defaultUserBarActive: true,
+                    shoppingCartQuickviewActive: true, 
+                    searchResultsActive: true,
+                    actionDone:true
+
+                    ,orderviewActive:false
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+                  
+                case "LOGIN":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+
+                    ,orderviewActive:false
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+
+                case "REGISTER":
+                  if(this.state.actionDone === false){
+                    return this.setState({
+
+                    actionDone:true
+
+                    ,orderviewActive:false
+                    ,createRestaurant: false
+                    ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                    });
+                  }
+                default:
+                  if(this.state.actionDone === false){
+                    return this.setState({ 
+                      customerModeActive: false,
+                      managerModeActive: false,
+                      managerBarActive: false,
+                      customerBarActive: false ,
+                      sideBarActive: true,
+                      containerActive: true,
+                      defaultUserBarActive: true,
+                      shoppingCartQuickviewActive: true, 
+                      searchResultsActive: true,
+                      actionDone:true
+
+                      ,orderviewActive:false
+                      ,createRestaurant: false
+                      ,editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false
+                      });
+                    }
+
+              }
+            }
+        })()}
+
+      { output }
+        
     </>
     )
   }

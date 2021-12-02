@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+frontend-react/voltapp/package-lock.json
+backend/bolt/src/main/resources/application.properties
