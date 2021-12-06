@@ -1,8 +1,13 @@
 package com.example.bolt.model;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -12,38 +17,33 @@ import lombok.Data;
 @AllArgsConstructor
 @Document(collection = "user")
 public class Customer {
-
     @Id
-    private String customerID;
+@JsonProperty
+    private String id;
     private String fname;
     private String lname;
     private String address;
     private String postNum;
     private String loginCredential;
     private String loginPassword;
-    private boolean ismanager;
+    //private boolean ismanager;
 
-    public boolean getIsmanager() {
-        return this.ismanager;
-    }
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
 
-    public void setIsmanager(boolean b) {
-        this.ismanager = b;
-    }
-    //private role userRole;
-    /*public enum role {
-        ADMIN,
-        CUSTOMER
-         }*/
-        
-    public Customer() {
-    }
-    public String getCustomerID() {
-        return this.customerID;
+
+
+    public String getId() {
+        return this.id;
     }
 
-    public void setCustomerID(String customerID) {
-        this.customerID = customerID;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+ 
+    public String getid() {
+        return this.id;
     }
 
     public String getFname() {
@@ -92,12 +92,18 @@ public class Customer {
     public void setLoginPassword(String loginPassword) {
         this.loginPassword = loginPassword;
     }
-   
 
+    public Customer() {
+    }
 
-
-
-
+    public Set<Role> getRoles() {
+        return roles;
+      }
+    
+      public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+      }
 
 
 }
+

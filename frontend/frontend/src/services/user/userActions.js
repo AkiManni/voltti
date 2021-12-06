@@ -10,11 +10,17 @@ export const registerUser = (userObject) => async (dispatch) => {
     const response = await axios.post(REGISTER_URL, userObject);
     dispatch(userSavedSuccess(response.data));
     return Promise.resolve(response.data);
+    
   } catch (error) {
     dispatch(userFailure(error.message));
+    
     return Promise.reject(error);
+
   }
 };
+
+
+
 
 const userRequest = () => {
   return {

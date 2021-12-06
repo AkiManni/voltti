@@ -1,30 +1,20 @@
 package com.example.bolt.Register.login;
 
+import java.util.Set;
 
 
 public class AuthenticationRequest {
     private String customerID;
-    //private role userRole;
+
     private String fname;
     private String lname;
     private String address;
     private String postNum;
     private String loginCredential;
     private String loginPassword;
-    private boolean ismanager;
 
-    public boolean getIsmanager() {
-        return this.ismanager;
-    }
+   private Set<String> roles;
 
-    public void setIsmanager(boolean b) {
-        this.ismanager = b;
-    }
-   /* public enum role {
-        ADMIN,
-        CUSTOMER
-         }
-         */
     public String getCustomerID() {
         return this.customerID;
     }
@@ -81,7 +71,15 @@ public class AuthenticationRequest {
         this.loginPassword = loginPassword;
     }
 
-  
+    public Set<String> getRoles() {
+        return this.roles;
+      }
+      
+      public void setRole(Set<String> roles) {
+        this.roles = roles;
+      }
+
+
 
 
 }

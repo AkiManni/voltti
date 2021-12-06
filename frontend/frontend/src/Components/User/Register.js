@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row , Alert} from "react-bootstrap";
+import { Form, Button, FormGroup, FormControl, ControlLabel, Col, Row , Alert,} from "react-bootstrap";
 import { registerUser } from "../../services/index";
-import MyToast from "../MyToast";
 
 const Register = (props) => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState();
 
   const initialState = {
     fname: "",
@@ -15,43 +15,88 @@ const Register = (props) => {
     postNum: "",
     loginCredential: "",
     loginPassword: "",
-    ismanager: null
+    roles: []
   };
 
+
+
+
+  
   const [user, setUser] = useState(initialState);
 
   const userChange = (event) => {
     
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
+
   };
+
+
+  const roleChange = (event) => {
+    
+    const { name, value } = event.target;
+    setUser({ ...user, [name]: [value] });
+    
+  };
+
 
   const dispatch = useDispatch();
 
   const saveUser = () => {
     dispatch(registerUser(user))
       .then((response) => {
-        setShow(true);
-        setMessage(response.message);
         resetRegisterForm();
         setTimeout(() => {
-          setShow(false);
           props.history.push("/login");
         }, 2000);
       })
+
+
+
+
+
+
       .catch((error) => {
-        console.log(error);
+        //jos kirjautuminen ei onnistunut
+        console.log("virhe👌" +error);
+        setShow(true);
+        resetRegisterForm();
+
+if(error.response.status == 403){
+
+  setError("User is already registered");
+
+}
+
+if(error.response.status == 404){
+
+  setError("Fill all information");
+}
+
+        
+
+
+     
       });
-  };
+    };
+
+
+
+
+
+
 
   const resetRegisterForm = () => {
     setUser(initialState);
   };
 
-
-  <MyToast show={show} message={message} type={"success"} />
   return (
     <Form>
+         {show && error && (
+        <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+          {error}
+        </Alert>
+      )}
    <Form.Text className="p-3 mb-2 bg-dark text-white d-flex p-2" >
           We'll never share your loginCredentials with anyone else.
         </Form.Text>
@@ -131,11 +176,12 @@ const Register = (props) => {
 </small>
       </Form.Group>
  
-      <select class="form-select" aria-label="Default select example"  value={user.ismanager}
-          onChange={userChange}   name="ismanager">
+      <select class="form-select" aria-label="Default select example"  value={user.roles} 
+          onChange={roleChange}  name="roles">
   <option selected>Select your role</option>
-  <option value={true}>Manager</option>
-  <option value={false}>User</option>
+  <option name="manager">manager</option>
+  <option name="customer">customer</option>
+
   
 </select>
 
@@ -148,11 +194,13 @@ const Register = (props) => {
         onClick={saveUser}
         //onClick={console.log(userChange.ismanager)}
        //disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
-       disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
-    >
+       disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0 ||user.lname.length === 0 || user.fname.length === 0|| user.postNum === 0 || user.address === 0 || user.ismanager === null}
+       
+   >
+      
         Register
-      </Button>{" "}
-   
+      </Button>
+ 
 </Form>
 
   );

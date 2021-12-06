@@ -26,7 +26,8 @@ const Login = (props) => {
     dispatch(authenticateUser(user.loginCredential, user.loginPassword, setCookie, removeCookie))
       .then((response) => {
         console.log(response.data);
-        return props.history.push("/");
+         return props.history.push("/");
+               
       })
       .catch((error) => {
         //jos kirjautuminen ei onnistunut
