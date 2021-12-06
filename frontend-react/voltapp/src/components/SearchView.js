@@ -5,8 +5,8 @@ import SearchResult from './SearchResult';
 
 export default function SearchView(props) {
 
-  const addToOrder = (id,restaurantId,foodName,photoPath,price,prepareTime) => {
-    props.addToOrder(id,restaurantId,foodName,photoPath,price,prepareTime)
+  const addToOrder = (id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime) => {
+    props.addToOrder(id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime)
   }
 
   return (

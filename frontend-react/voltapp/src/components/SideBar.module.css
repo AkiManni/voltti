@@ -9,9 +9,15 @@
     border:1px solid rgb(219, 219, 219);
   }
 
+.orderPreviewListRestaurantName{
+    text-align:left !important;
+    padding-left: 15%;
+    padding-top:15px;
+}
+  /* height: 1px border-top, 1px border-bottom, 10px margin, 10px padding + 578px = 600px ~ .cartContainer */
 .shoppingCart {
     width:90%;
-    height:500px;
+    height:578px;
     margin-top:10px;
     margin-left:5%;
     background-color: #f0f0f0;
@@ -20,10 +26,6 @@
     scrollbar-width:none;
     overflow-y: scroll;
     padding-top:10px;
-  }
-
-.orderReviewButton {
-    margin-top:10px;
   }
 
 .OrderHistoryList{
@@ -88,3 +90,59 @@
     overflow-y: scroll;
     padding-top:10px;
   }
+
+.cartContainer {
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width:none;
+  height:600px;
+  margin-bottom:10px !important;
+}
+
+.orderPreviewList{
+  text-align:left !important;
+  padding-left: 15%;
+}
+
+.orderHorizontal{
+  margin-left:11% !important;
+  margin-right:11% !important;
+  margin-top:4px;
+  margin-bottom:-4px;
+}
+
+.totalPriceHorizontalLine{
+  margin-top:30px;
+  margin-left:11% !important;
+  margin-right:11% !important;
+  padding-top:2px;
+  background-color: black;
+  margin-bottom:-3px;
+}
+
+.totalPricePrice{
+  text-align:right !important;
+  margin-right:-40%;
+}
+
+.totalPrice{
+  color:red;
+}
+
+.totalPriceOfRestaurant{
+  text-align:right !important;
+  margin-right:15%;
+  color:red;
+}
+
+.restaurantTotalText{
+  color: #4b4b4b !important;
+}
+
+.euromark{
+  color:black !important;
+}
+
+.shoppingCartContentContainer{
+  margin-bottom:100px;
+}

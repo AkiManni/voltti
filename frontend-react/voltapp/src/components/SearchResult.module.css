@@ -25,3 +25,22 @@
   border-bottom-right-radius: 50% 50%;
   border-bottom-left-radius: 50% 50%;
 }
+
+.price{
+  color:black !important;
+}
+
+.description{
+  color:#4b4b4b;
+}
+
+.productHorizontalLine{
+  margin-top:3px;
+  margin-bottom:1px;
+  margin-left:10%;
+  margin-right:10%;
+}
+
+.addButton{
+  margin-top:2px;
+}

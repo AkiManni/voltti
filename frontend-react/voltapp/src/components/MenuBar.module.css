@@ -30,3 +30,11 @@
   .menuButton {
     margin-left: 10px;
   }
+
+  .priceStageSlider{
+    margin-bottom:-5px;
+  }
+
+  .searchfield{
+    width:250px;
+  }

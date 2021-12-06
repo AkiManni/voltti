@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './MenuBar.module.css'
+import styles from './MenuBar.module.css';
 
 export default function MenuBar(props){
 
@@ -16,6 +16,10 @@ export default function MenuBar(props){
 
     const customerActivate = () => {
         props.customerActivate();
+    }
+
+    const customerOrderHistoryviewActivate = () => {
+        props.customerOrderHistoryviewActivate()
     }
 
     const managerActivate = () => {
@@ -38,28 +42,35 @@ export default function MenuBar(props){
         props.editRestaurantMenuActive();
     }
 
+    
+
+    
+
     let defaultUserBar = 
     <>
-    <div className={styles.defaultSearchBar}>
-    Search: <input type="text" onChange={ onSearchFieldChange } value={ props.productSearchString }/> 
-    <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
-    <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
-    <button className={styles.menuButton}>Login</button> <button className={styles.menuButton}>Register</button>
+        <div className={styles.defaultSearchBar}>
+        Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
+        onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
+        <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
+        <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
+        <button className={styles.menuButton}>Login/Register</button>
     </div>
     </>
 
     let defaultUserBarWithoutSearchBar = 
     <>
-    <div className={styles.defaultSearchBarWithoutSearch}>
-    <button className={styles.menuButton}>Login</button> <button className={styles.menuButton}>Register</button>
+        <div className={styles.defaultSearchBarWithoutSearch}>
+        <button className={styles.menuButton} onClick={() => defaultActivate()}>Search Products</button>
+        <button className={styles.menuButton}>Login/Register</button>
     </div>
     </>
 
     let customerBar =
     <>
     <div className={styles.defaultSearchBar}>
-        Search: <input type="text" onChange={ onSearchFieldChange } value={ props.productSearchString }/>  
-        <button className={styles.menuButton}>Order History</button> 
+        Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
+        onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
+        <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton}>Edit Customer Info</button> 
         <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out </button>
     </div>
@@ -67,22 +78,23 @@ export default function MenuBar(props){
 
     let customerBarWithoutSearchBar = 
     <>
-    <div className={styles.defaultSearchBar}>
-    <button className={styles.menuButton}>Order History</button> 
-    <button className={styles.menuButton}>Edit Customer Info</button> 
-    <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
+        <div className={styles.defaultSearchBar}>
+        <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
+        <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
+        <button className={styles.menuButton}>Edit Customer Info</button> 
+        <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
     </div>
     </>
 
     let managerBar =
     <>
-    <div className={styles.defaultSearchBar}>
-    <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
-    <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
-    <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
-    <button className={styles.menuButton}>Edit Restaurant Info</button> 
-    <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
-    <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
+        <div className={styles.defaultSearchBar}>
+        <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
+        <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
+        <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
+        <button className={styles.menuButton}>Edit Restaurant Info</button> 
+        <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
+        <button className={styles.menuButton} onClick={() => defaultActivate()}>Log Out</button>
     </div>
     </>
 
@@ -96,7 +108,6 @@ export default function MenuBar(props){
     let menuBarContainer =
     <>
         <div className= {styles.menuBar} >
-
         { props.defaultUserBarActive ? <div>{ defaultUserBar }</div> : <></> }
         { props.customerBarActive ? <div>{ customerBar }</div> : <></> }
         { props.customerEditBarActive ? <div>{customerBarWithoutSearchBar}</div> : <></> }

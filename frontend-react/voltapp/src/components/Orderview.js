@@ -5,11 +5,6 @@ import styles from './Orderview.module.css'
 export default function Orderview(props){
 
 
-
-    const getSum = (arr, key) => {
-        return arr.reduce((acc, cur) => acc + Number(cur[key]), 0)
-     }
-
     const statusText = (text) => {
         
         switch(text) {
@@ -42,6 +37,7 @@ export default function Orderview(props){
                 
                 Status: {statusText(order.orderStatus)} <br/><br/>
                 <b>Restaurant id:</b> <br/>{ order.restaurantId } <br/>
+                <b>Restaurant Name:</b> <br/>{ order.restaurantName } <br/>
                 <b>Customer id:</b><br/>
                 { order.customerId }<br/>
                 <b>Customer Name:</b><br/>
@@ -49,7 +45,7 @@ export default function Orderview(props){
                 <b>Address:</b> <br/>
                 { order.address }, {order.postNumber}<br/>
                 <br/>
-                <b>Order Placed:</b> <br/><text className={styles.orderTime}>{ order.orderPlacedAt } hh/mm/ss DD/MM/YYYY</text><br/>
+                <b>Order Placed:</b> <br/><text className={styles.orderTime}>{ order.orderPlacedAt }</text><br/>
                 <b>Order Prepared:</b> <br/><text className={styles.orderTime}>{ order.orderPreparedAt } </text><br/>
                 <b>Order Dispatched:</b> <br/><text className={styles.orderTime}>{ order.orderDispatchedAt } </text><br/>
                 <b>Order Delivered:</b> <br/><text className={styles.orderTime}>{ order.orderDeliveredAt } </text><br/>
@@ -57,10 +53,10 @@ export default function Orderview(props){
                 <br/>
                 <b>Products Ordered:</b>
                 {order.productsOrdered.map((product, i) => 
-                <dl key={i}><dt><b>{product.id}.</b> {product.name} <b>-</b> {product.price} €</dt></dl>
+                <dl key={i}><dt><b>{product.id}.</b> <b className={styles.orderTime}>{product.quantity}</b> x {product.foodName} <b>-</b> {product.price} €</dt></dl>
                 )}
                 <br/>
-                <b>Total Payment:</b> <b className={styles.orderStatusOnGoing}>{ getSum(order.productsOrdered, 'price')} </b><b>€</b>          
+                <b>Total Payment including Delivery:</b> <b className={styles.orderStatusOnGoing}>{ order.totalCost } </b><b>€</b>          
             </div>
         )}
         </div>
