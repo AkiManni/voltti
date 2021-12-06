@@ -39,7 +39,7 @@ export default function SideBar(props){
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.id}. </b> 
-              <b className={styles.orderStatusOnGoing}>PREPARED</b> <b>Ready in:</b> 
+              <b className={styles.orderStatusOnGoing}>PREPARED</b> <b>Ready in: </b> 
               <b className={styles.orderStatusOnGoing}>{item.prepareTime}</b><b> s</b><br/>
               <i>---Cooking Takes Time---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
@@ -58,7 +58,7 @@ export default function SideBar(props){
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.id}. </b> 
-              <b className={styles.orderStatusOnGoing}>{item.orderStatus}</b> <b>Delivered in:</b> 
+              <b className={styles.orderStatusOnGoing}>{item.orderStatus}</b> <b>Delivered in: </b> 
               <b className={styles.orderStatusOnGoing}>{item.deliveryTime}</b> <b>s</b><br/>
               <i>---Voltman is Coming to You---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
@@ -168,7 +168,7 @@ export default function SideBar(props){
               {props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.customerId === props.user.userId ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.id}.</b> 
-              <b className={styles.orderStatusOnGoing}> {item.orderStatus}</b> <b>Delivered in:</b> 
+              <b className={styles.orderStatusOnGoing}> {item.orderStatus}</b> <b>Delivered in: </b> 
               <b className={styles.orderStatusOnGoing}> {item.deliveryTime}</b> <b>s</b><br/><i>---Voltman is Coming to You---</i> <br/>
               <hr className={styles.hrList2}/>
               </div>)}

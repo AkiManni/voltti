@@ -21,10 +21,25 @@
   border-bottom-left-radius: 50% 50%;
 }
 
-.name
+/* .name
 {
   font-weight: 700;
   margin-top: 20px;
   margin-bottom: 5px;
   font-size: 18px;
+} */
+
+.price{
+  color:black !important;
+}
+
+.description{
+  color:#4b4b4b;
+}
+
+.productHorizontalLine{
+  margin-top:3px;
+  margin-bottom:1px;
+  margin-left:10%;
+  margin-right:10%;
 }

@@ -15,7 +15,7 @@ export default function AddMenuItem(props) {
             newMenuItemUrl, newPrepareTime, newPrice);
     }
 
-
+    
     //<div>Food Type: <br/><Select className={ styles.enterUser } placeholder="Type of Food" options={foodTypes} onChange={ (event) => setRestaurantType(event.label) }/></div>
 
         let addMenuItem = (
