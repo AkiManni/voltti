@@ -177,8 +177,6 @@ public class BoltController {
         return p;
     }
 
-    //koodi on *****
-
     @PostMapping("/addProductToRestaurant")
     public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
         Product p = this.pr.findById(variables.get("productID")).orElse(null);
