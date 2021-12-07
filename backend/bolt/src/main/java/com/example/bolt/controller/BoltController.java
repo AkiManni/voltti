@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/bolt")
+@CrossOrigin(orisigins = "http://voltti.herokuapp.com/")
 public class BoltController {
     @Autowired
     private UserRepository us;
