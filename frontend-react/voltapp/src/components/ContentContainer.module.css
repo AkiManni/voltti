@@ -1,0 +1,67 @@
+.contentContainer {
+    background-color:#f5f7fa;
+    height:640px;
+    overflow-y:scroll;
+    width:69%;
+    float:left;
+    
+    padding-top:10px;
+    text-align: center;
+    border:1px solid rgb(219, 219, 219);
+    padding-bottom:60px;
+  }
+
+
+  .orderHorizontal{
+    margin-left:11% !important;
+    margin-right:11% !important;
+    margin-top:4px;
+    margin-bottom:-4px;
+  }
+  
+  .totalPriceHorizontalLine{
+    margin-top:30px;
+    margin-left:11% !important;
+    margin-right:11% !important;
+    padding-top:2px;
+    background-color: black;
+    margin-bottom:-3px;
+  }
+  
+  .totalPricePrice{
+    text-align:right !important;
+    margin-right:-40%;
+  }
+  
+  .totalPrice{
+    color:red;
+  }
+  
+  .totalPriceOfRestaurant{
+    text-align:right !important;
+    margin-right:15%;
+    color:red;
+  }
+  
+  .restaurantTotalText{
+    color: #4b4b4b !important;
+  }
+  
+  .euromark{
+    color:black !important;
+  }
+  
+  .shoppingCartContentContainer{
+    margin-bottom:100px;
+  }
+
+  .orderPreviewList{
+    text-align:left !important;
+    padding-left: 15%;
+  }
+
+  .orderPreviewListRestaurantName{
+    text-align:left !important;
+    padding-left: 15%;
+    padding-bottom:10px;
+}

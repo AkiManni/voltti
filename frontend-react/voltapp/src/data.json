@@ -1,0 +1,38 @@
+
+{
+  "items": [
+    { 
+      "id": 1, 
+      "restaurantId": 1, 
+      "restaurantName":"Hieno Ravintola",
+      "foodName":"Smashed Potatoes",
+      "category":"FINE",
+      "description":"À la Carte Smashed Potatoes",
+      "photoPath": "https://www.herkkusuut.com/wp-content/uploads/2014/11/Perunamuusi-632x449.jpg",
+      "prepareTime": 40, 
+      "price": 23
+    },
+    
+    { "id": 2, "restaurantId": 1, "restaurantName":"Hieno Ravintola","foodName":"Borscht Soup","category":"FINE", "description":"Borscht Soup with Smetana", "photoPath": "https://static.onecms.io/wp-content/uploads/sites/9/2019/10/punk-rock-borscht-ft-blog1019.jpg",  "prepareTime": 25, "price": 17},
+    { "id": 3, "restaurantId": 1, "restaurantName":"Hieno Ravintola","foodName":"Herringsteak","category":"FINE", "description":"Herringsteak Deluxe with Dillsauce", "photoPath": "http://cdn.simplesite.com/i/a7/75/283163834275689895/i283163839527575479.jpg", "prepareTime": 30, "price": 16},
+    { "id": 4, "restaurantId": 1, "restaurantName":"Hieno Ravintola","foodName":"Swedepie","category":"FINE", "description":"'Baked in' Bacon wrapped Swedepie", "photoPath": "https://www.myllynparas.fi/sites/default/files/styles/meta_image/public/thumbnails/image/MP%20lanttukukko1.jpg?itok=UkXul3cR","prepareTime": 15,  "price": 12},
+    { "id": 5, "restaurantId": 1, "restaurantName":"Hieno Ravintola","foodName":"New Harvest Potatoes","category":"FINE", "description":"New Harvest Potato with Limemelissa", "photoPath": "https://im.mtv.fi/image/3323058/landscape16_9/1024/576/85c130f8abb060c0e273503e5401958f/ey/1828475.jpg","prepareTime": 25,  "price": 13},
+    { "id": 6, "restaurantId": 2, "restaurantName":"Pika Ravintola","foodName":"Pizza Siciliana","category":"FAST", "description":"Pizza Siciliana", "photoPath": "https://img.onmanorama.com/content/dam/mm/en/food/features/images/2021/10/17/pizza.jpg","prepareTime": 15,  "price": 14},
+    { "id": 7, "restaurantId": 2, "restaurantName":"Pika Ravintola","foodName":"Hamburger","category":"FAST", "description":"Hamburger", "photoPath": "https://assets.epicurious.com/photos/57c5c6d9cf9e9ad43de2d96e/master/pass/the-ultimate-hamburger.jpg","prepareTime": 20,  "price": 8},
+    { "id": 8, "restaurantId": 2, "restaurantName":"Pika Ravintola","foodName":"Pebis","category":"FAST", "description":"Cold Refreshing Beverage", "photoPath": "https://www.eatthis.com/wp-content/uploads/sites/4/2020/06/pepsi.jpg?fit=1200%2C879&ssl=1","prepareTime": 5,  "price": 5},
+    { "id": 9, "restaurantId": 2, "restaurantName":"Pika Ravintola","foodName":"French Fries","category":"FAST", "description":"French Fries", "photoPath": "https://apprenticerestaurant.com/wp-content/uploads/2020/12/french-fries-1.jpg" ,"prepareTime": 8, "price": 7},
+    { "id": 10, "restaurantId": 2, "restaurantName":"Pika Ravintola","foodName":"Kebab Iskender","category":"FAST", "description":"Kebab Iskender", "photoPath": "http://www.finmane.fi/wp-content/uploads/2015/08/kebab-turkkilaisella-jogurtilla.jpg","prepareTime": 20,  "price": 15},
+    { "id": 11, "restaurantId": 3, "restaurantName":"Cafe Kahvila","foodName":"Cappucino","category":"CAFE", "description":"Cappucino", "photoPath": "https://orasivegetale.it/new/wp-content/uploads/2020/09/orasi_cappuccino-1200x675.jpg","prepareTime": 10,  "price": 4},
+    { "id": 12, "restaurantId": 3, "restaurantName":"Cafe Kahvila","foodName":"Espresso","category":"CAFE", "description":"Espresso", "photoPath": "https://www.haggman.fi/wp-content/uploads/2015/05/Espresso.jpg","prepareTime": 10, "price": 3},
+    { "id": 13, "restaurantId": 3, "restaurantName":"Cafe Kahvila","foodName":"Cafe Latte","category":"CAFE", "description":"Cafe Latte", "photoPath": "https://www.gaffer-cafe.com/wp-content/uploads/2020/05/latte.jpg", "prepareTime": 10, "price": 5},
+    { "id": 14, "restaurantId": 3, "restaurantName":"Cafe Kahvila","foodName":"Hot Chocolate","category":"CAFE", "description":"Hot Chocolate", "photoPath": "https://bellyfull.net/wp-content/uploads/2021/07/Frozen-Hot-Chocolate-blog-2.jpg","prepareTime": 10,  "price": 6},
+    { "id": 15, "restaurantId": 3, "restaurantName":"Cafe Kahvila","foodName":"Tea","category":"CAFE", "description":"Tea", "photoPath": "https://worldteadirectory.com/wp-content/uploads/2017/06/Image_1-1.jpg","prepareTime": 10,  "price": 4},
+    { "id": 16, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Soup","category":"CASUAL", "description":"Soup", "photoPath": "https://upload.wikimedia.org/wikipedia/commons/0/0f/Hungarian_goulash_soup.jpg", "prepareTime": 20, "price": 8},
+    { "id": 17, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Sandwich","category":"CASUAL", "description":"Sandwich", "photoPath": "https://politicsandwar.com/uploads/f274c037209722d8a478e617e059dc842b68fc9a500x437888.jpg","prepareTime": 20,   "price": 6},
+    { "id": 18, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Cola","category":"CASUAL", "description":"Refreshing Cheap Drink Beverage", "photoPath": "https://kalori.info/pimg/6415712613396.jpg","prepareTime": 5,   "price": 3},
+    { "id": 19, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Pork Chops","category":"CASUAL", "description":"Pork Chops", "photoPath": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC1YLO9LaXOb9aHUBxcNHHDbpZ_2GuledH6Q&usqp=CAU", "prepareTime": 20,  "price": 11},
+    { "id": 20, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Milk Carton","category":"CASUAL", "description":"0,5 litres of Milk", "photoPath": "https://kalori.info/pimg/6408430000456.jpg", "prepareTime": 5,  "price": 3},
+    { "id": 21, "restaurantId": 4, "restaurantName":"Ravintola Kuppila","foodName":"Rice","category":"CASUAL", "description":"Rice in a Cup", "photoPath": "https://assets.epicurious.com/photos/57d70c8ade27564257b657c6/master/pass/perfect-steamed-rice.jpg", "prepareTime": 20,  "price": 12}
+  ]
+}
+

@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+<<<<<<< HEAD
 import com.example.bolt.Register.login.AuthenticationRequest;
 import com.example.bolt.Register.login.AuthenticationResponse;
 import com.example.bolt.Register.login.JwtUtil;
@@ -31,10 +33,15 @@ import com.example.bolt.repository.ManagerRepository;
 import com.example.bolt.repository.OrderRepository;
 import com.example.bolt.repository.ProductRepository;
 import com.example.bolt.repository.RestaurantRepository;
+=======
+import com.example.bolt.model.*;
+import com.example.bolt.repository.*;
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +49,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+=======
+import org.springframework.web.bind.annotation.CrossOrigin;
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,13 +59,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/bolt")
+@CrossOrigin(origins = "http://voltti.herokuapp.com/")
 public class BoltController {
 
     @Autowired
@@ -234,25 +248,28 @@ String test = userDetails.getPassword();
     }
 
     @Autowired
-    ManagerRepository ma;
+    private UserRepository us;
     @Autowired
-    CustomerRepository cu;
+    private RestaurantRepository re;
     @Autowired
-    RestaurantRepository re;
+    private ProductRepository pr;
     @Autowired
-    ProductRepository pr;
-    @Autowired
-    OrderRepository or;
+    private OrderRepository or;
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); // yleinen aika formatti
 
+<<<<<<< HEAD
     /////////////////////////////////////// CUSTOMER///////////////////////////////////////////
+=======
+    ///////////////////////////////////////USER///////////////////////////////////////////
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
 
-    @GetMapping("/getCustomer")
-    public List<Customer> getCustomers() {
-        return this.cu.findAll();
+    @GetMapping("/getUser")
+    public List<User> getUsers() {
+        return this.us.findAll();
     }
 
+<<<<<<< HEAD
     @GetMapping("/getCustomer/{id}")
     public Customer getCustomer(@PathVariable("id") String id) {
         Customer c = this.cu.findById(id).orElse(null);
@@ -277,9 +294,28 @@ String test = userDetails.getPassword();
     public String deleteCustomer(@PathVariable("id") String id) {
         if (this.cu.findById(id).isEmpty())
             return "No customer found.";
+=======
+    @GetMapping("/getUser/{id}")
+    public User getUser(@PathVariable("id") final String id) {
+        return this.us.findById(id).orElse(null);
+    }
+
+    @PostMapping("/addUser")
+    public User addUsers(@RequestBody User user) {
+        User u = user;
+        u.setUserID(generateID(0));
+        this.us.save(u);
+        return u;
+    }
+
+    @DeleteMapping("/deleteUser/{id}")
+    public String deleteUser(@PathVariable("id") String id) {
+        if (this.us.findById(id).isEmpty()) return "No user found.";
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
         else {
-            this.cu.deleteById(id);
+            this.us.deleteById(id);
         }
+<<<<<<< HEAD
         return "Deleted customer " + id + ".";
     }
 
@@ -315,28 +351,48 @@ String test = userDetails.getPassword();
             return "You already have restaurant.";
         else if (r.equals(null))
             return "No restaurant found.";
+=======
+        return "Deleted user " + id + ".";
+    }
+
+    @PostMapping("/addRestaurantToUser")
+    public String addRestaurantToUser(@RequestBody Map<String, String> variables) {
+        User u = this.us.findById(variables.get("userID")).orElse(null);
+        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+
+        if (u == null) return "No user found.";
+        if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+        else if (u.getRestaurant() != null) return "You already have restaurant.";
+        else if (r == null) return "No restaurant found.";
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
         else {
-            m.setRestaurantID(r.getRestaurantID());
-            this.ma.save(m);
-            return "(͠≖ ͜ʖ͠≖)👌";
+            u.setRestaurant(r);
+            this.us.save(u);
+            return u.toString();
         }
     }
 
-    @DeleteMapping("/deleteRestaurantFromManager/{managerID}")
-    public String deleteRestaurantFromManager(@PathVariable String managerID) {
-        Manager m = this.ma.findById(managerID).orElse(null);
+    @DeleteMapping("/deleteRestaurantFromUser/{userID}")
+    public String deleteRestaurantFromUser(@PathVariable String userID) {
+        User u = this.us.findById(userID).orElse(null);
 
+<<<<<<< HEAD
         if (m.equals(null))
             return "No manager found.";
         else if (m.getRestaurantID().equals(null))
             return "No restaurant found.";
+=======
+        if (u == null) return "No user found.";
+        else if (u.getRestaurant() == null) return "No restaurant found.";
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
         else {
-            m.setRestaurantID(null);
-            this.ma.save(m);
-            return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
+            u.setRestaurant(null);
+            this.us.save(u);
+            return u.toString();
         }
     }
 
+<<<<<<< HEAD
     @DeleteMapping("/deleteManager/{id}")
     public String deleteManager(@PathVariable("id") String id) {
         if (this.ma.findById(id).isEmpty())
@@ -348,6 +404,9 @@ String test = userDetails.getPassword();
     }
 
     /////////////////////////////////////// RESTAURANT///////////////////////////////////////////
+=======
+    ///////////////////////////////////////RESTAURANT///////////////////////////////////////////
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
 
     @GetMapping("/getRestaurant")
     public List<Restaurant> getRestaurants() {
@@ -356,16 +415,29 @@ String test = userDetails.getPassword();
 
     @GetMapping("/getRestaurant/{id}")
     public Restaurant getRestaurant(@PathVariable("id") String id) {
+<<<<<<< HEAD
         Restaurant r = this.re.findById(id).orElse(null);
         return r;
+=======
+        return this.re.findById(id).orElse(null);
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
     }
 
     @GetMapping(value = "/getRestaurantByName/{name}")
     public Restaurant getRestaurantByName(@PathVariable("name") String name) {
-        name = name.replace("_", " ");
         return this.re.findByName(name);
     }
 
+    @GetMapping(value="/getRestaurantByFoodType/{type}")
+    public List<Restaurant> getRestaurantByFoodType(@PathVariable("type") String type) {
+        List<Restaurant> r = new ArrayList<>();
+        List<Product> products = this.pr.findByType(type.toUpperCase());
+        for (Product p : products) {
+            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(this.re.findById(p.getRestaurantID()).orElse(null));
+        }
+        return r;
+    }
+        
     @PostMapping("/addRestaurant")
     public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
         Restaurant r = Restaurant;
@@ -394,23 +466,48 @@ String test = userDetails.getPassword();
 
     @GetMapping("/getProduct/{id}")
     public Product getProduct(@PathVariable("id") String id) {
+<<<<<<< HEAD
         Product p = this.pr.findById(id).orElse(null);
         return p;
+    }
+=======
+        return this.pr.findById(id).orElse(null);
+    }    
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
+
+    @GetMapping(value="/getFoodByName/{name}")
+    public Product getFoodByName(@PathVariable("name") String name) {
+        return this.pr.findByName(name);
+    }
+
+    @GetMapping(value="/getFoodByRestaurantID/{id}")
+    public List<Product> getFoodByRestaurantID(@PathVariable("id") String id) {
+        return this.pr.findByRestaurantID(id);
+    }
+
+    @GetMapping(value="/getFoodByRestaurantName/{name}")
+    public List<Product> getFoodByRestaurantName(@PathVariable("name") String name) {
+        Restaurant r = this.re.findByName(name);
+        return this.pr.findByRestaurantID(r.getRestaurantID());
     }
 
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
         p.setProductID(generateID(3));
+        p.setName(p.getName().replace(" ", "_"));
         this.pr.save(p);
         return p;
     }
+
+    //koodi on *****
 
     @PostMapping("/addProductToRestaurant")
     public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
         Product p = this.pr.findById(variables.get("productID")).orElse(null);
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
+<<<<<<< HEAD
         if (r.equals(null))
             return "No restaurant found.";
         else if (p.equals(null))
@@ -420,11 +517,18 @@ String test = userDetails.getPassword();
             for (String s : menus) {
                 if (s.equals(variables.get("productID")))
                     return "This product already exists.";
+=======
+        if (r == null) return "No restaurant found.";
+        else if (p == null) return "No product found.";
+        else {
+            List<Product> menus = r.getMenus();
+            for (Product item : menus) {
+                if (item == p) return "This product already exists.";
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
             }
-            menus.add(p.getProductID());
-            r.setMenus(menus);
-            this.re.save(r);
+            r.addMenus(p);
             p.setRestaurantID(r.getRestaurantID());
+            this.re.save(r);
             this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
         }
@@ -436,6 +540,7 @@ String test = userDetails.getPassword();
         Restaurant r = this.re.findById(restaurantID).orElse(null);
         Product p = this.pr.findById(productID).orElse(null);
 
+<<<<<<< HEAD
         if (r.equals(null))
             return "No restaurant found.";
         else if (p.equals(null))
@@ -449,9 +554,22 @@ String test = userDetails.getPassword();
                     this.re.save(r);
                     return "(👍≖‿‿≖)👍 👍(≖‿‿≖👍)";
                 }
+=======
+        if (r == null) return "No restaurant found.";
+        else if (p == null) return "No product found.";
+        List<Product> menus = r.getMenus();
+        for (Product item : menus) {
+            if (item.equals(p)) {
+                menus.remove(p);
+                r.setMenus(menus);
+                p.setRestaurantID(null);
+                this.pr.save(p);
+                this.re.save(r);
+                return r.toString();
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
             }
-            return "This product doesn't exists in your menu.";
         }
+        return "This product doesn't exists in your menu.";
     }
 
     @DeleteMapping("/deleteProduct/{id}")
@@ -461,7 +579,7 @@ String test = userDetails.getPassword();
         else {
             this.pr.deleteById(id);
         }
-        return "Deleted Manager " + id + ".";
+        return "Deleted user " + id + ".";
     }
 
     /////////////////////////////////////// ORDER///////////////////////////////////////////
@@ -473,13 +591,28 @@ String test = userDetails.getPassword();
 
     @GetMapping("/getOrder/{id}")
     public Order getOrder(@PathVariable("id") String id) {
+<<<<<<< HEAD
         Order o = this.or.findById(id).orElse(null);
         return o;
+=======
+        return this.or.findById(id).orElse(null);
     }
 
+    @GetMapping(value="/getOrderByUserID/{id}")
+    public List<Order> getOrderByUserID(@PathVariable("id") String id) {
+        return this.or.findByUserID(id);
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
+    }
+
+    @GetMapping(value="/getOrdersByRestaurantID/{id}")
+    public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
+        return this.or.findByRestaurantID(id);
+    }
+    
     @PostMapping("/addOrder")
     public Order addOrder(@RequestBody Map<String, String> ids) {
         Product p = this.pr.findById(ids.get("productID")).orElse(null);
+<<<<<<< HEAD
         if (p.equals(null))
             return null;
 
@@ -492,6 +625,22 @@ String test = userDetails.getPassword();
                 status.PLACED,
                 "",
                 5 + p.getPrice());
+=======
+        if (p == null) return null;
+
+        Order o = new Order(
+            generateID(4),
+            ids.get("userID"),
+            p.getRestaurantID(),
+            new ArrayList<>(),
+            dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
+            "",
+            Order.status.PLACED,
+            "",
+            5 + p.getPrice()
+        );
+        o.addProducts(p);
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
         this.or.save(o);
         return o;
     }
@@ -499,34 +648,42 @@ String test = userDetails.getPassword();
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
-        Product p = this.pr.findById(o.getProductID()).orElse(null);
-        Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
             case PLACED:
-                o.setOrderStatus(status.IN_PREPARATION);
+                o.setOrderStatus(Order.status.IN_PREPARATION);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case IN_PREPARATION:
-                o.setOrderStatus(status.READY_TO_DISPATCH);
+                o.setOrderStatus(Order.status.READY_TO_DISPATCH);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case READY_TO_DISPATCH:
-                o.setOrderStatus(status.DISPATCHED);
+                o.setOrderStatus(Order.status.DISPATCHED);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DISPATCHED:
-                o.setOrderStatus(status.DELIVERED);
+                o.setOrderStatus(Order.status.DELIVERED);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DELIVERED:
-                o.setOrderStatus(status.DONE);
+                o.setOrderStatus(Order.status.DONE);
                 o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
                 o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
                 this.or.save(o);
+<<<<<<< HEAD
 
                 r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
                 this.re.save(r);
+=======
+                
+                for (Product products : o.getProducts()) {
+                    Product p = products;
+                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+                    r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
+                    this.re.save(r);
+                }
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
                 return "Order is finished.";
             case DONE:
                 return "Order is already finished.";
@@ -554,6 +711,7 @@ String test = userDetails.getPassword();
         switch (i) {
             case 0:
                 while (true) {
+<<<<<<< HEAD
                     String j = "C";
                     if (this.cu.findById(j + k).orElse(null) == null)
                         return j + k;
@@ -567,6 +725,11 @@ String test = userDetails.getPassword();
                         return j + k;
                     else
                         k++;
+=======
+                    String j = "U";
+                    if (this.us.findById(j + k).orElse(null) == null) return j + k;
+                    else k++;
+>>>>>>> 11dc44e5d5b33f44152c367653b44fc073be52bb
                 }
             case 2:
                 while (true) {
