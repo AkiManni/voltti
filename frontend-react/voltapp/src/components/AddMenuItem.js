@@ -12,7 +12,7 @@ export default function AddMenuItem(props) {
     
     const addNewMenuItem = () => {
         props.addNewMenuItem(newFoodName, newDescription,
-            newMenuItemUrl, newPrepareTime, newPrice);
+            newMenuItemUrl, parseInt(newPrepareTime), parseInt(newPrice));
     }
 
     

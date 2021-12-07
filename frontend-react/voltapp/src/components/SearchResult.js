@@ -38,6 +38,7 @@ export default function SearchResult(props) {
           
           <div><button className={styles.addButton} onClick={() => addToOrder(props.id, props.restaurantId, 
             props.restaurantName, props.foodName, props.photoPath, props.price, props.prepareTime )}>Add to Order</button></div>
+          
         </div>
     </div>
   )
