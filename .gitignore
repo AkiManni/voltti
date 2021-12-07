@@ -33,7 +33,7 @@ build/
 .vscode/
 
 # dependencies
-/node_modules
+/frontend-react/voltapp/node_modules
 /.pnp
 .pnp.js
 
@@ -56,4 +56,3 @@ yarn-error.log*
 
 frontend-react/voltapp/package-lock.json
 backend/bolt/src/main/resources/application.properties
-frontend-react/voltapp/package-lock.json
