@@ -46,5 +46,12 @@ public class Restaurant {
     public void addMenus(Product p) {
         this.menus.add(p);
     }
+
+
+
+
+
+
+    
 }
  

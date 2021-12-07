@@ -1,32 +1,217 @@
 package com.example.bolt.controller;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+
+import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import com.example.bolt.model.*;
-import com.example.bolt.repository.*;
-
+import java.util.Set;
+import java.util.stream.Collectors;
+import com.example.bolt.Register.login.AuthenticationRequest;
+import com.example.bolt.Register.login.AuthenticationResponse;
+import com.example.bolt.Register.login.JwtUtil;
+import com.example.bolt.Register.login.UserRepository;
+import com.example.bolt.model.ERole;
+import com.example.bolt.model.Role;
+import com.example.bolt.model.RoleRepository;
+import com.example.bolt.model.Useri;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/bolt")
 @CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping("/bolt")
 public class BoltController {
+   
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+@Autowired
+private RoleRepository roleRepository;
+
+    @PostMapping("/luo")
+    private ResponseEntity<?> subscribeClient(@RequestBody AuthenticationRequest authenticationRequest) {
+        String logincredential = authenticationRequest.getLoginCredential();
+        String password = authenticationRequest.getLoginPassword();
+        String firstname = authenticationRequest.getFname();
+        String lastname = authenticationRequest.getLname();
+        String address = authenticationRequest.getAddress();
+        String postnum = authenticationRequest.getPostNum();
+       // String roles = authenticationRequest.getRoles();
+       Set<String> strRoles = authenticationRequest.getRoles();
+       Set<Role> roles = new HashSet<>();
+ 
+       if (strRoles == null) {
+        Role userRole = roleRepository.findByName(ERole.CUSTOMER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+    } else {
+        strRoles.forEach(role -> {
+            switch (role) {
+            case "manager":
+                Role adminRole = roleRepository.findByName(ERole.MANAGER)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(adminRole);
+
+                break;
+                default:
+                Role userRole = roleRepository.findByName(ERole.CUSTOMER)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(userRole);
+            }
+        });
+    }
+
+
+
+        //Set<Role> moro = authenticationRequest.getRoles();
+        // EnumSet roles = authenticationRequest.EnumSet.of
+        Useri usermodel = new Useri();
+        usermodel.setLoginCredential(logincredential);
+        usermodel.setLoginPassword(new BCryptPasswordEncoder().encode(password));
+        usermodel.setFname(firstname);
+        usermodel.setLname(lastname);
+        usermodel.setAddress(address);
+        usermodel.setPostNum(postnum);
+        usermodel.setRoles(roles);
+        //Role userRole = roleRepository.findByRole("ADMIN");
+       // usermodel.setRoles(new HashSet<>(Arrays.asList(userRole)));
+
+
+        try {
+
+            Useri arvo = userRepository.findByLoginCredential(usermodel.getLoginCredential());
+
+            if (arvo != null) {
+
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("Error Message");
+            }
+
+            else {
+
+                if (usermodel.getFname() == null || usermodel.getLname() == null || usermodel.getAddress() == null
+                        || usermodel.getPostNum() == null) {
+
+                    return ResponseEntity
+                            .status(HttpStatus.NOT_FOUND)
+                            .body("Tietoja puuttuu");
+                } else {
+                    userRepository.save(usermodel);
+                }
+
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(new AuthenticationResponse("Virhe käyttäjän luonnissa"));
+
+        }
+
+        return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu" + "tässä rooli"));
+
+    }
+
+    @PostMapping("/kirjaudu")
+    private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest, Principal principal){
+        
+        String username = authenticationRequest.getLoginCredential();
+        String password = authenticationRequest.getLoginPassword();
+    
+       JSONObject jsonObject = new JSONObject();
+     
+       try{
+
+        org.springframework.security.core.Authentication authentication = authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+     
+
+        //Customer user = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//Customer customer = (Customer) authentication.getPrincipal();
+    //User userDetails = (User)principal;
+
+//Customer mycustomer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+//SecurityContextHolder.getContext().setAuthentication(authentication);
+ //Boolean arvoa = user.getIsmanager();
+//Customer user = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//Boolean balance = user.getIsmanager();
+/*
+Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+boolean jepjep = ((AuthenticationRequest) loggedInUser).getIsmanager();
+ 
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+ */   
+//AuthenticationRequest moro = (AuthenticationRequest) authentication.getPrincipal();
+//List<String> roles = moro.getAuthorities().stream()
+//.map(item -> item.getAuthority())
+//.collect(Collectors.toList());	
+UserDetails userDetails = (UserDetails) authentication.getPrincipal();		
+List<String> roles = userDetails.getAuthorities().stream()
+				.map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+
+ final String jwt = JwtUtil.generateToken(username);
+    jsonObject.put("token", jwt);
+    jsonObject.put("name", authentication.getName());
+    jsonObject.put("Role", roles);
+
+    //jsonObject.put("moro", arvoa);
+   //jsonObject.put("ismanager", balance);
+
+    /*
+
+
+    
+
+    CustomUserDetail myUserDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Boolean arvo = myUserDetail.getUser().getUserDatabase().ismanager;
+
+
+    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+    .getPrincipal();
+String test = userDetails.getPassword();
+    */
+    
+
+
+
+        
+         //return ResponseEntity.ok(new AuthenticationResponse(jwt));
+         return ResponseEntity.ok(jsonObject.toString());
+ 
+
+       }
+       
+
+       catch(JSONException e){
+        //return ResponseEntity.ok(new AuthenticationResponse("virhe springbootin puolella, käyttäjätiedot eivät ole oikein"));
+        jsonObject.put("exception", e.getMessage());
+        return ResponseEntity.ok(e.getMessage());
+       }
+  
+      
+
+
+        
+    }
+
+    /*
+
+     @Autowired
     private UserRepository us;
     @Autowired
     private RestaurantRepository re;
@@ -35,6 +220,7 @@ public class BoltController {
     @Autowired
     private OrderRepository or;
 
+    
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
     ///////////////////////////////////////USER///////////////////////////////////////////
@@ -355,4 +541,6 @@ public class BoltController {
                 return null;
         }
     }
+
+    */
 }

@@ -24,4 +24,9 @@ public class Product {
     private int prepareTime;
     private float price;
     private String restaurantID;
+
+
+
+
+    
 }
