@@ -127,6 +127,7 @@ export default function ContentContainer(props){
             (item.restaurantName.toLowerCase().includes(props.productSearchString.toLowerCase()))||
             (item.foodName.toLowerCase().includes(props.productSearchString.toLowerCase())))) }
             
+            
           />
     </div>
     </>

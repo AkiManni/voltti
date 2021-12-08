@@ -18,6 +18,7 @@ class App extends React.Component {
   {
     super(props);
     this.state = {
+      priceslider: 0,
       products: products.products,
       orders: orders.orders,
       tempOrder: tempOrder.order,
@@ -200,6 +201,14 @@ class App extends React.Component {
       console.log(event.target.value);
       this.setState({ productSearchString: event.target.value });
   }
+
+  limitProducts = ( event) => {
+    
+    this.setState ({priceslider: event.target.value});
+    console.log(this.state.priceslider)
+    
+  }
+  
 
   deleteItem = itemId => {
 
@@ -499,6 +508,8 @@ class App extends React.Component {
           managerBarActive={this.state.managerBarActive}
           managerEditBarActive={this.state.managerEditBarActive}
           onSearchFieldChange={this.onSearchFieldChange}
+          priceslider={this.state.priceslider}
+
 
           createRestaurantActive={this.createRestaurantActive}
           managerActivate={this.managerActivate}
@@ -508,6 +519,7 @@ class App extends React.Component {
           managerOrderHistoryActivate={ this.managerOrderHistoryActivate}
           editRestaurantMenuActive = {this.editRestaurantMenuActive}
           customerOrderHistoryviewActivate = {this.customerOrderHistoryviewActivate}
+          limitProducts= {this.limitProducts}
           />
           {/* {()=> {this.renderSwitch()}} */}
 

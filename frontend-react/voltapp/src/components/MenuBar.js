@@ -10,6 +10,12 @@ export default function MenuBar(props){
         props.onSearchFieldChange(event);
       }
 
+
+    const limitProducts = (event) => {
+        console.log(event.target.value);
+       props.limitProducts(event);
+    }
+
     const defaultActivate = () => {
         props.defaultActivate();
     }
@@ -50,7 +56,8 @@ export default function MenuBar(props){
     <>
         <div className={styles.defaultSearchBar}>
         Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
-        onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
+        onChange={ onSearchFieldChange } value={ props.productSearchString }/>
+         <input className={styles.priceStageSlider} onChange={limitProducts} type="range" min="1" max="30" value={props.priceslider}/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
         <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
         <button className={styles.menuButton}>Login/Register</button>
