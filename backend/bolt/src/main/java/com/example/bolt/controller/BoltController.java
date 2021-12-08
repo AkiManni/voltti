@@ -13,7 +13,6 @@ import com.example.bolt.model.*;
 import com.example.bolt.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/bolt")
-@CrossOrigin(origins = "http://localhost:3000/")
 public class BoltController {
     @Autowired
     private UserRepository us;
@@ -107,7 +105,7 @@ public class BoltController {
         List<Restaurant> r = new ArrayList<>();
         List<Product> products = this.pr.findByType(type.toUpperCase());
         for (Product p : products) {
-            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(p.getRestaurant());
+            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(this.re.findById(p.getRestaurantID()).orElse(null));
         }
         return r;
     }
@@ -159,7 +157,8 @@ public class BoltController {
                 if (item == p) return "This product already exists.";
             }
             r.addMenus(p);
-            p.setRestaurant(r);
+            p.setRestaurantID(r.getRestaurantID());
+            p.setCategory(r.getCategory());
             this.re.save(r);
             this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
@@ -178,7 +177,8 @@ public class BoltController {
             if (item.equals(p)) {
                 menus.remove(p);
                 r.setMenus(menus);
-                p.setRestaurant(null);
+                p.setRestaurantID(null);
+                p.setCategory(null);
                 this.pr.save(p);
                 this.re.save(r);
                 return r.toString();
@@ -226,7 +226,7 @@ public class BoltController {
         Order o = new Order(
             generateID(4),
             ids.get("userID"),
-            p.getRestaurant().getRestaurantID(),
+            p.getRestaurantID(),
             new ArrayList<>(),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
@@ -268,7 +268,7 @@ public class BoltController {
                 
                 for (Product products : o.getProducts()) {
                     Product p = products;
-                    Restaurant r = p.getRestaurant();
+                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
                     r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
                     this.re.save(r);
                 }
