@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/bolt")
-@CrossOrigin(origins = "localhost:3000")
+@CrossOrigin(origins = "localhost:3000/")
 public class BoltController {
     @Autowired
     private UserRepository us;
