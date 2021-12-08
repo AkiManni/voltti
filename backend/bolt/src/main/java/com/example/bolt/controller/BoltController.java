@@ -230,11 +230,6 @@ String test = userDetails.getPassword();
         return this.us.findAll();
     }
 
-    @GetMapping("/getUser/{id}")
-    public User getUser(@PathVariable("id") final String id) {
-        return this.us.findById(id).orElse(null);
-    }
-
     @PostMapping("/addUser")
     public User addUsers(@RequestBody User user) {
         User u = user;
@@ -288,11 +283,6 @@ String test = userDetails.getPassword();
         return this.re.findAll();
     }
 
-    @GetMapping("/getRestaurant/{id}")
-    public Restaurant getRestaurant(@PathVariable("id") String id) {
-        return this.re.findById(id).orElse(null);
-    }
-
     @GetMapping(value="/getRestaurantByName/{name}")
     public Restaurant getRestaurantByName(@PathVariable("name") String name) {
         return this.re.findByName(name);
@@ -333,27 +323,6 @@ String test = userDetails.getPassword();
         return this.pr.findAll();
     }
 
-    @GetMapping("/getProduct/{id}")
-    public Product getProduct(@PathVariable("id") String id) {
-        return this.pr.findById(id).orElse(null);
-    }    
-
-    @GetMapping(value="/getFoodByName/{name}")
-    public Product getFoodByName(@PathVariable("name") String name) {
-        return this.pr.findByName(name);
-    }
-
-    @GetMapping(value="/getFoodByRestaurantID/{id}")
-    public List<Product> getFoodByRestaurantID(@PathVariable("id") String id) {
-        return this.pr.findByRestaurantID(id);
-    }
-
-    @GetMapping(value="/getFoodByRestaurantName/{name}")
-    public List<Product> getFoodByRestaurantName(@PathVariable("name") String name) {
-        Restaurant r = this.re.findByName(name);
-        return this.pr.findByRestaurantID(r.getRestaurantID());
-    }
-
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
@@ -377,6 +346,7 @@ String test = userDetails.getPassword();
             }
             r.addMenus(p);
             p.setRestaurantID(r.getRestaurantID());
+            p.setCategory(r.getCategory());
             this.re.save(r);
             this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
@@ -396,6 +366,7 @@ String test = userDetails.getPassword();
                 menus.remove(p);
                 r.setMenus(menus);
                 p.setRestaurantID(null);
+                p.setCategory(null);
                 this.pr.save(p);
                 this.re.save(r);
                 return r.toString();

@@ -38,3 +38,27 @@
   .searchfield{
     width:250px;
   }
+
+  .userInformation{
+    position:absolute;
+    padding-left: 3vw;
+    padding-top: 40px;
+    list-style-type: none;
+  }
+
+  .managerInformation{
+    position:absolute;
+    padding-left: 11vw;
+    padding-top: 30px;
+    list-style-type: none;
+  }
+  .restaurantImage{
+    position:absolute;
+    margin-left: 3vw;
+    padding-top:20px;
+    /* float:left; */
+  }
+
+  .balance{
+    color:red;
+  }

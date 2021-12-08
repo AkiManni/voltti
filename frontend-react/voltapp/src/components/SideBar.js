@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './SideBar.module.css'
-import AddMenuItem from './AddMenuItem';
+import AddMenuItem from './AddMenuItem'
+import EditCustomer from './EditCustomer'
 
 export default function SideBar(props){
 
@@ -253,17 +254,22 @@ export default function SideBar(props){
     </div>
     </>
     
-
-
+    let editCustomerInfo = 
+    <>
+    <div>
+          <EditCustomer user={props.user} editUser={props.editUser}/>
+    </div>
+    </>
 
     let sideBar =
     <>
       <div className={styles.sideBar}>
       { props.shoppingCartQuickviewActive? <div>{ shoppingCartQuickview }</div> : <></>}
+      { props.editUserActive?<div>{ editCustomerInfo }</div> : <></>}
       { props.editRestaurantMenuQuickviewActive? <div>{ editRestaurantMenuQuickview }</div> : <></>}
       { props.managerOrderHistoryActive? <div>{managerOrderHistoryList}</div> : <></>}
       { props.customerOrderHistoryActive? <div>{ customerOrderHistoryList }</div> : <></>}
-      { props.actionString === "ORDERPREVIEW" && props.role !== "CUSTOMER"?<div>You need to be <b>Logged In</b><br/>to be able to see Customer Orderlisting<br/>or to place an Order.</div> : <></>}
+      { props.actionString === "ORDERPREVIEW" && props.role !== "CUSTOMER"?<div><br/>You need to be <b><u>Logged In</u></b><br/>to be able to see Customer Orderlisting<br/>or to place an Order.</div> : <></>}
       { props.orderPreviewActive && props.role === "CUSTOMER"?<div className={styles.ManagerOrderHistoryListContainer}>{orderQuickPreview}</div> : <></>}
       </div>
     </>

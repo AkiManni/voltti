@@ -14,6 +14,7 @@ export default function SearchView(props) {
       <div className={ styles.presentationModeGrid }>
       {
         props.items.map(item => <SearchResult key={item.id} {...item} addToOrder={addToOrder}/>)
+        
       }
       </div>
     </div>

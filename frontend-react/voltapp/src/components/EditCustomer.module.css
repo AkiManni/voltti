@@ -1,0 +1,14 @@
+.enterUser {
+    width: 80%;
+}
+
+.enterUrl {
+    width: 80%;
+}
+
+.addMenuItemContainer{
+    text-align:left !important;
+    margin-left: 4vw;
+    margin-top:3vh !important;
+    height:700px;
+}
