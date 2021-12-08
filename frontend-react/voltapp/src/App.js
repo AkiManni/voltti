@@ -16,6 +16,25 @@ import data from './data.json'
 class App extends React.Component {
   constructor(props)
   {
+    /*
+
+
+    //Tähän väsätty tämmönen, millä näkyy kirjautuminen ja navbar
+<Router>
+
+  <div>
+  <Navibar/>
+  <Switch>
+  <Route path="/login" exact component={Login} />
+  <Route path="/register" exact component={Register} />
+  <Route path="/" exact component={Home} />
+  
+    </Switch>
+
+  </div>
+
+  </Router>
+    */
     super(props);
     this.state = {
       products: products.products,
