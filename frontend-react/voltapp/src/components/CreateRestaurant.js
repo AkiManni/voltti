@@ -18,6 +18,11 @@ export default function CreateRestaurant(props) {
             newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel);
     }
 
+    const editRestaurant = () => {
+        props.editRestaurant(newRestaurantName, newAddress, newPostNumber, 
+            newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel);
+    }
+
     const defaultActivate = () => {
       props.defaultActivate();
     }
@@ -36,7 +41,31 @@ export default function CreateRestaurant(props) {
       { label:"FAST", value: 4}
     ]
 
-        let createRestaurant = (
+    let editedRestaurant = (
+        <div className={ styles.restaurantRegisterContainer }>
+
+        <div className={ styles.userText }><br/> <b>Edit Restaurant Info:</b> </div>
+        <div><br/>Restaurant Name: <br/><input type="text" placeholder="Restaurant name" minLength = "10" className={ styles.enterUser } 
+            onChange={ (event) => setRestaurantName(event.target.value) }></input></div>
+        <div>Address: <br/><input type="text" placeholder="Examplestreet 5" minLength = "10" className={ styles.enterUser }
+            onChange={ (event) => setNewAddress(event.target.value) }></input></div>
+        <div>Postnumber: <br/><input type="number" placeholder="12345"minLength = "5" maxLength = "5" className={styles.enterUser}
+            onChange={ (event) => setNewPostNumber(event.target.value)}></input></div>
+        <div>Image of Restaurant(url): <br/><input type="text" placeholder="http://adress-for-a-picture.com/123.jpg" minLength = "20" className={ styles.enterUrl }
+            onChange={ (event) => setRestaurantUrl(event.target.value) }></input></div>
+            <br/>
+        <img style={{width: 150, height: 150, borderRadius: 150/ 2}}  src={newRestaurantUrl}  alt="<Preview>"/>
+        <div><br/>Operating Hours: <br/><input type="text" minLength = "11" placeholder="12:00 - 21:00" className={ styles.enterUser }
+            onChange={ (event) => setNewOperatingHours(event.target.value) }></input></div>
+        <div>Restaurant Type: <br/><Select className={ styles.enterUser } placeholder="Type of Restaurant" options={restaurantTypes} onChange={ (event) => setRestaurantType(event.label) }/></div>
+        <div>Pricelevel: <br/><Select className={ styles.enterUser } placeholder="€ - €€€€€?" options={priceLevels} onChange={ (event) => setPricelevel(event.label) }/></div>
+        <br/>
+        <div><button onClick={ editRestaurant }>Edit Changes</button> <button onClick={ defaultActivate }>Peruuta</button></div>
+        
+    </div>  
+    );
+
+    let createRestaurant = (
             <div className={ styles.restaurantRegisterContainer }>
              <i>Testinäkymä CreateRestaurant Classille</i><br/>
              <i>Näkymä sisällytetään managerin authiin, jos managerilla ei ole ravintolaa ehdon taakse</i>
@@ -61,9 +90,17 @@ export default function CreateRestaurant(props) {
         </div>  
     );
 
+    let createEditContainer =
+    <>
+    <div>
+        { props.createRestaurant ? <div>{createRestaurant}</div> : <></> }
+        { props.editRestaurantActive ? <div>{editedRestaurant}</div> : <></> }
+    </div>
+    </>
+
     return (
         <div>
-            {createRestaurant}
+            {createEditContainer}
         </div>
     );
 

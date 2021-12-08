@@ -127,7 +127,6 @@ export default function ContentContainer(props){
             (item.restaurantName.toLowerCase().includes(props.productSearchString.toLowerCase()))||
             (item.foodName.toLowerCase().includes(props.productSearchString.toLowerCase())))) }
             
-            
           />
     </div>
     </>
@@ -191,7 +190,8 @@ export default function ContentContainer(props){
         { props.managerOrderHistoryActive ? <div>{managerOrderHistoryOverview}</div> : <></>}
         { props.orderPreviewActive ? <div>{orderPreview}</div> : <></>}
         { props.orderviewActive? <Orderview orders={props.orders} overviewId={props.overviewId}/> : <></>}
-        { props.createRestaurant? <CreateRestaurant addNewRestaurant = { props.addNewRestaurant } defaultActivate = {props.defaultActivate} /> : <> </>}
+        { props.createRestaurant || props.editRestaurantActive? <CreateRestaurant addNewRestaurant = { props.addNewRestaurant } createRestaurant={props.createRestaurant}
+      editRestaurantActive={props.editRestaurantActive} editRestaurant = {props.editRestaurant} defaultActivate = {props.defaultActivate} /> : <> </>}
         </div>
       </>
 

@@ -1,19 +1,18 @@
 import React, {Component} from 'react'
 
 
-class AddMenuItem extends Component {
+class EditCustomer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            newFoodName: "",
-            newDescription: "",
-            newPrice: "",
-            newMenuItemUrl:"",
-            newPrepareTime: ""
+            ...props,
+            editedFirstName: "",
+            editedSurName: "",
+            editedAddress: "",
+            editedPostNumber:""
         }
       }
-
 
 
     render() {
@@ -27,4 +26,4 @@ class AddMenuItem extends Component {
 }
 }
 
-export default AddMenuItem;
+export default EditCustomer;
