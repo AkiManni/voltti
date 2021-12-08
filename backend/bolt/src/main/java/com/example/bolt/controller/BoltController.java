@@ -44,11 +44,6 @@ public class BoltController {
         return this.us.findAll();
     }
 
-    @GetMapping("/getUser/{id}")
-    public User getUser(@PathVariable("id") final String id) {
-        return this.us.findById(id).orElse(null);
-    }
-
     @PostMapping("/addUser")
     public User addUsers(@RequestBody User user) {
         User u = user;
@@ -102,11 +97,6 @@ public class BoltController {
         return this.re.findAll();
     }
 
-    @GetMapping("/getRestaurant/{id}")
-    public Restaurant getRestaurant(@PathVariable("id") String id) {
-        return this.re.findById(id).orElse(null);
-    }
-
     @GetMapping(value="/getRestaurantByName/{name}")
     public Restaurant getRestaurantByName(@PathVariable("name") String name) {
         return this.re.findByName(name);
@@ -117,7 +107,7 @@ public class BoltController {
         List<Restaurant> r = new ArrayList<>();
         List<Product> products = this.pr.findByType(type.toUpperCase());
         for (Product p : products) {
-            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(this.re.findById(p.getRestaurantID()).orElse(null));
+            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(p.getRestaurant());
         }
         return r;
     }
@@ -147,27 +137,6 @@ public class BoltController {
         return this.pr.findAll();
     }
 
-    @GetMapping("/getProduct/{id}")
-    public Product getProduct(@PathVariable("id") String id) {
-        return this.pr.findById(id).orElse(null);
-    }    
-
-    @GetMapping(value="/getFoodByName/{name}")
-    public Product getFoodByName(@PathVariable("name") String name) {
-        return this.pr.findByName(name);
-    }
-
-    @GetMapping(value="/getFoodByRestaurantID/{id}")
-    public List<Product> getFoodByRestaurantID(@PathVariable("id") String id) {
-        return this.pr.findByRestaurantID(id);
-    }
-
-    @GetMapping(value="/getFoodByRestaurantName/{name}")
-    public List<Product> getFoodByRestaurantName(@PathVariable("name") String name) {
-        Restaurant r = this.re.findByName(name);
-        return this.pr.findByRestaurantID(r.getRestaurantID());
-    }
-
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
@@ -190,7 +159,7 @@ public class BoltController {
                 if (item == p) return "This product already exists.";
             }
             r.addMenus(p);
-            p.setRestaurantID(r.getRestaurantID());
+            p.setRestaurant(r);
             this.re.save(r);
             this.pr.save(p);
             return "(͠≖ ͜ʖ͠≖)👌";
@@ -209,7 +178,7 @@ public class BoltController {
             if (item.equals(p)) {
                 menus.remove(p);
                 r.setMenus(menus);
-                p.setRestaurantID(null);
+                p.setRestaurant(null);
                 this.pr.save(p);
                 this.re.save(r);
                 return r.toString();
@@ -257,7 +226,7 @@ public class BoltController {
         Order o = new Order(
             generateID(4),
             ids.get("userID"),
-            p.getRestaurantID(),
+            p.getRestaurant().getRestaurantID(),
             new ArrayList<>(),
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
@@ -299,7 +268,7 @@ public class BoltController {
                 
                 for (Product products : o.getProducts()) {
                     Product p = products;
-                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+                    Restaurant r = p.getRestaurant();
                     r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
                     this.re.save(r);
                 }

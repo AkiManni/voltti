@@ -33,7 +33,7 @@ public class Restaurant {
     private String address;
     private String postNum;
     private String photoPath;
-    private type restaurantType;
+    private type category;
     private List<Product> menus;
     private float restaurantBalance;
     private String operatingHours;
