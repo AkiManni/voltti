@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @RequestMapping("/bolt")
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -67,7 +68,7 @@ public class BoltController {
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-        if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+        // lisää koodi, joka tarkistaa onko käyttäjä manageri vai ei
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {
@@ -95,21 +96,6 @@ public class BoltController {
     @GetMapping("/getRestaurant")
     public List<Restaurant> getRestaurants() {
         return this.re.findAll();
-    }
-
-    @GetMapping(value="/getRestaurantByName/{name}")
-    public Restaurant getRestaurantByName(@PathVariable("name") String name) {
-        return this.re.findByName(name);
-    }
-
-    @GetMapping(value="/getRestaurantByFoodType/{type}")
-    public List<Restaurant> getRestaurantByFoodType(@PathVariable("type") String type) {
-        List<Restaurant> r = new ArrayList<>();
-        List<Product> products = this.pr.findByType(type.toUpperCase());
-        for (Product p : products) {
-            if (p.getFoodType().toString().equalsIgnoreCase(type)) r.add(this.re.findById(p.getRestaurantID()).orElse(null));
-        }
-        return r;
     }
         
     @PostMapping("/addRestaurant")
@@ -152,7 +138,7 @@ public class BoltController {
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (r == null) return "No restaurant found.";
-        else if (p == null) return "No product found.";
+        else if (p == null) return "No product found.";                                     // add product ja add product to restaurant pitäisi olla yks funktio?
         else {
             List<Product> menus = r.getMenus();
             for (Product item : menus) {
@@ -215,15 +201,16 @@ public class BoltController {
         return this.or.findByUserID(id);
     }
 
-    @GetMapping(value="/getOrdersByRestaurantID/{id}")
-    public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
-        return this.or.findByRestaurantID(id);
-    }
+    // @GetMapping(value="/getOrdersByRestaurantID/{id}")                               // käyttöä?
+    // public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
+    //     return this.or.findByRestaurantID(id);
+    // }
     
     @PostMapping("/addOrder")
     public Order addOrder(@RequestBody Map<String, String> ids) {
         Product p = this.pr.findById(ids.get("productID")).orElse(null);
         if (p == null) return null;
+        if (p.getRestaurantID() == null) return null;
 
         Order o = new Order(
             generateID(4),

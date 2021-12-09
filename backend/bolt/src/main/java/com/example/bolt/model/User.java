@@ -19,6 +19,5 @@ public class User {
     private String loginCredential;
     private String loginPassword;
 
-    private boolean ismanager;
     private Restaurant restaurant;
 }
