@@ -81,6 +81,20 @@ class App extends React.Component {
       postNumber: 21146,
       deliveryTime:20,
       isManager: false
+    },
+
+    restaurant: 
+    {
+      restaurantId:1,
+      restaurantName:"Hieno Ravintola",
+      address:"Rantabulevardi 2",
+      postNumber:"90111",
+      restaurantType:"FINE",
+      photoPath:"https://thumbs.dreamstime.com/b/fine-dining-entree-fruity-terrine-sauce-cracker-115491493.jpg",
+      menus:[],
+      restaurantBalance:this.getRestaurantBalance(this.state.restaurant.restaurantId),
+      operatingHours:"10:00 - 20:00",
+      priceLevel:"€€€€"
     }
 
   }) }
@@ -106,7 +120,7 @@ class App extends React.Component {
             postNumber: editedPostNumber
           }})
       }
-      }
+  }
     
   changeItems = () => {
     axios({      
@@ -132,7 +146,7 @@ class App extends React.Component {
       postNumber: 21146,
       isManager: true
     },
-    
+
     restaurant: 
     {
       restaurantId:1,
@@ -183,7 +197,6 @@ class App extends React.Component {
 
   }
 
-
   getRestaurantBalance = (id) => {
     let ordersCopy = [...this.state.orders]
 
@@ -192,7 +205,7 @@ class App extends React.Component {
     if(ordersCopy.length === -1){
       sum = 0;
     }
-    if(ordersCopy.length === 0){
+    if(ordersCopy.length <= 0){
       sum = 0;
     }
     else{
@@ -204,7 +217,6 @@ class App extends React.Component {
     //this.setState({restaurantBalance: sum})
   }
   
-
   managerOrderOverviewActivate = () => {this.setState( {actionDone:false, actionString:"ORDERS", orderviewActive:false, managerOrderHistoryActive:false })}
 
   managerOrderHistoryActivate = () => {this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
@@ -253,7 +265,6 @@ class App extends React.Component {
   previewOrderActivate = () => { this.setState( {actionDone:false, actionString:"ORDERPREVIEW", defaultScroll:true}); 
   }
 
-  
   moveToPreparation = (orderId) => {
 
     let copyOfOrders = [...this.state.orders]
@@ -665,49 +676,30 @@ class App extends React.Component {
                       defaultUserBarActive: false,
                       defaultUserBarWithoutSearchBar: false,
                       orderPreviewActive:false,
-                      managerModeActive: false,
                       customerBarActive: true ,
                       sideBarActive: true,
                       shoppingCartQuickviewActive: true,
                       customerEditBarActive: false,
                       customerOrderHistoryActive: false,  
-                      searchResultsActive: true,
-                      
-                      actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
+                      searchResultsActive: true, 
                       editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      orderviewActive:false,
+                      actionDone:true
                     });
                 }
                 case "ORDERHISTORY":
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      
                       customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
                       customerEditBarActive: true,
-
                       containerActive: true,
                       shoppingCartQuickviewActive: false, 
-                      orderPreviewActive:false,
-                      
-                      managerOrderHistoryActive: false,
+                      orderPreviewActive:false, 
                       customerOrderHistoryActive: true,
-
                       searchResultsActive: false,
-                      managerBarActive: false,
                       actionDone:true
-
                       ,orderviewActive:true
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      ,editUserActive:false
                     });
                   }
 
@@ -715,28 +707,16 @@ class App extends React.Component {
                   if(this.state.actionDone === false){
                     return this.setState({
                       orderPreviewActive:true,
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      
                       customerBarActive: false,
                       defaultBarWithoutSearchActive: false,
                       customerEditBarActive: true,
-                      managerOrderHistoryActive: false,
                       customerOrderHistoryActive: false,
-                      
-                      
                       containerActive: true,
                       shoppingCartQuickviewActive: false,
-
                       searchResultsActive: false,
-                      managerBarActive: false,
-                      actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
+                      orderviewActive:false,
                       editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      actionDone:true
                     });
                   }
 
@@ -749,17 +729,11 @@ class App extends React.Component {
                     editUserActive:true,
                     containerActive: true,
                     shoppingCartQuickviewActive: false, 
-
-                    managerOrderHistoryActive: false,
+                    customerEditBarActive: true,
+                    customerBarActive: false,
                     searchResultsActive: false,
-                    managerBarActive: false,
-
-                    actionDone:true
-
-                    ,orderviewActive:false
-                    ,createRestaurant: false
-                    ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                    orderviewActive:false,
+                    actionDone:true,
                     });
                   }
                 default:
@@ -768,20 +742,15 @@ class App extends React.Component {
                       defaultUserModeActive: false, 
                       defaultUserBarActive: false,
                       defaultUserBarWithoutSearchBar: false,
-                      managerModeActive: false,
                       customerBarActive: true ,
                       sideBarActive: true,
                       shoppingCartQuickviewActive: true,
                       customerEditBarActive: false,
                       customerOrderHistoryActive: false, 
                       searchResultsActive: true,
-                      actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
+                      orderviewActive:false,
                       editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      actionDone:true
                     });
                 }
 
@@ -793,143 +762,91 @@ class App extends React.Component {
                   if(this.state.actionDone === false){
                   return this.setState({
                       defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
                       defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      userBarWithoutSearchActive: false,
-                      customerOrderHistoryActive: false,
                       containerActive: false,
-                      managerBarActive: true,
+                      managerBarActive: true,    
+                      orderviewActive:false,
+                      createRestaurant: false,
+                      editRestaurantActive: false,
+                      editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false,
                       actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantActive: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
                   });
                 }
                 case "ORDERS":
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
                       containerActive: false,
                       managerBarActive: true,
+                      orderviewActive:false,
+                      createRestaurant: false,
+                      editRestaurantActive: false,
+                      editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false,
                       actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantActive: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
                 case "ORDERHISTORY":
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
                       containerActive: true,
                       shoppingCartQuickviewActive: false, 
                       managerOrderHistoryActive: true,
                       searchResultsActive: false,
                       managerBarActive: true,
+                      orderviewActive:true,
+                      createRestaurant: false,
+                      editRestaurantActive: false,
+                      editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false,
                       actionDone:true
-
-                      ,orderviewActive:true
-                      ,createRestaurant: false
-                      ,editRestaurantActive: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
                     });
                   }
 
                 case "EDITCREATERESTAURANT":
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
                       containerActive: true,
                       shoppingCartQuickviewActive: false, 
                       managerOrderHistoryActive: false,
                       searchResultsActive: false,
                       managerBarActive: true,
-
-                      orderviewActive:false
-                      ,actionDone:true
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      orderviewActive:false,
+                      editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false,
+                      actionDone:true
                     });
                   }
 
                 case "EDITCREATERESTAURANTMENU":
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      userBarWithoutSearchActive: false,
                       containerActive: true,
                       shoppingCartQuickviewActive: false, 
                       managerOrderHistoryActive: false,
-                      customerOrderHistoryActive: false,
                       searchResultsActive: false,
-                      managerBarActive: true   /////////////////////////////////////////////////
-
-                      ,orderviewActive:false
-                      ,editRestaurantMenuActive:true
-                      ,editRestaurantActive: false
-                      ,editRestaurantMenuQuickviewActive: true
-                      ,actionDone:true
-                      ,createRestaurant: false
+                      managerBarActive: true,
+                      orderviewActive:false,
+                      editRestaurantMenuActive:true,
+                      editRestaurantActive: false,
+                      editRestaurantMenuQuickviewActive: true,
+                      createRestaurant: false,
+                      actionDone:true
                     });
                   }
                 default:
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserBarActive: false,
-                      defaultModeActive: false,
-                      customerModeActive: false,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false,
                       managerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
                       containerActive: false,
                       managerBarActive: true,
+                      orderviewActive:false,
+                      createRestaurant: false,
+                      editRestaurantMenuActive:false,
+                      editRestaurantMenuQuickviewActive: false,
+                      editRestaurantActive: false,
                       actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
-                      ,editRestaurantActive: false
                     });
                   }
 
@@ -939,7 +856,7 @@ class App extends React.Component {
               switch(this.state.actionString){
                 case "MAIN":
                   if(this.state.actionDone === false){
-                  return this.setState({ 
+                  return this.setState({
                       customerModeActive: false,
                       managerModeActive: false,
                       managerBarActive: false,
@@ -953,15 +870,15 @@ class App extends React.Component {
                       customerEditBarActive: false,
                       orderPreviewActive:false,
                       customerOrderHistoryActive: false,
-                      managerOrderHistoryActive: false, 
-                      actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantActive: false
-                      ,editRestaurantMenuActive:false,
+                      managerOrderHistoryActive: false,
+                      userBarWithoutSearchActive: false,
+                      orderviewActive:false,
+                      createRestaurant: false,
+                      editRestaurantActive: false,
+                      editRestaurantMenuActive:false,
                       editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      editRestaurantMenuQuickviewActive: false,
+                      actionDone:true
                       });
                   }
 
@@ -970,25 +887,12 @@ class App extends React.Component {
                     return this.setState({
                       orderPreviewActive:true,
                       defaultUserBarActive: false,
-                      defaultModeActive: true,  // TÄMÄ MUUTETTU
-                      
-                      customerBarActive: false,
                       defaultBarWithoutSearchActive: true,
-                      
                       containerActive: true,
                       shoppingCartQuickviewActive: false,
-
-                      managerOrderHistoryActive: false,
-                      customerOrderHistoryActive: false,
-
                       searchResultsActive: false,
-                      managerBarActive: false,
+                      orderviewActive: false,
                       actionDone:true
-
-                      ,orderviewActive: false // TÄMÄ MUUTETTU
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
 
                     });
                   }
@@ -996,26 +900,14 @@ class App extends React.Component {
                 case "LOGIN":
                   if(this.state.actionDone === false){
                     return this.setState({
-
                       actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
                       });
                   }
 
                 case "REGISTER":
                   if(this.state.actionDone === false){
                     return this.setState({
-
                       actionDone:true
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
                       });
                   }
                 default:
@@ -1028,15 +920,21 @@ class App extends React.Component {
                       sideBarActive: true,
                       containerActive: true,
                       defaultUserBarActive: true,
+                      defaultBarWithoutSearchActive: false,
                       shoppingCartQuickviewActive: true, 
                       searchResultsActive: true,
-                      actionDone:true,
-                      customerEditBarActive: false 
-
-                      ,orderviewActive:false
-                      ,createRestaurant: false
-                      ,editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false
+                      customerEditBarActive: false,
+                      orderPreviewActive:false,
+                      customerOrderHistoryActive: false,
+                      managerOrderHistoryActive: false,
+                      userBarWithoutSearchActive: false,
+                      orderviewActive:false,
+                      createRestaurant: false,
+                      editRestaurantActive: false,
+                      editRestaurantMenuActive:false,
+                      editUserActive:false,
+                      editRestaurantMenuQuickviewActive: false,
+                      actionDone:true
                       });
                     }
 

@@ -53,7 +53,7 @@ export default function Orderview(props){
                 <br/>
                 <b>Products Ordered:</b>
                 {order.productsOrdered.map((product, i) => 
-                <dl key={i}><dt><b>{product.id}.</b> <b className={styles.orderTime}>{product.quantity}</b> x {product.foodName} <b>-</b> {product.price} €</dt></dl>
+                <dl key={i}><dt><b className={styles.orderTime}>{product.quantity}</b> x <b>{product.id}.</b> {product.foodName} <b>-</b> {product.price} €</dt></dl>
                 )}
                 <br/>
                 <b>Total Payment including Delivery:</b> <b className={styles.orderStatusOnGoing}>{ order.totalCost } </b><b>€</b>          
