@@ -1,9 +1,30 @@
 package com.example.bolt.controller;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.example.bolt.model.*;
+import com.example.bolt.repository.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.security.Principal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.example.bolt.Register.login.AuthenticationRequest;
@@ -14,30 +35,36 @@ import com.example.bolt.model.ERole;
 import com.example.bolt.model.Role;
 import com.example.bolt.model.RoleRepository;
 import com.example.bolt.model.Useri;
+import com.example.bolt.repository.OrderRepository;
+import com.example.bolt.repository.ProductRepository;
+import com.example.bolt.repository.RestaurantRepository;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000/")
 @RequestMapping("/bolt")
 public class BoltController {
    
-    @Autowired
-    private UserRepository userRepository;
+
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+   private UserRepository us;
+   @Autowired
+   private RestaurantRepository re;
+   @Autowired
+   private ProductRepository pr;
+   @Autowired
+   private OrderRepository or;
 
 @Autowired
 private RoleRepository roleRepository;
@@ -50,7 +77,6 @@ private RoleRepository roleRepository;
         String lastname = authenticationRequest.getLname();
         String address = authenticationRequest.getAddress();
         String postnum = authenticationRequest.getPostNum();
-       // String roles = authenticationRequest.getRoles();
        Set<String> strRoles = authenticationRequest.getRoles();
        Set<Role> roles = new HashSet<>();
  
@@ -77,8 +103,7 @@ private RoleRepository roleRepository;
 
 
 
-        //Set<Role> moro = authenticationRequest.getRoles();
-        // EnumSet roles = authenticationRequest.EnumSet.of
+     
         Useri usermodel = new Useri();
         usermodel.setLoginCredential(logincredential);
         usermodel.setLoginPassword(new BCryptPasswordEncoder().encode(password));
@@ -87,13 +112,11 @@ private RoleRepository roleRepository;
         usermodel.setAddress(address);
         usermodel.setPostNum(postnum);
         usermodel.setRoles(roles);
-        //Role userRole = roleRepository.findByRole("ADMIN");
-       // usermodel.setRoles(new HashSet<>(Arrays.asList(userRole)));
 
 
         try {
 
-            Useri arvo = userRepository.findByLoginCredential(usermodel.getLoginCredential());
+            Useri arvo = us.findByLoginCredential(usermodel.getLoginCredential());
 
             if (arvo != null) {
 
@@ -111,7 +134,7 @@ private RoleRepository roleRepository;
                             .status(HttpStatus.NOT_FOUND)
                             .body("Tietoja puuttuu");
                 } else {
-                    userRepository.save(usermodel);
+                    us.save(usermodel);
                 }
 
             }
@@ -139,26 +162,6 @@ private RoleRepository roleRepository;
         .authenticate(new UsernamePasswordAuthenticationToken(username, password));
      
 
-        //Customer user = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//Customer customer = (Customer) authentication.getPrincipal();
-    //User userDetails = (User)principal;
-
-//Customer mycustomer = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-//SecurityContextHolder.getContext().setAuthentication(authentication);
- //Boolean arvoa = user.getIsmanager();
-//Customer user = (Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//Boolean balance = user.getIsmanager();
-/*
-Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
-boolean jepjep = ((AuthenticationRequest) loggedInUser).getIsmanager();
- 
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
- */   
-//AuthenticationRequest moro = (AuthenticationRequest) authentication.getPrincipal();
-//List<String> roles = moro.getAuthorities().stream()
-//.map(item -> item.getAuthority())
-//.collect(Collectors.toList());	
 UserDetails userDetails = (UserDetails) authentication.getPrincipal();		
 List<String> roles = userDetails.getAuthorities().stream()
 				.map(item -> item.getAuthority())
@@ -169,28 +172,13 @@ List<String> roles = userDetails.getAuthorities().stream()
     jsonObject.put("name", authentication.getName());
     jsonObject.put("Role", roles);
 
-    //jsonObject.put("moro", arvoa);
-   //jsonObject.put("ismanager", balance);
 
-    /*
-
-
-    
-
-    CustomUserDetail myUserDetail = (CustomUserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Boolean arvo = myUserDetail.getUser().getUserDatabase().ismanager;
-
-
-    UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-    .getPrincipal();
-String test = userDetails.getPassword();
-    */
     
 
 
 
         
-         //return ResponseEntity.ok(new AuthenticationResponse(jwt));
+      
          return ResponseEntity.ok(jsonObject.toString());
  
 
@@ -198,7 +186,6 @@ String test = userDetails.getPassword();
        
 
        catch(JSONException e){
-        //return ResponseEntity.ok(new AuthenticationResponse("virhe springbootin puolella, käyttäjätiedot eivät ole oikein"));
         jsonObject.put("exception", e.getMessage());
         return ResponseEntity.ok(e.getMessage());
        }
@@ -209,16 +196,7 @@ String test = userDetails.getPassword();
         
     }
 
-    /*
-
-     @Autowired
-    private UserRepository us;
-    @Autowired
-    private RestaurantRepository re;
-    @Autowired
-    private ProductRepository pr;
-    @Autowired
-    private OrderRepository or;
+   
 
     
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
@@ -226,13 +204,13 @@ String test = userDetails.getPassword();
     ///////////////////////////////////////USER///////////////////////////////////////////
 
     @GetMapping("/getUser")
-    public List<User> getUsers() {
+    public List<Useri> getUsers() {
         return this.us.findAll();
     }
 
     @PostMapping("/addUser")
-    public User addUsers(@RequestBody User user) {
-        User u = user;
+    public Useri addUsers(@RequestBody Useri user) {
+    	Useri u = user;
         u.setUserID(generateID(0));
         this.us.save(u);
         return u;
@@ -249,7 +227,7 @@ String test = userDetails.getPassword();
 
     @PostMapping("/addRestaurantToUser")
     public String addRestaurantToUser(@RequestBody Map<String, String> variables) {
-        User u = this.us.findById(variables.get("userID")).orElse(null);
+       Useri u = this.us.findById(variables.get("userID")).orElse(null);
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
@@ -265,7 +243,7 @@ String test = userDetails.getPassword();
 
     @DeleteMapping("/deleteRestaurantFromUser/{userID}")
     public String deleteRestaurantFromUser(@PathVariable String userID) {
-        User u = this.us.findById(userID).orElse(null);
+        Useri u = this.us.findById(userID).orElse(null);
 
         if (u == null) return "No user found.";
         else if (u.getRestaurant() == null) return "No restaurant found.";
@@ -513,5 +491,5 @@ String test = userDetails.getPassword();
         }
     }
 
-    */
+    
 }

@@ -18,7 +18,7 @@ import lombok.Data;
 public class Useri {
     @Id
     @JsonProperty
-        private String id;
+        private String UserID;
         private String fname;
         private String lname;
         private String address;
@@ -33,15 +33,17 @@ public class Useri {
     private Restaurant restaurant;
 
 
-    public String getId() {
-        return this.id;
-    }
+   
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String getUserID() {
+		return UserID;
+	}
 
-    public String getFname() {
+	public void setUserID(String userID) {
+		UserID = userID;
+	}
+
+	public String getFname() {
         return this.fname;
     }
 

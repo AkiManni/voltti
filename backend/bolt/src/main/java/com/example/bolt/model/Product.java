@@ -24,13 +24,5 @@ public class Product {
     private int prepareTime;
     private float price;
     private String restaurantID;
-<<<<<<< HEAD
-
-
-
-
-    
-=======
     private Restaurant.type category;
->>>>>>> main
 }
