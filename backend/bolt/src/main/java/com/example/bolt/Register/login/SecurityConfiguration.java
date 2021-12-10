@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
           http.csrf().disable()
-          .authorizeRequests().antMatchers("/bolt/luo", "/bolt/kirjaudu").permitAll()
+          .authorizeRequests().antMatchers("/bolt/luo", "/bolt/kirjaudu", "/bolt/getProduct").permitAll()
           .anyRequest().authenticated().and().sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   ;
