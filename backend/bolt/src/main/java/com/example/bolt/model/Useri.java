@@ -25,7 +25,6 @@ public class Useri {
         private String postNum;
         private String loginCredential;
         private String loginPassword;
-        //private boolean ismanager;
     
         @DBRef
         private Set<Role> roles = new HashSet<>();
@@ -34,7 +33,4 @@ public class Useri {
 
     public Useri() {
     }
-
-
-
 }

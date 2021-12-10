@@ -1,6 +1,5 @@
 package com.example.bolt.controller;
 
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,22 +22,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-<<<<<<< HEAD
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-import com.example.bolt.Register.login.AuthenticationRequest;
-import com.example.bolt.Register.login.AuthenticationResponse;
-import com.example.bolt.Register.login.JwtUtil;
-import com.example.bolt.Register.login.UserRepository;
-import com.example.bolt.model.ERole;
-import com.example.bolt.model.Role;
-import com.example.bolt.model.RoleRepository;
-import com.example.bolt.model.Useri;
-import com.example.bolt.repository.OrderRepository;
-import com.example.bolt.repository.ProductRepository;
-import com.example.bolt.repository.RestaurantRepository;
+import com.example.bolt.Register.login.*;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,9 +36,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-=======
->>>>>>> 2a270ad5abe50a47814ef7e0391d993f60a22282
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -234,11 +219,7 @@ List<String> roles = userDetails.getAuthorities().stream()
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-<<<<<<< HEAD
       //  if (!u.isIsmanager()) return "This feature is not allowed for customers.";
-=======
-        // lisää koodi, joka tarkistaa onko käyttäjä manageri vai ei
->>>>>>> 2a270ad5abe50a47814ef7e0391d993f60a22282
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {
