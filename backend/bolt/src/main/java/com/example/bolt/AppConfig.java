@@ -11,10 +11,10 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class AppConfig {
     
     public @Bean MongoClient mongoClient() {
-        return MongoClients.create("mongodb+srv://dbUser2:53mymtuIHojApy99@cluster0.hetwd.mongodb.net/bolt");
+        return MongoClients.create(System.getenv("URL"));
     }
 
     public @Bean MongoTemplate mongoTemplate() {
-        return new MongoTemplate(mongoClient(), "bolt");
+        return new MongoTemplate(mongoClient(), System.getenv("COLLECTION"));
     }
 }
