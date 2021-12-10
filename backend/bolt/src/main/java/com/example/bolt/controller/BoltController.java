@@ -1,5 +1,6 @@
 package com.example.bolt.controller;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,31 +23,194 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/bolt")
-@CrossOrigin(origins = "http://localhost:3000/")
-public class BoltController {
-    @Autowired
-    private UserRepository us;
-    @Autowired
-    private RestaurantRepository re;
-    @Autowired
-    private ProductRepository pr;
-    @Autowired
-    private OrderRepository or;
+import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import com.example.bolt.Register.login.AuthenticationRequest;
+import com.example.bolt.Register.login.AuthenticationResponse;
+import com.example.bolt.Register.login.JwtUtil;
+import com.example.bolt.Register.login.UserRepository;
+import com.example.bolt.model.ERole;
+import com.example.bolt.model.Role;
+import com.example.bolt.model.RoleRepository;
+import com.example.bolt.model.Useri;
+import com.example.bolt.repository.OrderRepository;
+import com.example.bolt.repository.ProductRepository;
+import com.example.bolt.repository.RestaurantRepository;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
+@RestController
+@CrossOrigin(origins = "http://localhost:3000/")
+@RequestMapping("/bolt")
+public class BoltController {
+   
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+   private UserRepository us;
+   @Autowired
+   private RestaurantRepository re;
+   @Autowired
+   private ProductRepository pr;
+   @Autowired
+   private OrderRepository or;
+
+@Autowired
+private RoleRepository roleRepository;
+
+    @PostMapping("/luo")
+    private ResponseEntity<?> subscribeClient(@RequestBody AuthenticationRequest authenticationRequest) {
+        String logincredential = authenticationRequest.getLoginCredential();
+        String password = authenticationRequest.getLoginPassword();
+        String firstname = authenticationRequest.getFname();
+        String lastname = authenticationRequest.getLname();
+        String address = authenticationRequest.getAddress();
+        String postnum = authenticationRequest.getPostNum();
+       Set<String> strRoles = authenticationRequest.getRoles();
+       Set<Role> roles = new HashSet<>();
+ 
+       if (strRoles == null) {
+        Role userRole = roleRepository.findByName(ERole.CUSTOMER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+    } else {
+        strRoles.forEach(role -> {
+            switch (role) {
+            case "manager":
+                Role adminRole = roleRepository.findByName(ERole.MANAGER)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(adminRole);
+
+                break;
+                default:
+                Role userRole = roleRepository.findByName(ERole.CUSTOMER)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles.add(userRole);
+            }
+        });
+    }
+
+
+
+     
+        Useri usermodel = new Useri();
+        usermodel.setLoginCredential(logincredential);
+        usermodel.setLoginPassword(new BCryptPasswordEncoder().encode(password));
+        usermodel.setFname(firstname);
+        usermodel.setLname(lastname);
+        usermodel.setAddress(address);
+        usermodel.setPostNum(postnum);
+        usermodel.setRoles(roles);
+
+
+        try {
+
+            Useri arvo = us.findByLoginCredential(usermodel.getLoginCredential());
+
+            if (arvo != null) {
+
+                return ResponseEntity
+                        .status(HttpStatus.FORBIDDEN)
+                        .body("Error Message");
+            }
+
+            else {
+
+                if (usermodel.getFname() == null || usermodel.getLname() == null || usermodel.getAddress() == null
+                        || usermodel.getPostNum() == null) {
+
+                    return ResponseEntity
+                            .status(HttpStatus.NOT_FOUND)
+                            .body("Tietoja puuttuu");
+                } else {
+                    us.save(usermodel);
+                }
+
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(new AuthenticationResponse("Virhe käyttäjän luonnissa"));
+
+        }
+
+        return ResponseEntity.ok(new AuthenticationResponse("Käyttäjä luotu" + "tässä rooli"));
+
+    }
+
+    @PostMapping("/kirjaudu")
+    private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest, Principal principal){
+        
+        String username = authenticationRequest.getLoginCredential();
+        String password = authenticationRequest.getLoginPassword();
+    
+       JSONObject jsonObject = new JSONObject();
+     
+       try{
+
+        org.springframework.security.core.Authentication authentication = authenticationManager
+        .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+     
+
+UserDetails userDetails = (UserDetails) authentication.getPrincipal();		
+List<String> roles = userDetails.getAuthorities().stream()
+				.map(item -> item.getAuthority())
+				.collect(Collectors.toList());
+
+ final String jwt = JwtUtil.generateToken(username);
+    jsonObject.put("token", jwt);
+    jsonObject.put("name", authentication.getName());
+    jsonObject.put("Role", roles);
+
+
+    
+
+
+
+        
+      
+         return ResponseEntity.ok(jsonObject.toString());
+ 
+
+       }
+       
+
+       catch(JSONException e){
+        jsonObject.put("exception", e.getMessage());
+        return ResponseEntity.ok(e.getMessage());
+       }
+  
+      
+
+
+        
+    }
+
+   
+
+    
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
     ///////////////////////////////////////USER///////////////////////////////////////////
 
     @GetMapping("/getUser")
-    public List<User> getUsers() {
+    public List<Useri> getUsers() {
         return this.us.findAll();
     }
 
     @PostMapping("/addUser")
-    public User addUsers(@RequestBody User user) {
-        User u = user;
+    public Useri addUsers(@RequestBody Useri user) {
+    	Useri u = user;
         u.setUserID(generateID(0));
         this.us.save(u);
         return u;
@@ -63,11 +227,11 @@ public class BoltController {
 
     @PostMapping("/addRestaurantToUser")
     public String addRestaurantToUser(@RequestBody Map<String, String> variables) {
-        User u = this.us.findById(variables.get("userID")).orElse(null);
+       Useri u = this.us.findById(variables.get("userID")).orElse(null);
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-        if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+      //  if (!u.isIsmanager()) return "This feature is not allowed for customers.";
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {
@@ -79,7 +243,7 @@ public class BoltController {
 
     @DeleteMapping("/deleteRestaurantFromUser/{userID}")
     public String deleteRestaurantFromUser(@PathVariable String userID) {
-        User u = this.us.findById(userID).orElse(null);
+        Useri u = this.us.findById(userID).orElse(null);
 
         if (u == null) return "No user found.";
         else if (u.getRestaurant() == null) return "No restaurant found.";
@@ -326,4 +490,6 @@ public class BoltController {
                 return null;
         }
     }
+
+    
 }
