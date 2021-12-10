@@ -231,7 +231,7 @@ List<String> roles = userDetails.getAuthorities().stream()
         Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
         if (u == null) return "No user found.";
-        if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+      //  if (!u.isIsmanager()) return "This feature is not allowed for customers.";
         else if (u.getRestaurant() != null) return "You already have restaurant.";
         else if (r == null) return "No restaurant found.";
         else {

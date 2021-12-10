@@ -26,6 +26,9 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
+
+
+
     @Autowired
     JwtUtil jwtUtil;
 
@@ -34,8 +37,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String authorizationHeader =  request.getHeader("Authorization");
-
+        
         String jwtToken = null;
         String username = null;
         String bearerToken = request.getHeader("Authorization");
