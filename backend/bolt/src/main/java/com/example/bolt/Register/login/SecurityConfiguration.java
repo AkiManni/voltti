@@ -37,10 +37,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
           */
 
 
-          http.csrf().disable()
+
+          // vaatii kirjautumisen kaikkiin muihin paitsi .antMatchers kohtaan määritellyille osoitteille
+         /* http.csrf().disable()
           .authorizeRequests().antMatchers("/bolt/luo", "/bolt/kirjaudu", "/bolt/getProduct").permitAll()
           .anyRequest().authenticated().and().sessionManagement()
+          .sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+
+
+
+
+
+// Tällä määrittelyllä menee kaikki komennot läpi ilman kirjautumista
+          http.csrf().disable()
+          .authorizeRequests().antMatchers("**").permitAll()
+          .anyRequest().authenticated().and().sessionManagement()
           .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
   ;
 
   http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
