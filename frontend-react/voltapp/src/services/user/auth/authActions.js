@@ -2,7 +2,7 @@ import * as AT from "./authTypes";
 import axios from "axios";
 //määritetään springbootin localhost osoite
 import Cookies from 'js-cookie';
-import Navibar from "../../../Components/User/Navibar";
+import Navibar from "../../../components/User/Navibar";
 const AUTH_URL = "http://localhost:8080/bolt/kirjaudu";
 
 
