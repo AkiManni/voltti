@@ -7,18 +7,18 @@ import Cookies from 'js-cookie';
 const Home = () => {
 
   if (Cookies.get('jwtToken')) {
-    console.log("käytttäjä on vielä tunnistuatunut jwttokenilla " + Cookies.get('jwtToken'));
+  //  console.log("käytttäjä on vielä tunnistuatunut jwttokenilla " + Cookies.get('jwtToken'));
   authToken(Cookies.get('jwtToken'));
   }
 
   
   const auth = useSelector((state) => state.auth);
-  console.log(auth.isLoggedIn + "Onko kirjautunut");
+  //console.log(auth.isLoggedIn + "Onko kirjautunut");
   return (
-    
+   
     <Alert style={{ backgroundColor: "#343A40", color: "#ffffff80" }}>
     Welcome {auth.username}
-    Testi {auth.isLoggedIn}
+  
   </Alert>
 
 

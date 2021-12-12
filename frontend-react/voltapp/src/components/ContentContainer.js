@@ -4,10 +4,12 @@ import MenuView from './MenuView';
 import SearchView from './SearchView';
 import Orderview from './Orderview';
 import CreateRestaurant from './CreateRestaurant';
+import { useState } from 'react';
 
 export default function ContentContainer(props){
 
-          
+  const [alternativeAddress,setAlternativeAddress] = useState("");
+  const [alternativePostNumber,setAlternativePostNumber] = useState("");          
   
   const scrollTop = () => {
 
@@ -35,43 +37,96 @@ export default function ContentContainer(props){
 
   const compileOrdersAndSend = (rId) => {
 
-    if(props.role === "CUSTOMER"){
+    if(alternativeAddress === "" && alternativePostNumber === ""){
+
+      if(props.role === "CUSTOMER"){
   
-    var ref = {};
-
-    var res = props.tempOrder.reduce(function(arr, o) {
-      
-      if (ref.hasOwnProperty(o.restaurantId))
-      
-        
-        arr[ref[o.restaurantId]].push(o);
-      
-      else {
-        ref[o.restaurantId] = arr.length;
-        
-        arr.push([o]);
-      }
-      
-      return arr;
-      
-    }, []);
-
-
-    var intti = 0;
-    for(const element of res){ 
-    if(rId === element[0].restaurantId){
-        intti++;
-            makeOrder(intti+Math.max.apply(Math, props.orders.map(function(o) { return o.id; })),props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
-            props.user.surName,props.user.address,props.user.postNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
-            };
-          clearOrderFromTempOrder(rId)
-        }
-    }
+        var ref = {};
     
-    else{
-      alert("You need to Login first.")
+        var res = props.tempOrder.reduce(function(arr, o) {
+          
+          if (ref.hasOwnProperty(o.restaurantId))
+          
+            
+            arr[ref[o.restaurantId]].push(o);
+          
+          else {
+            ref[o.restaurantId] = arr.length;
+            
+            arr.push([o]);
+          }
+          
+          return arr;
+          
+        }, []);
+    
+    
+        var intti = 0;
+        for(const element of res){ 
+        if(rId === element[0].restaurantId){
+            intti++;
+                makeOrder(intti+Math.max.apply(Math, props.orders.map(function(o) { return o.id; })),props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
+                props.user.surName,props.user.address,props.user.postNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
+                };
+              clearOrderFromTempOrder(rId)
+            }
+        }
+        
+        else{
+          alert("You need to Login first.")
+        }
+     }
+
+     if(alternativeAddress !== "" && alternativePostNumber !== "" && alternativePostNumber !==""){
+
+      if (!Number.isInteger(parseInt(alternativePostNumber))){
+        alert("Postnumber must be a number!")
+      }
+      else{
+        if(props.role === "CUSTOMER"){
+  
+          var ref = {};
+      
+          var res = props.tempOrder.reduce(function(arr, o) {
+            
+            if (ref.hasOwnProperty(o.restaurantId))
+            
+              
+              arr[ref[o.restaurantId]].push(o);
+            
+            else {
+              ref[o.restaurantId] = arr.length;
+              
+              arr.push([o]);
+            }
+            
+            return arr;
+            
+          }, []);
+      
+      
+          var intti = 0;
+          for(const element of res){ 
+          if(rId === element[0].restaurantId){
+              intti++;
+                  makeOrder(intti+Math.max.apply(Math, props.orders.map(function(o) { return o.id; })),props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
+                  props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
+                  };
+                clearOrderFromTempOrder(rId)
+              }
+          }
+          
+          else{
+            alert("You need to Login first.")
+          }
+
+
+      }
+
+      }
     }
- }
+
+    
 
   const templateOfOrder = () => {
     
@@ -135,6 +190,11 @@ export default function ContentContainer(props){
     <>
     <div id="contentcontainer">
       PRODUCTS TO BE ORDERED:<br/><br/>
+      <text className={styles.orderinfoText}>if you want to order the products elsewhere, <br/>
+      please include alternative address info:</text><br/>
+      <input type="text" placeholder={props.user.address} minLength = "10" 
+                onChange={ (event) => setAlternativeAddress(event.target.value) }></input> - <input type="text" placeholder={props.user.postNumber} minLength = "10" className={ styles.alternativeAddress } 
+                onChange={ (event) => setAlternativePostNumber(event.target.value) }></input>
       { templateOfOrder() }
     </div>
     </>

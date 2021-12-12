@@ -10,28 +10,15 @@ import SideBar from './components/SideBar';
 import data from './data.json'
 import axios from 'axios';
 
+import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Login from "./components/User/Login";
+import Navibar from "./components/User/Navibar";
+import Register from "./components/User/Register";
+import Home from './components/Home';
 class App extends React.Component {
   constructor(props)
   {
-    /*
-
-
-    //Tähän väsätty tämmönen, millä näkyy kirjautuminen ja navbar
-<Router>
-
-  <div>
-  <Navibar/>
-  <Switch>
-  <Route path="/login" exact component={Login} />
-  <Route path="/register" exact component={Register} />
-  <Route path="/" exact component={Home} />
-  
-    </Switch>
-
-  </div>
-
-  </Router>
-    */
+   
     super(props);
     this.state = {
       products: products.products,
@@ -42,6 +29,7 @@ class App extends React.Component {
       managerModeActive:false,
       defaultUserModeActive: true,
       customerModeActive: false,
+      loginActive: false,
 
       productSearchString: "",
       ordersClear:[],
@@ -557,6 +545,9 @@ class App extends React.Component {
     this.setState({orderPrices:copyOfPrices})
   }
 
+  loginActivate = () =>  { 
+    this.setState({loginActive:!this.state.loginActive})
+  }
   
   render() 
   {
@@ -640,6 +631,29 @@ class App extends React.Component {
     </div>
     </>
 
+    let loginBar = 
+    <>
+    <div>
+    
+      <Router>
+
+      <div>
+      <Navibar/>
+      <Switch>
+      <Route path="/login" exact component={Login} />
+      <Route path="/register" exact component={Register} />
+      <Route path="/" exact component={Home} />
+
+        </Switch>
+
+      </div>
+
+      </Router>
+      
+
+    </div>
+    </>
+
     let output = 
       <>
         <div>
@@ -668,10 +682,13 @@ class App extends React.Component {
           editRestaurantMenuActive = {this.editRestaurantMenuActive}
           customerEditInfoActivate = {this.customerEditInfoActivate}
           customerOrderHistoryviewActivate = {this.customerOrderHistoryviewActivate}
+          loginActivate = {this.loginActivate}
           />
           {/* {()=> {this.renderSwitch()}} */}
-
           
+
+          {this.state.loginActive? <div>{loginBar}</div> : <></>}
+
           <div className="wrapper">
           { elementContainer }
           </div>
@@ -679,7 +696,13 @@ class App extends React.Component {
       </>
 
 
+
+
+    
   return (
+
+
+
     <>
 
       {(() => {
@@ -963,9 +986,9 @@ class App extends React.Component {
 
       { output }
 
-        
     </>
     )
+       
   }
 }
 

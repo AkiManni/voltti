@@ -49,6 +49,10 @@ export default function MenuBar(props){
     const editRestaurantInfoActivate = () => {
         props.editRestaurantInfoActivate();
     }
+
+    const loginActivate = () => { 
+        props.loginActivate();
+    }
     
 
     
@@ -60,7 +64,7 @@ export default function MenuBar(props){
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
         <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
-        <button className={styles.menuButton}>Login/Register</button>
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login/Register</button>
     </div>
     </>
 
@@ -68,7 +72,7 @@ export default function MenuBar(props){
     <>
         <div className={styles.defaultSearchBarWithoutSearch}>
         <button className={styles.menuButton} onClick={() => defaultActivate()}>Search Products</button>
-        <button className={styles.menuButton}>Login/Register</button>
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login/Register</button>
     </div>
     </>
 
