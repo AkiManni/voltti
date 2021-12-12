@@ -14,13 +14,43 @@ export default function CreateRestaurant(props) {
     const [newPricelevel, setPricelevel] = useState("");
     
     const addNewRestaurant = () => {
-        props.addNewRestaurant(newRestaurantName, newAddress, newPostNumber, 
-            newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel);
+
+            axios({
+                method: 'post',
+                url: 'https://voltti.herokuapp.com/bolt/addRestaurant',
+                data: {
+                  name:newRestaurantName,
+                  address:newAddress,
+                  postNum: newPostNumber,
+                  photoPath: newRestaurantUrl,
+                  operatingHours:newOperatingHours,
+                  restaurantType:newRestaurantType,
+                  priceLevel:newPricelevel
+                }
+              });
+
     }
 
     const editRestaurant = () => {
-        props.editRestaurant(newRestaurantName, newAddress, newPostNumber, 
-            newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel);
+        // Vastaavaa edit toimintoa ei löydy backendistä.
+
+            axios({
+                method: 'post',
+                url: 'https://voltti.herokuapp.com/bolt/addRestaurant',
+                data: {
+                    restaurantID:props.Useri.Restaurant.restaurantID,
+                    restaurantName:newRestaurantName,
+                    address:newAddress,
+                    postNum: newPostNumber,
+                    photoPath: newRestaurantUrl,
+                    operatingHours:newOperatingHours,
+                    restaurantType:newRestaurantType,
+                    priceLevel:newPricelevel
+                }
+              });
+
+
+          
     }
 
     const defaultActivate = () => {

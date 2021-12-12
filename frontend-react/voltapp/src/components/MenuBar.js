@@ -79,8 +79,8 @@ export default function MenuBar(props){
     let customerBar =
     <>
     <div className={styles.userInformation}>
-        <li><b>{props.user.firstName + " " + props.user.surName}</b></li>
-        <li>{props.user.address + ", " + props.user.postNumber}</li>
+        <li><b>{props.Useri.fname + " " + props.Useri.lname}</b></li>
+        <li>{props.Useri.address + ", " + props.Useri.postNum}</li>
     </div>
     <div className={styles.defaultSearchBar}>
         Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
@@ -94,8 +94,8 @@ export default function MenuBar(props){
     let customerBarWithoutSearchBar = 
     <>
     <div className={styles.userInformation}>
-        <li><b>{props.user.firstName + " " + props.user.surName}</b></li>
-        <li>{props.user.address + ", " + props.user.postNumber}</li>
+    <li><b>{props.Useri.fname + " " + props.Useri.lname}</b></li>
+        <li>{props.Useri.address + ", " + props.Useri.postNum}</li>
     </div>
         <div className={styles.defaultSearchBar}>
         <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
@@ -111,7 +111,7 @@ export default function MenuBar(props){
     <div className={styles.managerInformation}>
         <li><b>{props.restaurant.restaurantName}</b></li>
         <li>{props.restaurant.address + ", " + props.restaurant.postNumber}</li>
-        <li>Balance: <b className={styles.balance}>{props.restaurant.restaurantBalance}</b> €</li>
+        <li>Balance: <b className={styles.balance}>{props.Useri.Restaurant.restaurantBalance}</b> €</li>
     </div></div>
     
         <div className={styles.defaultSearchBar}>

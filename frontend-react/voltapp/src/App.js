@@ -21,10 +21,9 @@ class App extends React.Component {
    
     super(props);
     this.state = {
-      products: products.products,
-      orders: orders.orders,
+      orders: orders.orders, // voi kai korvata [] - katsotaan huomenna
       tempOrder: tempOrder.order,
-      items: data.items,
+      items: data.items,  // voi kai korvata [] - katsotaan huomenna
 
       managerModeActive:false,
       defaultUserModeActive: true,
@@ -79,148 +78,14 @@ class App extends React.Component {
     if(this.state.defaultScroll === false){this.setState({ defaultScroll: true })} else{ this.setState({ defaultScroll: false })}}
   
   customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN", createRestaurantActive: false, 
-  user: 
-    { 
-      userId: 3,
-      firstName: "Guy",
-      surName: "Customer",
-      address:"Cypress Hole 3",
-      postNumber: 21146,
-      deliveryTime:20,
-      isManager: false
-    },
-
-    restaurant: 
-    {
-      restaurantId:1,
-      restaurantName:"Hieno Ravintola",
-      address:"Rantabulevardi 2",
-      postNumber:"90111",
-      restaurantType:"FINE",
-      photoPath:"https://thumbs.dreamstime.com/b/fine-dining-entree-fruity-terrine-sauce-cracker-115491493.jpg",
-      menus:[],
-      restaurantBalance:this.getRestaurantBalance(this.state.restaurant.restaurantId),
-      operatingHours:"10:00 - 20:00",
-      priceLevel:"€€€€"
-    }
 
   }) }
 
-  editUser = (editedFirstName, editedSurName,
-    editedAddress, editedPostNumber) => 
+  managerActivate = () => {  this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"})}
+
+  getRestaurantBalance = () => {
     
-    { console.log(editedFirstName, editedSurName,
-      editedAddress, editedPostNumber); 
-
-      if(editedFirstName === "" || editedSurName === "" || editedAddress === "" || editedPostNumber === ""){
-        alert("Empty Fields.")
-      }
-      else if(!Number.isInteger(parseInt(editedPostNumber))){
-        alert("Postnumber must be a number!")
-      }
-      else{
-        this.setState({ 
-          user:{
-            firstName: editedFirstName,
-            surName: editedSurName,
-            address: editedAddress,
-            postNumber: editedPostNumber
-          }})
-      }
-  }
-    
-  changeItems = () => {
-    axios({      
-    method:'GET',
-    //url:'https://voltti.herokuapp.com/bolt/getProduct'})
-    url:'https://voltti.herokuapp.com/bolt/getRestaurant'})
-    .then(res => {
-
-      //this.setState({items:res.data})
-      console.log(res.data)
-    
-  })
-  }
-
-  managerActivate = () => {  this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN",
-  
-    user: 
-    { 
-      userId: 3,
-      firstName: "Guy",
-      surName: "Customer",
-      address:"Cypress Hole 3",
-      postNumber: 21146,
-      isManager: true
-    },
-
-    restaurant: 
-    {
-      restaurantId:1,
-      restaurantName:"Hieno Ravintola",
-      address:"Rantabulevardi 2",
-      postNumber:"90111",
-      restaurantType:"FINE",
-      photoPath:"https://thumbs.dreamstime.com/b/fine-dining-entree-fruity-terrine-sauce-cracker-115491493.jpg",
-      menus:[],
-      restaurantBalance:this.getRestaurantBalance(this.state.restaurant.restaurantId),
-      operatingHours:"10:00 - 20:00",
-      priceLevel:"€€€€"
-    }
-
-  })}
-
-  editRestaurant = (newRestaurantName, newAddress, newPostNumber, 
-    newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel) => { 
-
-      console.log(newRestaurantName, newAddress, newPostNumber, 
-        newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel)
-
-      if(newRestaurantName === "" || newAddress === "" || newPostNumber === "" || newRestaurantUrl === "" ||
-       newOperatingHours === ""|| newRestaurantType === "" || newPricelevel === "")
-      {
-        alert("Empty Fields.")
-      }
-      else if(!Number.isInteger(parseInt(newPostNumber))){
-        alert("Postnumber must be a number!")
-      }
-      else{
-      this.setState({
-
-        restaurant:{
-          restaurantId:1,
-          restaurantName:newRestaurantName,
-          address:newAddress,
-          postNumber: newPostNumber,
-          photoPath: newRestaurantUrl,
-          operatingHours:newOperatingHours,
-          restaurantType:newRestaurantType,
-          priceLevel:newPricelevel,
-          restaurantBalance:this.getRestaurantBalance(this.state.restaurant.restaurantId)
-        }
-        })
-      }
-      
-
-  }
-
-  getRestaurantBalance = (id) => {
-    let ordersCopy = [...this.state.orders]
-
-    let sum 
-
-    if(ordersCopy.length === -1){
-      sum = 0;
-    }
-    if(ordersCopy.length <= 0){
-      sum = 0;
-    }
-    else{
-      sum = ordersCopy.filter(order => order.restaurantId === id).map(item => item.totalCost).reduce((prev, next) => parseInt(prev) + parseInt(next));
-    }
-    
-
-    return sum;
+    return this.state.Useri.Restaurant.restaurantBalance;
     //this.setState({restaurantBalance: sum})
   }
   
@@ -246,86 +111,45 @@ class App extends React.Component {
 
   customerOrderHistoryviewActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"ORDERHISTORY"})}
 
-  addNewRestaurant = (newRestaurantName, newAddress, newPostNumber, 
-    newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel) => { 
-      
-      console.log(newRestaurantName, newAddress, newPostNumber, 
-      newRestaurantUrl, newOperatingHours, newRestaurantType, newPricelevel)
-      //console.log("nämä pitäisi lähettää eteenpäin.")
-
-      axios({
-        method: 'post',
-        url: 'https://voltti.herokuapp.com/bolt/addRestaurant',
-        data: {
-          name:newRestaurantName,
-          address:newAddress,
-          postNum: newPostNumber,
-          photoPath: newRestaurantUrl,
-          operatingHours:newOperatingHours,
-          restaurantType:newRestaurantType,
-          priceLevel:newPricelevel
-        }
-      });
-
-  }
 
   previewOrderActivate = () => { this.setState( {actionDone:false, actionString:"ORDERPREVIEW", defaultScroll:true}); 
   }
 
-  moveToPreparation = (orderId) => {
-
-    let copyOfOrders = [...this.state.orders]
-  
-    copyOfOrders[orderId-1].orderStatus = "IN_PREPARATION"
-
-    copyOfOrders[orderId-1].orderPreparedAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
-
-    this.setState({ orders: copyOfOrders })
-  
-    clearInterval(this.intervalTimerId);
-  }
-  
-  setToDispatched = (orderId) => {
-
-      let anotherCopyOfOrders = [...this.state.orders]
-  
-      anotherCopyOfOrders[orderId-1].orderStatus = 'DISPATCHED'
-
-      anotherCopyOfOrders[orderId-1].orderDispatchedAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
-  
-      this.setState({ orders: anotherCopyOfOrders })
-      clearInterval(this.intervalTimerId);
-  }
-
-  prepareTimer = () => {
-
-        let newOrders = [...this.state.orders]
+  dataUpdater = () => {
         
-        for(var i in newOrders){
-          if(newOrders[i].orderStatus === 'IN_PREPARATION'){
-            newOrders[i].prepareTime--
-          }
-          if(newOrders[i].orderStatus === 'DISPATCHED'){
-            newOrders[i].deliveryTime--
-          }
-          if(newOrders[i].prepareTime === 0 && newOrders[i].orderStatus === 'IN_PREPARATION'){
-            newOrders[i].orderStatus = 'READY_TO_DISPATCH'
-            
-          }
-          if(newOrders[i].deliveryTime === 0 && newOrders[i].orderStatus === 'DISPATCHED'){
-            newOrders[i].orderStatus = 'DELIVERED'
-            newOrders[i].orderDeliveredAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
-          }
+        axios({      
+          method:'GET',
+          url:'https://voltti.herokuapp.com/bolt/getProduct'}) 
+          .then(res => {
+            this.setState({items:res.data})
+          
+        })
+        
+        if(this.state.user.role === "MANAGER"){
+          axios({
+            method:'GET',
+            url:'https://voltti.herokuapp.com/bolt/getOrdersByRestaurantID/{id}',
+            params: {id: this.state.user.restaurantID}     // EN TIEDÄ ONKO OK - KORJATAAN.
+          }).then(function(res){
+            this.setState({orders:res.data})
+          });    
+        }
+        
+        if(this.state.user.role === "CUSTOMER"){
+          axios({
+            method:'GET',
+            url:'https://voltti.herokuapp.com/bolt/getOrderByUserID/{id}',
+            params: {id: this.state.user.userID}
+          }).then(function(res){
+            this.setState({orders:res.data})
+          });  
         }
 
-        this.setState({
-          orders:newOrders
-        });
   }
 
   componentDidMount(){
       this.setState({intervalId: setInterval(() => {
-        this.prepareTimer()
+        this.dataUpdater()
       }, 1000)})
   }
 
@@ -338,88 +162,44 @@ class App extends React.Component {
       this.setState({ productSearchString: event.target.value });
   }
 
-  deleteItem = itemId => {
 
-  let newItems = [...this.state.items]
+  confirmOrder = (orderID) => {
 
-      let index = newItems.map((item) => item.id).indexOf(itemId);
-      
-        newItems.splice(index, 1);
-      
-        console.log("Instead doing this, this should send itemId to Spring Boot and pop the item with that id off from the database.")
-
-  this.setState({items:newItems})
-    
-  }
-
-  addNewMenuItem = (newFoodName, newDescription,
-    newMenuItemUrl, newPrepareTime, newPrice) => { 
-
-    let newItems = [...this.state.items];
-
-    var id = Math.max.apply(Math, newItems.map(function(o) { return o.id; }))
-
-    newItems.push({
-      id: ++id,
-      restaurantId: this.state.restaurant.restaurantId, 
-      restaurantName:this.state.restaurant.restaurantName,
-      foodName:newFoodName,
-      category: this.state.restaurant.restaurantType,
-      description: newDescription,
-      photoPath: newMenuItemUrl,
-      prepareTime: newPrepareTime, 
-      price: newPrice
-    })
-
-    this.setState({
-      items:newItems
+    axios({
+      method: 'get',
+      url: 'https://voltti.herokuapp.com/bolt/updateOrder/{id}',
+      params: {id: orderID}
     });
-    
-  }
-
-  confirmOrder = () => {
-    let newOrders = [...this.state.orders]
         
-        for(var i in newOrders){
-
-          if(newOrders[i].customerId === this.state.user.userId && newOrders[i].orderStatus === 'DELIVERED'){
-            newOrders[i].orderStatus = 'DONE'
-            newOrders[i].orderDoneAt = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
-
-        console.log("This should be handled differently via Spring or AXIOS.")
-
-          this.setState({orders:newOrders});
-          }
-        }
   }
 
   overviewChange = id => { 
     this.setState({overviewId: id, orderviewActive:true})
   }
 
-  addToOrder = (id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime) => {
+  addToOrder = (productID,restaurantID,restaurantName,foodName,photoPath,price,prepareTime) => {
 
     let newTemplateOfOrder = [...this.state.tempOrder]
     var actionDone = false
     let idcheck
 
-    this.priceSaver(restaurantId,price);
+    this.priceSaver(restaurantID,price);
     
-    if(!newTemplateOfOrder.findIndex(index => index.id === id) && actionDone === false)
+    if(!newTemplateOfOrder.findIndex(index => index.id === productID) && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === productID)
         newTemplateOfOrder[idcheck].quantity += 1
         actionDone = true;
       }
 
-    if(!newTemplateOfOrder.findIndex(index => index.id === id) === false && newTemplateOfOrder.findIndex(index => index.id === id) === -1 && actionDone === false)
+    if(!newTemplateOfOrder.findIndex(index => index.id === productID) === false && newTemplateOfOrder.findIndex(index => index.id === id) === -1 && actionDone === false)
       {
-        newTemplateOfOrder.push({"id":id,"restaurantId":restaurantId,"restaurantName":restaurantName,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
+        newTemplateOfOrder.push({"productID":productID,"restaurantId":restaurantID,"restaurantName":restaurantName,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
         actionDone = true;
       }
-    if(newTemplateOfOrder.findIndex(index => index.id === id) >=0 && actionDone === false)
+    if(newTemplateOfOrder.findIndex(index => index.productID === productID) >=0 && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
+        idcheck = newTemplateOfOrder.findIndex(index => index.productID === productID)
         newTemplateOfOrder[idcheck].quantity += 1
         actionDone = true;
       }
@@ -427,7 +207,7 @@ class App extends React.Component {
     this.setState({tempOrder:newTemplateOfOrder})
   }
 
-  reduceFromOrder = (id, restaurantID) => {
+  reduceFromOrder = (productID, restaurantID) => {
 
     let newTemplateOfOrder = [...this.state.tempOrder]
     let newTemplatePrices = [...this.state.orderPrices]
@@ -437,11 +217,11 @@ class App extends React.Component {
 
     let orderIdcheck = newTemplatePrices.findIndex(index => index.id === restaurantID)    // restaurant Id Pricelistiltä
 
-    if(newTemplateOfOrder.findIndex(index => index.id === id) >=0 && actionDone === false)
+    if(newTemplateOfOrder.findIndex(index => index.productID === productID) >=0 && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.id === id && index.restaurantId === restaurantID)
+        idcheck = newTemplateOfOrder.findIndex(index => index.productID === productID && index.restaurantId === restaurantID)
         newTemplateOfOrder[idcheck].quantity -= 1
-        tempResId = newTemplateOfOrder.findIndex(index => index.id === id )
+        tempResId = newTemplateOfOrder.findIndex(index => index.productID === productID )
         newTemplatePrices[orderIdcheck].price -= newTemplateOfOrder[tempResId].price;
 
         if(newTemplateOfOrder[idcheck].quantity === 0){
@@ -457,43 +237,6 @@ class App extends React.Component {
 
   }
 
-  makeOrder = (index, customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime) => {
-    
-    let copyOfOrders = [...this.state.orders]
-    
-    var indexid = Math.max.apply(Math, copyOfOrders.map(function(o) { return o.id; }))
-
-    console.log(indexid)
-    if(copyOfOrders.length <= 0){
-       indexid = 1;
-     }
-    else{
-       indexid = index
-    }
-
-    copyOfOrders.push({
-      id: indexid,
-      customerId: customerId,
-      restaurantId: restaurantId,
-      restaurantName:restaurantName,
-      customerName: customerName,
-      address: address,
-      postNumber: postnumber,
-      totalCost: totalCost,
-      orderPlacedAt:new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString(),
-      orderPreparedAt:null,
-      orderReadyToDispatchAt:null,
-      orderDispatchedAt:null,
-      orderDeliveredAt:null,
-      orderDoneAt:null,
-      productsOrdered: productsOrdered,
-      prepareTime: prepareTime,
-      deliveryTime: deliveryTime,
-      orderStatus: "PLACED"  
-    })
-
-    this.setState({orders:copyOfOrders})
-  }
 
   clearOrderFromTempOrder = (rId) => {
     let newTemplateOfOrder = [...this.state.tempOrder]
@@ -583,12 +326,9 @@ class App extends React.Component {
 
           defaultScrollActivate={this.defaultScrollActivate}
           reduceFromOrder={this.reduceFromOrder}
-          deleteItem ={ this.deleteItem }
           addToOrder ={ this.addToOrder }
-          addNewRestaurant={ this.addNewRestaurant}
           editRestaurant={this.editRestaurant}
           defaultActivate={ this.defaultActivate}
-          makeOrder={ this.makeOrder}
           clearOrderFromTempOrder={ this.clearOrderFromTempOrder }
           getRestaurantBalance = {this.getRestaurantBalance}
         />
@@ -607,21 +347,15 @@ class App extends React.Component {
           customerOrderHistoryActive= {this.state.customerOrderHistoryActive}
           orderPreviewActive= {this.state.orderPreviewActive}
           editUserActive = {this.state.editUserActive}
-          addNewMenuItem={this.addNewMenuItem}
           overviewChange={this.overviewChange}
-          confirmOrder={this.confirmOrder}
           reduceFromOrder={this.reduceFromOrder}
           previewOrderActivate={this.previewOrderActivate}
           getRestaurantBalance = {this.getRestaurantBalance}
-          editUser={this.editUser}
           
         />
       </div>
       : 
         <ManagerView 
-          moveToPreparation={ this.moveToPreparation } 
-          setToDispatched = { this.setToDispatched } 
-          products= { this.state.products } 
           orders= { this.state.orders }
           user= { this.state.user }
           restaurant = {this.state.restaurant}
@@ -658,8 +392,8 @@ class App extends React.Component {
       <>
         <div>
           <MenuBar
-          user = {this.state.user}
-          restaurant = {this.state.restaurant}
+          Useri = {this.state.Useri}
+          Restaurant = {this.state.Useri.Restaurant}
           menuBarActive={this.state.menuBarActive}
           defaultUserBarActive={this.state.defaultUserBarActive}
           defaultBarWithoutSearchActive={this.state.defaultBarWithoutSearchActive}
@@ -684,7 +418,6 @@ class App extends React.Component {
           customerOrderHistoryviewActivate = {this.customerOrderHistoryviewActivate}
           loginActivate = {this.loginActivate}
           />
-          {/* {()=> {this.renderSwitch()}} */}
           
 
           {this.state.loginActive? <div>{loginBar}</div> : <></>}

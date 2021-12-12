@@ -34,9 +34,11 @@ export default function SearchResult(props) {
           <div className={ styles.name } class="ordersByIdColored"><b>{ props.foodName } </b><text className={ styles.price }>{ props.price } €</text></div>
           <div><hr className={ styles.productHorizontalLine }/></div>
           <div><i className={ styles.description }>{ props.description }</i></div>
-          <div>From <b className={ styles.description }>{ props.category }</b> restaurant: <br/><b>{ props.restaurantName}</b></div>
-          
-          <div><button className={styles.addButton} onClick={() => addToOrder(props.id, props.restaurantId, 
+          <div>From <b className={ styles.description }> {props.category}</b> restaurant: <br/><b>{ props.restaurantName}</b></div>
+          {/* <div>From <b className={ styles.description }> {props.category === NULL ? <></> : <>{ props.category }</>}</b> restaurant: <br/><b>{ props.restaurantName}</b></div> */}
+          {/* Backendin tuotevalikoiman 4:stä tuotteesta 3 on ravintolattomie ja kategorisoimattomia. En saa pyyntöjä läpi edes yllä olevan kierron kautta. 
+          Veikkaan että restaurantName herjaa myös, kun category = NULL katoaa. */}
+          <div><button className={styles.addButton} onClick={() => addToOrder(props.productID, props.restaurantID, 
             props.restaurantName, props.foodName, props.photoPath, props.price, props.prepareTime )}>Add to Order</button></div>
           
         </div>

@@ -5,15 +5,15 @@ import SearchResult from './SearchResult';
 
 export default function SearchView(props) {
 
-  const addToOrder = (id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime) => {
-    props.addToOrder(id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime)
+  const addToOrder = (productID,restaurantID,restaurantName,name,photoPath,price,prepareTime) => {
+    props.addToOrder(productID,restaurantID,restaurantName,name,photoPath,price,prepareTime)
   }
 
   return (
     <div>
       <div className={ styles.presentationModeGrid }>
       {
-        props.items.map(item => <SearchResult key={item.id} {...item} addToOrder={addToOrder}/>)
+        props.items.map(item => <SearchResult key={item.productID} {...item} addToOrder={addToOrder}/>)
         
       }
       </div>

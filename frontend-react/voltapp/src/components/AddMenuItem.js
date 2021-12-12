@@ -9,14 +9,31 @@ export default function AddMenuItem(props) {
     const [newPrice, setPrice] = useState("");
     const [newMenuItemUrl, setNewMenuItemUrl] = useState("");
     const [newPrepareTime, setNewPrepareTime] = useState("");
+    const [newFoodType,setNewFoodType] = useState("");
     
     const addNewMenuItem = () => {
-        props.addNewMenuItem(newFoodName, newDescription,
-            newMenuItemUrl, parseInt(newPrepareTime), parseInt(newPrice));
+
+            axios({
+                method:'post',
+                url:'https://voltti.herokuapp.com/bolt/addProductToRestaurant',
+                data: {
+                    name:newFoodName,
+                    photoPath: newMenuItemUrl,
+                    foodType:newFoodType,
+                    prepareTime: newPrepareTime,
+                    price: newPrice,
+                    restaurantID: props.Useri.Restaurant.restaurantID, 
+                    category: props.Useri.Restaurant.type
+                    //description: newDescription,   missä on tuotteen kuvaus? 
+                }
+              });  
     }
 
-    
-    //<div>Food Type: <br/><Select className={ styles.enterUser } placeholder="Type of Food" options={foodTypes} onChange={ (event) => setRestaurantType(event.label) }/></div>
+    const foodTypes = [
+        { label:"MEAL", value: 1},
+        { label:"DRINK", value: 2},
+        { label:"SNACK", value: 3}
+      ]
 
         let addMenuItem = (
             <div className={ styles.addMenuItemContainer }>
@@ -26,6 +43,9 @@ export default function AddMenuItem(props) {
             
             <div>Description: <br/><input type="text" placeholder="Describe product shortly" minLength = "10" className={ styles.enterUser }
                 onChange={ (event) => setDescription(event.target.value) }></input></div>
+
+            <div>Foodtype Type: <br/><Select className={ styles.enterUser } placeholder="Type of Food" options={foodTypes} 
+            onChange={ (event) => setNewFoodType(event.label) }/></div>
             
             <div>Image of Product(url): <br/><input type="text" placeholder="http://adress-for-a-picture.com/123.jpg" minLength = "20" className={ styles.enterUrl }
                 onChange={ (event) => setNewMenuItemUrl(event.target.value) }></input></div>

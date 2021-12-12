@@ -22,13 +22,43 @@ export default function ContentContainer(props){
     defaultScrollActivate()
     }
 
-    const defaultScrollActivate = () => {
+  const defaultScrollActivate = () => {
       props.defaultScrollActivate()
     }
 
-  const makeOrder = (index,customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime) => {
-      console.log(index,customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime)
-      props.makeOrder(index,customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime)
+  const makeOrder = (customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered) => {
+      //console.log(customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime)
+      
+      axios({
+        method:'post',
+        url:'https://voltti.herokuapp.com/bolt/addOrder',
+        data: 
+        {
+          UserID: customerId,
+          restaurantID: restaurantId,
+          restaurantName:restaurantName,
+          customerName: customerName,
+          address: address,
+          postNumber: postnumber,
+          totalCost: totalCost,
+          products: productsOrdered,
+          // prepareTime: prepareTime,
+          // deliveryTime: deliveryTime  Kuinka frontin ajastin toimii ilman näitä ?
+        }
+      });
+      
+      // BACKEND ORDER POHJA:
+      //----------------------
+      // private String orderID;
+      // private String userID;
+      // private String restaurantID;
+      // private List<Product> products;
+      // private String orderTime;
+      // private String orderDelivered;
+      // private status orderStatus;
+      // private String totalPrepareTime;
+      // private float totalCost;
+
   }
 
   const clearOrderFromTempOrder = (rId) => {
@@ -39,7 +69,7 @@ export default function ContentContainer(props){
 
     if(alternativeAddress === "" && alternativePostNumber === ""){
 
-      if(props.role === "CUSTOMER"){
+      if(props.Useri.role === "CUSTOMER"){
   
         var ref = {};
     
@@ -61,12 +91,13 @@ export default function ContentContainer(props){
         }, []);
     
     
-        var intti = 0;
+        
         for(const element of res){ 
         if(rId === element[0].restaurantId){
-            intti++;
-                makeOrder(intti+Math.max.apply(Math, props.orders.map(function(o) { return o.id; })),props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
-                props.user.surName,props.user.address,props.user.postNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
+            
+                makeOrder(props.Useri.userID,element[0].restaurantID,element[0].restaurantName,props.Useri.fname + " " + 
+                props.Useri.lname,props.Useri.address,props.Useri.postNum,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element)
+                //props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
                 };
               clearOrderFromTempOrder(rId)
             }
@@ -105,12 +136,13 @@ export default function ContentContainer(props){
           }, []);
       
       
-          var intti = 0;
+          
           for(const element of res){ 
           if(rId === element[0].restaurantId){
-              intti++;
-                  makeOrder(intti+Math.max.apply(Math, props.orders.map(function(o) { return o.id; })),props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
-                  props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
+              
+                  makeOrder(props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
+                  props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element)
+                  //props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
                   };
                 clearOrderFromTempOrder(rId)
               }
@@ -125,8 +157,6 @@ export default function ContentContainer(props){
 
       }
     }
-
-    
 
   const templateOfOrder = () => {
     
@@ -192,8 +222,8 @@ export default function ContentContainer(props){
       PRODUCTS TO BE ORDERED:<br/><br/>
       <text className={styles.orderinfoText}>if you want to order the products elsewhere, <br/>
       please include alternative address info:</text><br/>
-      <input type="text" placeholder={props.user.address} minLength = "10" 
-                onChange={ (event) => setAlternativeAddress(event.target.value) }></input> - <input type="text" placeholder={props.user.postNumber} minLength = "10" className={ styles.alternativeAddress } 
+      <input type="text" placeholder={props.Useri.address} minLength = "10" 
+                onChange={ (event) => setAlternativeAddress(event.target.value) }></input> - <input type="text" placeholder={props.Useri.postNumber} minLength = "10" className={ styles.alternativeAddress } 
                 onChange={ (event) => setAlternativePostNumber(event.target.value) }></input>
       { templateOfOrder() }
     </div>
@@ -233,7 +263,7 @@ export default function ContentContainer(props){
     <div>
         <MenuView items={ props.items.filter((item) => 
             (item.restaurantId === props.restaurant.restaurantId))}
-        deleteItem ={ props.deleteItem }/>
+        />
     </div>
     </>
 

@@ -10,7 +10,8 @@ class AddMenuItem extends Component {
             newDescription: "",
             newPrice: "",
             newMenuItemUrl:"",
-            newPrepareTime: ""
+            newPrepareTime: "",
+            newFoodType: ""
         }
       }
 
