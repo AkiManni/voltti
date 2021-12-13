@@ -48,7 +48,6 @@ class App extends React.Component {
       restaurant: {},
       Restaurant:{},
       defaultScroll: false,
-      isLogged: false,
 
       menuBarActive: true,
       defaultUserBarActive: true,
@@ -108,8 +107,7 @@ class App extends React.Component {
     firstName: null,
     surName: null,
     address: null,
-    postNumber: null,
-    isManager: false} }) } 
+    postNumber: null} }) } 
 
   createRestaurantActive = () => { this.setState( {actionDone:false, role:"MANAGER", createRestaurant: true, editRestaurantActive: false, actionString:"EDITCREATERESTAURANT"})}
 
@@ -158,7 +156,7 @@ class App extends React.Component {
           authToken(Cookies.get('jwtToken'));
 
           if(Cookies.get('jwtToken')){
-            if(this.state.Useri.username === "" && this.state.isLogged === false){
+            if(this.state.Useri.username === "" ){
 
 
               this.setState(
@@ -168,23 +166,20 @@ class App extends React.Component {
                     Role:Cookies.get('Role'),
                     Restaurant:{}
                   },
-                  role:Cookies.get('Role'),
+                  role:Cookies.get('Role').toString(),
                   actionString:"MAIN"
               });
               
-              if(this.state.role === "MANAGER"){
+            }
+            else{
+              if(this.state.Useri.role === "MANAGER"){
                 this.managerActivate()
               }
               else{
                 this.customerActivate()
               }
-            
-            }
-            else{
+              
               console.log(this.state.Useri)
-              console.log(Cookies.get('jwtToken'))
-              console.log(Cookies.get('username'))
-              console.log(Cookies.get('Role'))
               
               console.log(this.state.role)
               
@@ -489,7 +484,8 @@ class App extends React.Component {
       {(() => {
 
       // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
-        switch(this.state.Useri.Role){
+      console.log(this.state.role)
+        switch(this.state.Useri.role){
           case "CUSTOMER":
               switch(this.state.actionString){
                 case "MAIN":

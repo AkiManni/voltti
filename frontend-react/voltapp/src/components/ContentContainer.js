@@ -5,6 +5,7 @@ import SearchView from './SearchView';
 import Orderview from './Orderview';
 import CreateRestaurant from './CreateRestaurant';
 import { useState } from 'react';
+import axios from 'axios'
 
 export default function ContentContainer(props){
 
@@ -262,7 +263,7 @@ export default function ContentContainer(props){
     <>
     <div>
         <MenuView items={ props.items.filter((item) => 
-            (item.restaurantId === props.restaurant.restaurantId))}
+            (item.restaurantID === props.Restaurant.restaurantID))}
         />
     </div>
     </>
