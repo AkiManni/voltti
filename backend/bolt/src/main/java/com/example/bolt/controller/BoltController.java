@@ -195,6 +195,11 @@ List<String> roles = userDetails.getAuthorities().stream()
         return this.us.findAll();
     }
 
+    @GetMapping("/getUser/{loginCredential}")
+    public Useri getUserByName(@PathVariable String loginCredential) {
+        return this.us.findByLoginCredential(loginCredential);
+    }
+
     @PostMapping("/addUser")
     public Useri addUsers(@RequestBody Useri user) {
     	Useri u = user;
