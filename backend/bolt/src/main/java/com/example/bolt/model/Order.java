@@ -30,14 +30,14 @@ public class Order {
     private String orderTime;
     private String orderDelivered;
     private status orderStatus;
-    private String totalPrepareTime;
+    private StatusTime times;
     private float totalCost;
 
     public Order() {
-      this.products = new ArrayList<>();
+        this.products = new ArrayList<>();
     }
 
     public void addProducts(Product product) {
-      this.products.add(product);
+        this.products.add(product);
     }
 }

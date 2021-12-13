@@ -52,4 +52,8 @@ public class Restaurant {
         this.menus.remove(p);
     }
 
+    public void addRestaurantBalance(float price) {
+        this.restaurantBalance += price;
+    }
+
 }

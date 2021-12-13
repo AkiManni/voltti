@@ -187,7 +187,6 @@ List<String> roles = userDetails.getAuthorities().stream()
    
 
     
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
     ///////////////////////////////////////USER///////////////////////////////////////////
 
@@ -390,7 +389,7 @@ List<String> roles = userDetails.getAuthorities().stream()
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
             Order.status.PLACED,
-            "",
+            new StatusTime(getTime()),
             5 + p.getPrice()
         );
         o.addProducts(p);
@@ -401,34 +400,42 @@ List<String> roles = userDetails.getAuthorities().stream()
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
+        StatusTime s = o.getTimes();
+        Restaurant r = this.re.findById(o.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
             case PLACED:
                 o.setOrderStatus(Order.status.IN_PREPARATION);
+                s.setInPreparationTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case IN_PREPARATION:
                 o.setOrderStatus(Order.status.READY_TO_DISPATCH);
+                s.setReadyToDispathTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case READY_TO_DISPATCH:
                 o.setOrderStatus(Order.status.DISPATCHED);
+                s.setDispatchedTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DISPATCHED:
                 o.setOrderStatus(Order.status.DELIVERED);
+                s.setDeliveredTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DELIVERED:
                 o.setOrderStatus(Order.status.DONE);
-                o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
-                o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
+                s.setDoneTime(getTime());
+                s.setTotalTime(getTimeDifference(s.getPlacedTime()));
                 this.or.save(o);
                 
-                for (Product products : o.getProducts()) {
-                    Product p = products;
-                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
-                    r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
+                for (Product p : o.getProducts()) {
+                    r.addRestaurantBalance(p.getPrice());
                     this.re.save(r);
                 }
                 return "Order is finished.";
@@ -439,8 +446,10 @@ List<String> roles = userDetails.getAuthorities().stream()
         }
     }
 
-    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+    ///////////////////////////////////////CLOCK///////////////////////////////////////////
 
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
+    
     private String getTimeDifference(String orderTime) throws ParseException {
         long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
         return String.format(
@@ -451,33 +460,43 @@ List<String> roles = userDetails.getAuthorities().stream()
             );
     }
 
+    private String getTime() {
+        return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+
     //Tarkistaa ja luo uuden tyhjän id:n
     private String generateID(int i) {
         int k = 0;
         switch(i) {
             case 0:
+                k = (int) this.us.count();
                 while (true) {
                     String j = "U";
                     if (this.us.findById(j + k).orElse(null) == null) return j + k;
                     else k++;
                 }
             case 2:
+                k = (int) this.re.count();
                 while (true) {
                     String j = "R";
                     if (this.re.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 3:
+                k = (int) this.pr.count();
                 while (true) {
                     String j = "P";
                     if (this.pr.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 4:
+                k = (int) this.or.count();
                 while (true) {
                     String j = "O";
                     if (this.or.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             default:
                 return null;
