@@ -195,7 +195,6 @@ List<String> roles = userDetails.getAuthorities().stream()
    
 
     
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
 
     ///////////////////////////////////////USER///////////////////////////////////////////
 
@@ -266,6 +265,15 @@ List<String> roles = userDetails.getAuthorities().stream()
         return r;
     }
 
+    @PostMapping("/editRestaurant")
+    public Restaurant editRestaurant(@RequestBody Restaurant restaurant) {
+        Restaurant r = this.re.findById(restaurant.getRestaurantID()).orElse(null);
+        if (r != null) {
+            this.re.save(r);
+        }
+        return r;
+    }
+
     @DeleteMapping("/deleteRestaurant/{id}")
     public String deleteRestaurant(@PathVariable("id") String id) {
         if (this.re.findById(id).isEmpty()) return "No restaurant found.";
@@ -285,59 +293,69 @@ List<String> roles = userDetails.getAuthorities().stream()
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
-        p.setProductID(generateID(3));
-        p.setName(p.getName().replace(" ", "_"));
-        this.pr.save(p);
+
+        Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+        if (r != null) {
+            p.setProductID(generateID(3));
+            p.setName(p.getName().replace(" ", "_"));
+            p.setRestaurantName(r.getName());
+            p.setCategory(r.getCategory());
+            r.addMenus(p);
+            this.re.save(r);
+            this.pr.save(p);
+        }
         return p;
     }
 
-    @PostMapping("/addProductToRestaurant")
-    public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
-        Product p = this.pr.findById(variables.get("productID")).orElse(null);
-        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+    // @PostMapping("/addProductToRestaurant")
+    // public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
+    //     Product p = this.pr.findById(variables.get("productID")).orElse(null);
+    //     Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
-        if (r == null) return "No restaurant found.";
-        else if (p == null) return "No product found.";                                     // add product ja add product to restaurant pitäisi olla yks funktio?
-        else {
-            List<Product> menus = r.getMenus();
-            for (Product item : menus) {
-                if (item == p) return "This product already exists.";
-            }
-            r.addMenus(p);
-            p.setRestaurantID(r.getRestaurantID());
-            p.setCategory(r.getCategory());
-            this.re.save(r);
-            this.pr.save(p);
-            return "(͠≖ ͜ʖ͠≖)👌";
-        }
-    }
+    //     if (r == null) return "No restaurant found.";
+    //     else if (p == null) return "No product found.";                                     // add product ja add product to restaurant pitäisi olla yks funktio?
+    //     else {
+    //         List<Product> menus = r.getMenus();
+    //         for (Product item : menus) {
+    //             if (item == p) return "This product already exists.";
+    //         }
+    //         r.addMenus(p);
+    //         p.setRestaurantID(r.getRestaurantID());
+    //         p.setCategory(r.getCategory());
+    //         this.re.save(r);
+    //         this.pr.save(p);
+    //         return "(͠≖ ͜ʖ͠≖)👌";
+    //     }
+    // }
 
-    @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
-    public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
-        Restaurant r = this.re.findById(restaurantID).orElse(null);
-        Product p = this.pr.findById(productID).orElse(null);
+    // @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
+    // public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
+    //     Restaurant r = this.re.findById(restaurantID).orElse(null);
+    //     Product p = this.pr.findById(productID).orElse(null);
 
-        if (r == null) return "No restaurant found.";
-        else if (p == null) return "No product found.";
-        List<Product> menus = r.getMenus();
-        for (Product item : menus) {
-            if (item.equals(p)) {
-                menus.remove(p);
-                r.setMenus(menus);
-                p.setRestaurantID(null);
-                p.setCategory(null);
-                this.pr.save(p);
-                this.re.save(r);
-                return r.toString();
-            }
-        }
-        return "This product doesn't exists in your menu.";
-    }
+    //     if (r == null) return "No restaurant found.";
+    //     else if (p == null) return "No product found.";
+    //     List<Product> menus = r.getMenus();
+    //     for (Product item : menus) {
+    //         if (item.equals(p)) {
+    //             menus.remove(p);
+    //             r.setMenus(menus);
+    //             this.pr.deleteById(p.getProductID());
+    //             this.re.save(r);
+    //             return r.toString();
+    //         }
+    //     }
+    //     return "This product doesn't exists in your menu.";
+    // }
 
     @DeleteMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") String id) {
-        if (this.pr.findById(id).isEmpty()) return "No product found.";
+        Product p = this.pr.findById(id).orElse(null);
+        if (p == null) return "No product found.";
         else {
+            Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+            r.removeMenus(p);
+            this.re.save(r);
             this.pr.deleteById(id);
         }
         return "Deleted user " + id + ".";
@@ -379,7 +397,7 @@ List<String> roles = userDetails.getAuthorities().stream()
             dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
             "",
             Order.status.PLACED,
-            "",
+            new StatusTime(getTime()),
             5 + p.getPrice()
         );
         o.addProducts(p);
@@ -390,34 +408,42 @@ List<String> roles = userDetails.getAuthorities().stream()
     @GetMapping("/updateOrder/{id}")
     public String updateOrder(@PathVariable("id") String id) throws ParseException {
         Order o = this.or.findById(id).orElse(null);
+        StatusTime s = o.getTimes();
+        Restaurant r = this.re.findById(o.getRestaurantID()).orElse(null);
 
         switch (o.getOrderStatus()) {
             case PLACED:
                 o.setOrderStatus(Order.status.IN_PREPARATION);
+                s.setInPreparationTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case IN_PREPARATION:
                 o.setOrderStatus(Order.status.READY_TO_DISPATCH);
+                s.setReadyToDispathTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case READY_TO_DISPATCH:
                 o.setOrderStatus(Order.status.DISPATCHED);
+                s.setDispatchedTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DISPATCHED:
                 o.setOrderStatus(Order.status.DELIVERED);
+                s.setDeliveredTime(getTime());
+                o.setTimes(s);
                 this.or.save(o);
                 return "Order Updated to: " + o.getOrderStatus();
             case DELIVERED:
                 o.setOrderStatus(Order.status.DONE);
-                o.setOrderDelivered(dateFormat.format(Calendar.getInstance().getTime()));
-                o.setTotalPrepareTime(getTimeDifference(o.getOrderTime()));
+                s.setDoneTime(getTime());
+                s.setTotalTime(getTimeDifference(s.getPlacedTime()));
                 this.or.save(o);
                 
-                for (Product products : o.getProducts()) {
-                    Product p = products;
-                    Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
-                    r.setRestaurantBalance(r.getRestaurantBalance() + o.getTotalCost());
+                for (Product p : o.getProducts()) {
+                    r.addRestaurantBalance(p.getPrice());
                     this.re.save(r);
                 }
                 return "Order is finished.";
@@ -428,8 +454,10 @@ List<String> roles = userDetails.getAuthorities().stream()
         }
     }
 
-    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+    ///////////////////////////////////////CLOCK///////////////////////////////////////////
 
+    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
+    
     private String getTimeDifference(String orderTime) throws ParseException {
         long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
         return String.format(
@@ -440,33 +468,43 @@ List<String> roles = userDetails.getAuthorities().stream()
             );
     }
 
+    private String getTime() {
+        return dateFormat.format(Calendar.getInstance().getTime());
+    }
+
+    ///////////////////////////////////////EXTRA///////////////////////////////////////////
+
     //Tarkistaa ja luo uuden tyhjän id:n
     private String generateID(int i) {
         int k = 0;
         switch(i) {
             case 0:
+                k = (int) this.us.count();
                 while (true) {
                     String j = "U";
                     if (this.us.findById(j + k).orElse(null) == null) return j + k;
                     else k++;
                 }
             case 2:
+                k = (int) this.re.count();
                 while (true) {
                     String j = "R";
                     if (this.re.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 3:
+                k = (int) this.pr.count();
                 while (true) {
                     String j = "P";
                     if (this.pr.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             case 4:
+                k = (int) this.or.count();
                 while (true) {
                     String j = "O";
                     if (this.or.findById(j + k).orElse(null) == null) return j + k;
-                    else k++;
+                    k++;
                 }
             default:
                 return null;

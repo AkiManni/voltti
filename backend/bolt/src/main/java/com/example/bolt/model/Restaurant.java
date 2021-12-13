@@ -19,6 +19,7 @@ public class Restaurant {
         CASUAL,
         FAST
     }
+
     public enum level {
         €,
         €€,
@@ -47,11 +48,12 @@ public class Restaurant {
         this.menus.add(p);
     }
 
+    public void removeMenus(Product p) {
+        this.menus.remove(p);
+    }
 
+    public void addRestaurantBalance(float price) {
+        this.restaurantBalance += price;
+    }
 
-
-
-
-    
 }
- 
