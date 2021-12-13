@@ -23,6 +23,9 @@ public class Product {
     private type foodType;
     private int prepareTime;
     private float price;
+    private String description;
     private String restaurantID;
+    private String restaurantName;
     private Restaurant.type category;
+
 }

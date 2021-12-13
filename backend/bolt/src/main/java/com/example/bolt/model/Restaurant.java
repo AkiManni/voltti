@@ -19,6 +19,7 @@ public class Restaurant {
         CASUAL,
         FAST
     }
+
     public enum level {
         €,
         €€,
@@ -47,11 +48,4 @@ public class Restaurant {
         this.menus.add(p);
     }
 
-
-
-
-
-
-    
 }
- 

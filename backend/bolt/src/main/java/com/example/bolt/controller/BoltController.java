@@ -258,6 +258,15 @@ List<String> roles = userDetails.getAuthorities().stream()
         return r;
     }
 
+    @PostMapping("/editRestaurant")
+    public Restaurant editRestaurant(@RequestBody Restaurant restaurant) {
+        Restaurant r = this.re.findById(restaurant.getRestaurantID()).orElse(null);
+        if (r != null) {
+            this.re.save(r);
+        }
+        return r;
+    }
+
     @DeleteMapping("/deleteRestaurant/{id}")
     public String deleteRestaurant(@PathVariable("id") String id) {
         if (this.re.findById(id).isEmpty()) return "No restaurant found.";
@@ -277,32 +286,40 @@ List<String> roles = userDetails.getAuthorities().stream()
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product Product) {
         Product p = Product;
-        p.setProductID(generateID(3));
-        p.setName(p.getName().replace(" ", "_"));
-        this.pr.save(p);
+
+        Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+        if (r != null) {
+            p.setProductID(generateID(3));
+            p.setName(p.getName().replace(" ", "_"));
+            p.setRestaurantName(r.getName());
+            p.setCategory(r.getCategory());
+            r.addMenus(p);
+            this.re.save(r);
+            this.pr.save(p);
+        }
         return p;
     }
 
-    @PostMapping("/addProductToRestaurant")
-    public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
-        Product p = this.pr.findById(variables.get("productID")).orElse(null);
-        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+    // @PostMapping("/addProductToRestaurant")
+    // public String addProductToRestaurant(@RequestBody Map<String, String> variables) {
+    //     Product p = this.pr.findById(variables.get("productID")).orElse(null);
+    //     Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
-        if (r == null) return "No restaurant found.";
-        else if (p == null) return "No product found.";                                     // add product ja add product to restaurant pitäisi olla yks funktio?
-        else {
-            List<Product> menus = r.getMenus();
-            for (Product item : menus) {
-                if (item == p) return "This product already exists.";
-            }
-            r.addMenus(p);
-            p.setRestaurantID(r.getRestaurantID());
-            p.setCategory(r.getCategory());
-            this.re.save(r);
-            this.pr.save(p);
-            return "(͠≖ ͜ʖ͠≖)👌";
-        }
-    }
+    //     if (r == null) return "No restaurant found.";
+    //     else if (p == null) return "No product found.";                                     // add product ja add product to restaurant pitäisi olla yks funktio?
+    //     else {
+    //         List<Product> menus = r.getMenus();
+    //         for (Product item : menus) {
+    //             if (item == p) return "This product already exists.";
+    //         }
+    //         r.addMenus(p);
+    //         p.setRestaurantID(r.getRestaurantID());
+    //         p.setCategory(r.getCategory());
+    //         this.re.save(r);
+    //         this.pr.save(p);
+    //         return "(͠≖ ͜ʖ͠≖)👌";
+    //     }
+    // }
 
     @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
     public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
@@ -316,9 +333,7 @@ List<String> roles = userDetails.getAuthorities().stream()
             if (item.equals(p)) {
                 menus.remove(p);
                 r.setMenus(menus);
-                p.setRestaurantID(null);
-                p.setCategory(null);
-                this.pr.save(p);
+                this.pr.deleteById(p.getProductID());
                 this.re.save(r);
                 return r.toString();
             }
