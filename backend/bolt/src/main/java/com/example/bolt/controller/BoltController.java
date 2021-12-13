@@ -152,13 +152,21 @@ private RoleRepository roleRepository;
 
 UserDetails userDetails = (UserDetails) authentication.getPrincipal();		
 List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
-				.collect(Collectors.toList());
+.map(item -> item.getAuthority())
+.collect(Collectors.toList());
 
  final String jwt = JwtUtil.generateToken(username);
     jsonObject.put("token", jwt);
     jsonObject.put("name", authentication.getName());
-    jsonObject.put("Role", roles);
+
+    if(roles.contains("MANAGER")){
+        jsonObject.put("Role", "MANAGER");
+    }
+    else{
+        jsonObject.put("Role", "CUSTOMER");
+    }
+    
+
 
 
     

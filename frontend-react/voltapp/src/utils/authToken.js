@@ -12,7 +12,8 @@ const authToken = (token) => {
   else {
     delete axios.defaults.headers.common["Authorization"];
 Cookies.remove(token);
-
+Cookies.remove("username");
+  Cookies.remove("Role");
   }
 
 

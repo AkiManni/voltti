@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import products from './products.json';
 import orders from './orders.json';
 import tempOrder from './tempOrder.json';
 import ManagerView from './components/ManagerView';
@@ -9,6 +8,8 @@ import ContentContainer from './components/ContentContainer';
 import SideBar from './components/SideBar';
 import data from './data.json'
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import authToken from "./utils/authToken";
 
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./components/User/Login";
@@ -38,9 +39,16 @@ class App extends React.Component {
       actionString:"MAIN",
       intervalId:"",
       overviewId:"",
+      Useri:{
+        username:"",
+        Restaurant:{},
+        Role:""
+      },
       user: {},
       restaurant: {},
+      Restaurant:{},
       defaultScroll: false,
+      isLogged: false,
 
       menuBarActive: true,
       defaultUserBarActive: true,
@@ -145,6 +153,45 @@ class App extends React.Component {
           });  
         }
 
+        if (Cookies.get('jwtToken')) {
+          //  console.log("käyttäjä on vielä tunnistautunut jwttokenilla " + Cookies.get('jwtToken'));
+          authToken(Cookies.get('jwtToken'));
+
+          if(Cookies.get('jwtToken')){
+            if(this.state.Useri.username === "" && this.state.isLogged === false){
+
+
+              this.setState(
+                {
+                  Useri:{
+                    username:Cookies.get('username'),
+                    Role:Cookies.get('Role'),
+                    Restaurant:{}
+                  },
+                  role:Cookies.get('Role'),
+                  actionString:"MAIN"
+              });
+              
+              if(this.state.role === "MANAGER"){
+                this.managerActivate()
+              }
+              else{
+                this.customerActivate()
+              }
+            
+            }
+            else{
+              console.log(this.state.Useri)
+              console.log(Cookies.get('jwtToken'))
+              console.log(Cookies.get('username'))
+              console.log(Cookies.get('Role'))
+              
+              console.log(this.state.role)
+              
+            }
+          }
+          }
+
   }
 
   componentDidMount(){
@@ -192,7 +239,7 @@ class App extends React.Component {
         actionDone = true;
       }
 
-    if(!newTemplateOfOrder.findIndex(index => index.id === productID) === false && newTemplateOfOrder.findIndex(index => index.id === id) === -1 && actionDone === false)
+    if(!newTemplateOfOrder.findIndex(index => index.productID === productID) === false && newTemplateOfOrder.findIndex(index => index.productID === productID) === -1 && actionDone === false)
       {
         newTemplateOfOrder.push({"productID":productID,"restaurantId":restaurantID,"restaurantName":restaurantName,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
         actionDone = true;
@@ -303,8 +350,8 @@ class App extends React.Component {
       <div>
         <ContentContainer 
           items = { this.state.items}
-          restaurant = { this.state.restaurant}
-          user = { this.state.user }
+          Restaurant = { this.state.restaurant}
+          Useri = { this.state.user }
           orders={this.state.orders} 
           overviewId={this.state.overviewId}
           tempOrder = {this.state.tempOrder}
@@ -394,6 +441,7 @@ class App extends React.Component {
           <MenuBar
           Useri = {this.state.Useri}
           Restaurant = {this.state.Useri.Restaurant}
+          restaurant = {this.state.restaurant}
           menuBarActive={this.state.menuBarActive}
           defaultUserBarActive={this.state.defaultUserBarActive}
           defaultBarWithoutSearchActive={this.state.defaultBarWithoutSearchActive}
@@ -441,7 +489,7 @@ class App extends React.Component {
       {(() => {
 
       // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
-        switch(this.state.role){
+        switch(this.state.Useri.Role){
           case "CUSTOMER":
               switch(this.state.actionString){
                 case "MAIN":
