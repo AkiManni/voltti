@@ -48,4 +48,8 @@ public class Restaurant {
         this.menus.add(p);
     }
 
+    public void removeMenus(Product p) {
+        this.menus.remove(p);
+    }
+
 }

@@ -321,30 +321,34 @@ List<String> roles = userDetails.getAuthorities().stream()
     //     }
     // }
 
-    @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
-    public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
-        Restaurant r = this.re.findById(restaurantID).orElse(null);
-        Product p = this.pr.findById(productID).orElse(null);
+    // @DeleteMapping("/deleteProductFromRestaurant/{restaurantID}/{productID}")
+    // public String deleteProductFromRestaurant(@PathVariable("restaurantID") String restaurantID, @PathVariable("productID") String productID) {
+    //     Restaurant r = this.re.findById(restaurantID).orElse(null);
+    //     Product p = this.pr.findById(productID).orElse(null);
 
-        if (r == null) return "No restaurant found.";
-        else if (p == null) return "No product found.";
-        List<Product> menus = r.getMenus();
-        for (Product item : menus) {
-            if (item.equals(p)) {
-                menus.remove(p);
-                r.setMenus(menus);
-                this.pr.deleteById(p.getProductID());
-                this.re.save(r);
-                return r.toString();
-            }
-        }
-        return "This product doesn't exists in your menu.";
-    }
+    //     if (r == null) return "No restaurant found.";
+    //     else if (p == null) return "No product found.";
+    //     List<Product> menus = r.getMenus();
+    //     for (Product item : menus) {
+    //         if (item.equals(p)) {
+    //             menus.remove(p);
+    //             r.setMenus(menus);
+    //             this.pr.deleteById(p.getProductID());
+    //             this.re.save(r);
+    //             return r.toString();
+    //         }
+    //     }
+    //     return "This product doesn't exists in your menu.";
+    // }
 
     @DeleteMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") String id) {
-        if (this.pr.findById(id).isEmpty()) return "No product found.";
+        Product p = this.pr.findById(id).orElse(null);
+        if (p == null) return "No product found.";
         else {
+            Restaurant r = this.re.findById(p.getRestaurantID()).orElse(null);
+            r.removeMenus(p);
+            this.re.save(r);
             this.pr.deleteById(id);
         }
         return "Deleted user " + id + ".";
