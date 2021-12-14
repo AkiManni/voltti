@@ -37,7 +37,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000/")
+@CrossOrigin(origins = "https://volttifrontti.herokuapp.com/")
 @RequestMapping("/bolt")
 public class BoltController {
    
