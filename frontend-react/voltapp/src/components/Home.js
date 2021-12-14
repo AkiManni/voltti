@@ -15,11 +15,9 @@ const Home = () => {
   const auth = useSelector((state) => state.auth);
   //console.log(auth.isLoggedIn + "Onko kirjautunut");
   return (
-   
-    <Alert style={{ backgroundColor: "#343A40", color: "#ffffff80" }}>
-    Welcome {auth.username}
-  
-  </Alert>
+   <div>
+
+     </div>
 
 
   );

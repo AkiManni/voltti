@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {Link} from 'react-router-dom'
 import {BrowserRouter} from "react-router-dom";
 
+
+
 export default function MenuBar(props){
     const onSearchFieldChange = (event) => {
 
@@ -12,10 +14,14 @@ export default function MenuBar(props){
         console.log(event.target.value);
         props.onSearchFieldChange(event);
       }
+
+     
+
+ 
       const dispatch = useDispatch();
       const logout = () => {
         dispatch(logoutUser());
-    
+
    
       };
     const defaultActivate = () => {
@@ -58,11 +64,29 @@ export default function MenuBar(props){
         props.editRestaurantInfoActivate();
     }
 
-    const loginActivate = (history) => { 
+    const loginActivate = () => { 
         props.loginActivate();
         
     }
+const testi = () =>{
+    logout();
+    window.location.href="/";
+    /*
+    const isLoggedIn = Cookies.get("jwtToken");
+    if (isLoggedIn == null){
 
+        window.location.reload();
+    }
+
+    else{
+
+
+        logout();
+        window.location.reload();
+     
+    }
+    */
+}
 
     
 
@@ -99,14 +123,11 @@ export default function MenuBar(props){
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-        <BrowserRouter>
-     
-     <Link to="/">
-     <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
-     </Link>   
-     </BrowserRouter>
        
-        <a id="3">http://localhost:3000/</a>
+        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
+ 
+       
+    
     </div>
     </>
 
@@ -120,12 +141,7 @@ export default function MenuBar(props){
         <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-        <BrowserRouter>
-     
-     <Link to="/">
-     <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
-     </Link>   
-     </BrowserRouter>    <a id="3">http://localhost:3000/</a>
+        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
     </div>
     </>
 
@@ -142,14 +158,9 @@ export default function MenuBar(props){
         <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
         <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
         <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
-        <button className={styles.menuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
+        <button className={styles.mesnuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
         <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
-        <BrowserRouter>
-     
-        <Link to="/">
-        <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
-        </Link>   
-        </BrowserRouter>
+        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
     </div>
     </>
 
