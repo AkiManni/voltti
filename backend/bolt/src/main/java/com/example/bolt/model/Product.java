@@ -22,7 +22,7 @@ public class Product {
     private String photoPath;
     private type foodType;
     private int prepareTime;
-    private float price;
+    private int price;
     private String description;
     private String restaurantID;
     private String restaurantName;

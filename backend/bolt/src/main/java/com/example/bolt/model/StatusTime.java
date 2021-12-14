@@ -10,7 +10,6 @@ public class StatusTime {
     private String dispatchedTime;
     private String deliveredTime;
     private String doneTime;
-    private String totalTime;
 
     public StatusTime(String placedTime) {
         this.placedTime = placedTime;

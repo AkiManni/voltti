@@ -3,11 +3,9 @@ package com.example.bolt.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import com.example.bolt.model.*;
 import com.example.bolt.repository.*;
@@ -36,6 +34,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000/")
@@ -383,29 +382,17 @@ List<String> roles = userDetails.getAuthorities().stream()
         return this.or.findByUserID(id);
     }
 
-    // @GetMapping(value="/getOrdersByRestaurantID/{id}")                               // käyttöä?
-    // public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
-    //     return this.or.findByRestaurantID(id);
-    // }
+    @GetMapping(value="/getOrdersByRestaurantID/{id}")                               // käyttöä?
+    public List<Order> getOrdersByRestaurantID(@PathVariable("id") String id) {
+        return this.or.findByRestaurantID(id);
+    }
     
     @PostMapping("/addOrder")
-    public Order addOrder(@RequestBody Map<String, String> ids) {
-        Product p = this.pr.findById(ids.get("productID")).orElse(null);
-        if (p == null) return null;
-        if (p.getRestaurantID() == null) return null;
-
-        Order o = new Order(
-            generateID(4),
-            ids.get("userID"),
-            p.getRestaurantID(),
-            new ArrayList<>(),
-            dateFormat.format(Calendar.getInstance().getTime()),    //luo tämän hetkisen ajan
-            "",
-            Order.status.PLACED,
-            new StatusTime(getTime()),
-            5 + p.getPrice()
-        );
-        o.addProducts(p);
+    public Order addOrder(@RequestBody Order order) {
+        Order o = order;
+        o.setOrderID(generateID(4));
+        o.setOrderStatus(Order.status.PLACED);
+        o.setTimes(new StatusTime(getTime()));
         this.or.save(o);
         return o;
     }
@@ -444,7 +431,6 @@ List<String> roles = userDetails.getAuthorities().stream()
             case DELIVERED:
                 o.setOrderStatus(Order.status.DONE);
                 s.setDoneTime(getTime());
-                s.setTotalTime(getTimeDifference(s.getPlacedTime()));
                 this.or.save(o);
                 
                 for (Product p : o.getProducts()) {
@@ -463,15 +449,15 @@ List<String> roles = userDetails.getAuthorities().stream()
 
     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss"); //yleinen aika formatti
     
-    private String getTimeDifference(String orderTime) throws ParseException {
-        long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
-        return String.format(
-            "%02d:%02d:%02d",
-            TimeUnit.MILLISECONDS.toHours(difference),
-            TimeUnit.MILLISECONDS.toMinutes(difference) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(difference)),
-            TimeUnit.MILLISECONDS.toSeconds(difference) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(difference))
-            );
-    }
+    // private String getTimeDifference(String orderTime) throws ParseException {
+    //     long difference = System.currentTimeMillis() - dateFormat.parse(orderTime).getTime();
+    //     return String.format(
+    //         "%02d:%02d:%02d",
+    //         TimeUnit.MILLISECONDS.toHours(difference),
+    //         TimeUnit.MILLISECONDS.toMinutes(difference) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(difference)),
+    //         TimeUnit.MILLISECONDS.toSeconds(difference) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(difference))
+    //         );
+    // }
 
     private String getTime() {
         return dateFormat.format(Calendar.getInstance().getTime());

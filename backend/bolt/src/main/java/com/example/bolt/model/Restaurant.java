@@ -36,7 +36,7 @@ public class Restaurant {
     private String photoPath;
     private type category;
     private List<Product> menus;
-    private float restaurantBalance;
+    private int restaurantBalance;
     private String operatingHours;
     private level priceLevel;
 
@@ -52,7 +52,7 @@ public class Restaurant {
         this.menus.remove(p);
     }
 
-    public void addRestaurantBalance(float price) {
+    public void addRestaurantBalance(int price) {
         this.restaurantBalance += price;
     }
 

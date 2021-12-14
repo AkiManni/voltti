@@ -25,13 +25,13 @@ public class Order {
     @Id
     private String orderID;
     private String userID;
+    private String address;
+    private String postNumber;
     private String restaurantID;
     private List<Product> products;
-    private String orderTime;
-    private String orderDelivered;
     private status orderStatus;
     private StatusTime times;
-    private float totalCost;
+    private int totalCost;
 
     public Order() {
         this.products = new ArrayList<>();
