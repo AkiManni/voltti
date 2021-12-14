@@ -34,6 +34,8 @@ const Login = (props) => {
          return props.history.push("/home");
                
       })
+
+   
       .catch((error) => {
         //jos kirjautuminen ei onnistunut
         console.log("virhe👌" +error);
@@ -42,6 +44,11 @@ const Login = (props) => {
         setError("  Invalid loginCredential and loginPassword");
       });
   };
+
+  const Registeruser = () => {
+    return props.history.push("/register");
+          
+ }
 
   const resetLoginForm = () => {
     setUser(initialState);
@@ -103,6 +110,18 @@ const Login = (props) => {
         disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
       >
         Login
+      </Button>{" "}
+
+      <Button
+      style={{marginLeft: '20px'} }
+        class="btn btn-primary my-1"
+        size="sm"
+        type="button"
+        variant="success"
+        onClick={Registeruser}
+        
+      >
+        Register
       </Button>{" "}
     </Form>
 

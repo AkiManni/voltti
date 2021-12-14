@@ -38,7 +38,12 @@ const Register = (props) => {
     setUser({ ...user, [name]: [value] });
     
   };
+      
+  const savelogin = () => {
+   
+    props.history.push("/");
 
+}
 
   const dispatch = useDispatch();
 
@@ -47,7 +52,7 @@ const Register = (props) => {
       .then((response) => {
         resetRegisterForm();
         setTimeout(() => {
-          props.history.push("/login");
+          props.history.push("/");
         }, 2000);
       })
 
@@ -62,6 +67,7 @@ const Register = (props) => {
         setShow(true);
         resetRegisterForm();
 
+  
 if(error.response.status == 403){
 
   setError("User is already registered");
@@ -201,6 +207,19 @@ if(error.response.status == 404){
         Register
       </Button>
  
+
+
+      <Button  
+      style={{marginTop: '20px', marginLeft: '20px'}}
+        class="btn btn-primary my-1"
+        size="sm"
+        type="button"
+        variant="success"
+        onClick={savelogin}
+   >
+      
+        Back to Login
+      </Button>
 </Form>
 
   );
