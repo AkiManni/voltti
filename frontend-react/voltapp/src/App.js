@@ -133,47 +133,7 @@ class App extends React.Component {
                       this.setState({items:json})
                   )
                   
-<<<<<<< HEAD
-                // APPCONFIG
-=======
-
->>>>>>> 6d1be38da1ff27cd84e9ec8e41edaf9137175b85
-                // public @Bean MongoClient mongoClient() {
-                //     return MongoClients.create("mongodb+srv://dbUser2:d3UQ21lsA6JynShY@cluster0.hetwd.mongodb.net/bolt");
-                // }
-            
-                // public @Bean MongoTemplate mongoTemplate() {
-                //     return new MongoTemplate(mongoClient(), "bolt");
-<<<<<<< HEAD
-                // }       
-=======
-                // }
-
-                  fetch(
-                    `https://voltti.herokuapp.com/bolt/getUser/${userCred}`)
-                                .then((res) => res.json())
-                                .then((json) => {
-                                    this.setState({
-                                        Useri: {
-                                          fname: json.fname,
-                                          lname: json.lname,
-                                          address: json.address,
-                                          postNum: json.postNum,
-                                          role:Cookies.get('Role'),
-                                          Restaurant:{}
-                                        },
-                                       
-                                    });
-                                })         
-        
-        // axios({      
-        //   method:'GET',
-        //   url:'https://voltti.herokuapp.com/bolt/getProduct'}) 
-        //   .then(res => {
-        //     this.setState({items:res.data})
-          
-        // })
->>>>>>> 6d1be38da1ff27cd84e9ec8e41edaf9137175b85
+                  
         
         if(this.state.user.role === "MANAGER"){
           axios({
