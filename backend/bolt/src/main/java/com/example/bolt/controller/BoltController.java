@@ -215,6 +215,16 @@ List<String> roles = userDetails.getAuthorities().stream()
         return u;
     }
 
+    @PostMapping("/editUser")
+    public Useri editUser(@RequestBody Useri user) {
+        Useri u = this.us.findById(user.getUserID()).orElse(null);
+        if (u != null) {
+            u = user;
+            this.us.save(u);
+        }
+        return u;
+    }
+
     @DeleteMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") String id) {
         if (this.us.findById(id).isEmpty()) return "No user found.";
@@ -273,6 +283,7 @@ List<String> roles = userDetails.getAuthorities().stream()
     public Restaurant editRestaurant(@RequestBody Restaurant restaurant) {
         Restaurant r = this.re.findById(restaurant.getRestaurantID()).orElse(null);
         if (r != null) {
+            r = restaurant;
             this.re.save(r);
         }
         return r;
