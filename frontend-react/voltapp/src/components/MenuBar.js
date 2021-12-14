@@ -1,15 +1,23 @@
 import React from 'react';
 import styles from './MenuBar.module.css';
+import { logoutUser } from "../services/index";
+import { useDispatch, useSelector } from "react-redux";
+import {Link} from 'react-router-dom'
+import {BrowserRouter} from "react-router-dom";
 
 export default function MenuBar(props){
-
     const onSearchFieldChange = (event) => {
 
         console.log('Keyboard event');
         console.log(event.target.value);
         props.onSearchFieldChange(event);
       }
-
+      const dispatch = useDispatch();
+      const logout = () => {
+        dispatch(logoutUser());
+    
+   
+      };
     const defaultActivate = () => {
         props.defaultActivate();
     }
@@ -50,10 +58,11 @@ export default function MenuBar(props){
         props.editRestaurantInfoActivate();
     }
 
-    const loginActivate = () => { 
+    const loginActivate = (history) => { 
         props.loginActivate();
+        
     }
-    
+
 
     
 
@@ -64,15 +73,18 @@ export default function MenuBar(props){
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
         <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Login/Register</button>
+        
+        <button className={styles.menuButton} renderAs ={"/login"} onClick={() => loginActivate() }>Login/Register</button>
     </div>
     </>
+
+
 
     let defaultUserBarWithoutSearchBar = 
     <>
         <div className={styles.defaultSearchBarWithoutSearch}>
         <button className={styles.menuButton} onClick={() => defaultActivate()}>Search Products</button>
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Login/Register</button>
+        <button className={styles.menuButton} renderAs ={"/login"}    onClick={() => loginActivate() }>Login/Register</button>
     </div>
     </>
 
@@ -87,7 +99,14 @@ export default function MenuBar(props){
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Log Out </button>
+        <BrowserRouter>
+     
+     <Link to="/">
+     <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
+     </Link>   
+     </BrowserRouter>
+       
+        <a id="3">http://localhost:3000/</a>
     </div>
     </>
 
@@ -101,7 +120,12 @@ export default function MenuBar(props){
         <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Log Out</button>
+        <BrowserRouter>
+     
+     <Link to="/">
+     <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
+     </Link>   
+     </BrowserRouter>    <a id="3">http://localhost:3000/</a>
     </div>
     </>
 
@@ -120,7 +144,12 @@ export default function MenuBar(props){
         <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
         <button className={styles.menuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
         <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Log Out</button>
+        <BrowserRouter>
+     
+        <Link to="/">
+        <button className={styles.menuButton} id = "3" onClick={() => loginActivate(),logout}>Log Out </button>
+        </Link>   
+        </BrowserRouter>
     </div>
     </>
 

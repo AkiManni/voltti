@@ -77,6 +77,7 @@ export const logoutUser = () => {
 
 
     dispatch(success({ username: "", isLoggedIn: false }));
+   
   };
 };
 
@@ -92,10 +93,10 @@ const logoutRequest = () => {
   };
 };
 
-const success = (isLoggedIn, ismanager) => {
+const success = (isLoggedIn) => {
   return {
     type: AT.SUCCESS,
-    payload: isLoggedIn,ismanager
+    payload: isLoggedIn
   };
 };
 

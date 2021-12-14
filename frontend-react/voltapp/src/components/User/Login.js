@@ -4,6 +4,8 @@ import { authenticateUser } from "../../services/index";
 import { Form, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import Cookies from 'js-cookie';
+
 const Login = (props) => {
   const [error, setError] = useState();
   const [show, setShow] = useState(true);
@@ -12,6 +14,9 @@ const Login = (props) => {
     loginCredential: "",
     loginPassword: "",
   };
+
+  
+  
 
   const [user, setUser] = useState(initialState);
   const [cookies, setCookie, removeCookie] = useCookies(["jwtToken"]);
@@ -26,7 +31,7 @@ const Login = (props) => {
     dispatch(authenticateUser(user.loginCredential, user.loginPassword, setCookie, removeCookie))
       .then((response) => {
         console.log(response.data);
-         return props.history.push("/");
+         return props.history.push("/home");
                
       })
       .catch((error) => {
