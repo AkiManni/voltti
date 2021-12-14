@@ -35,7 +35,7 @@ export default function ContentContainer(props){
         url:'https://voltti.herokuapp.com/bolt/addOrder',
         data: 
         {
-          UserID: customerId,
+          userID: customerId,
           restaurantID: restaurantId,
           restaurantName:restaurantName,
           customerName: customerName,
@@ -44,7 +44,7 @@ export default function ContentContainer(props){
           totalCost: totalCost,
           products: productsOrdered,
           // prepareTime: prepareTime,
-          // deliveryTime: deliveryTime  Kuinka frontin ajastin toimii ilman näitä ?
+          // deliveryTime: deliveryTime 
         }
       });
       
@@ -141,8 +141,8 @@ export default function ContentContainer(props){
           for(const element of res){ 
           if(rId === element[0].restaurantId){
               
-                  makeOrder(props.user.userId,element[0].restaurantId,element[0].restaurantName,props.user.firstName + " " + 
-                  props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element)
+                  makeOrder(props.Useri.userId,element[0].restaurantId,element[0].restaurantName,props.Useri.fname + " " + 
+                  props.Useri.lname,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element)
                   //props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
                   };
                 clearOrderFromTempOrder(rId)
@@ -211,7 +211,7 @@ export default function ContentContainer(props){
           items={props.items.filter((item) => 
             (item.category.toLowerCase().includes(props.productSearchString.toLowerCase())||
             (item.restaurantName.toLowerCase().includes(props.productSearchString.toLowerCase()))||
-            (item.foodName.toLowerCase().includes(props.productSearchString.toLowerCase())))) }
+            (item.name.toLowerCase().includes(props.productSearchString.toLowerCase())))) }
             
           />
     </div>

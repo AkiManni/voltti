@@ -24,7 +24,7 @@ class App extends React.Component {
     this.state = {
       orders: orders.orders, // voi kai korvata [] - katsotaan huomenna
       tempOrder: tempOrder.order,
-      items: data.items,  // voi kai korvata [] - katsotaan huomenna
+      items: [],  // voi kai korvata [] - katsotaan huomenna
 
       managerModeActive:false,
       defaultUserModeActive: true,
