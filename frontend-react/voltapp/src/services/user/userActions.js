@@ -1,7 +1,7 @@
 import * as UT from "./userTypes";
 import axios from "axios";
 
-const REGISTER_URL = "http://localhost:8080/bolt/luo";
+const REGISTER_URL = "https://voltti.herokuapp.com/bolt/luo";
 
 
 export const registerUser = (userObject) => async (dispatch) => {

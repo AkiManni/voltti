@@ -29,7 +29,7 @@ public class Useri {
         @DBRef
         private Set<Role> roles = new HashSet<>();
 
-    private Restaurant restaurant;
+    private String restaurantID;
 
     public Useri() {
     }
