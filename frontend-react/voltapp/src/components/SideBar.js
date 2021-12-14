@@ -27,16 +27,16 @@ export default function SideBar(props){
           ORDER HISTORY:
       
           <div className={styles.OrderHistoryList}>
-              {props.orders.filter(order => order.orderStatus === 'PLACED' && order.userID === props.Useri.userID ).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'PLACED' ).map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
-              <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
+              <button onClick={() => overviewChange(item.orderID)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusPlaced}>{item.orderStatus}</b><br/>
               <i>---Review and Confirm arrived---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
               
-              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.userID === props.Useri.userID).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION').map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
@@ -46,7 +46,7 @@ export default function SideBar(props){
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.userID === props.Useri.userID).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH').map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
@@ -55,7 +55,7 @@ export default function SideBar(props){
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.userID === props.Useri.userID).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DISPATCHED').map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
@@ -65,7 +65,7 @@ export default function SideBar(props){
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DELIVERED' && order.userID === props.Useri.userID).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DELIVERED').map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
@@ -74,7 +74,7 @@ export default function SideBar(props){
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DONE' && order.userID === props.Useri.userID).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DONE').map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order: {item.orderID}. </b> 
@@ -93,42 +93,42 @@ export default function SideBar(props){
           ORDER HISTORY:
       
           <div className={styles.OrderHistoryList}>
-              {props.orders.filter(order => order.orderStatus === 'PLACED' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'PLACED' ).map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusPlaced}>{item.orderStatus}</b><br/><i>---Order is placed, waits Staff Response---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
               
-              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' ).map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusOnGoing}>PREPARED</b> <b>Ready in:</b> <b className={styles.orderStatusOnGoing}>{item.prepareTime}</b><b> s</b><br/><i>---Cooking Takes Time---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusRDT}>READY TO DISPATCH</b><br/><i>---Waiting Courier to Pick up---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DISPATCHED' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusOnGoing}>{item.orderStatus}</b> <b>Delivered in:</b> <b className={styles.orderStatusOnGoing}>{item.deliveryTime}</b> <b>s</b><br/><i>---Voltman Is Delivering---</i> <br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DELIVERED' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DELIVERED' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusDelivered}>{item.orderStatus}</b> <br/><i>---Waiting Customer to Confirm---</i><br/>
               {item.orderPlacedAt} - {item.customerName} <hr className={styles.hrList}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DONE' && order.restaurantID === props.Useri.Restaurant.restaurantID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DONE' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <button onClick={() => overviewChange(item.id)}>View Order</button> <br/><b>Order: {item.orderID}. </b> 
               <b className={styles.orderStatusDone}>{item.orderStatus}</b> <br/><i>---Order Is Complete---</i><br/>
@@ -143,7 +143,7 @@ export default function SideBar(props){
     <>
     <div>
           <div className={styles.OrderHistoryList}>
-              {props.orders.filter(order => order.orderStatus === 'PLACED' && order.userID === props.Useri.userID ).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'PLACED' ).map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.orderID}.</b> 
               <b className={styles.orderStatusPlaced}> {item.orderStatus}</b><br/>
@@ -151,7 +151,7 @@ export default function SideBar(props){
               <hr className={styles.hrList2}/>
               </div>)}
               
-              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' && order.userID === props.Useri.userID ).map((item,index) => 
+              {props.orders.filter(order => order.orderStatus === 'IN_PREPARATION' ).map((item,index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.orderID}.</b> 
               <b className={styles.orderStatusOnGoing}> IN PREPARATION</b> <b>Ready in: </b> 
@@ -159,14 +159,14 @@ export default function SideBar(props){
              <hr className={styles.hrList2}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' && order.userID === props.Useri.userID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'READY_TO_DISPATCH' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.orderID}.</b> 
               <b className={styles.orderStatusRDT}> READY TO DISPATCH</b><br/><i>---Waiting Courier to Pick up---</i> <br/>
               <hr className={styles.hrList2}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DISPATCHED' && order.userID === props.Useri.userID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DISPATCHED' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
               <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.orderID}.</b> 
               <b className={styles.orderStatusOnGoing}> {item.orderStatus}</b> <b>Delivered in: </b> 
@@ -174,7 +174,7 @@ export default function SideBar(props){
               <hr className={styles.hrList2}/>
               </div>)}
 
-              {props.orders.filter(order => order.orderStatus === 'DELIVERED' && order.userID === props.Useri.userID ).map((item, index) => 
+              {props.orders.filter(order => order.orderStatus === 'DELIVERED' ).map((item, index) => 
             <div className={styles.OrderHistoryListItems} key ={index}>
                <b className={styles.restaurantTotalText}>{item.restaurantName}</b><br/><b>Order {item.orderID}.</b> 
                <b className={styles.orderStatusDelivered}> {item.orderStatus} </b> 

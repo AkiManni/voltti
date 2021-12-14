@@ -39,9 +39,11 @@ class App extends React.Component {
       actionString:"MAIN",
       intervalId:"",
       overviewId:"",
+      userID:"",
       Useri:{
+        userID:"",
         username:"",
-        Restaurant:{},
+        restaurant:{ restaurantID:"" },
         Role:""
       },
       user: {},
@@ -103,13 +105,8 @@ class App extends React.Component {
 
   customerEditInfoActivate = () => {this.setState( {actionDone:false, actionString:"EDITCUSTOMER"})}
 
-  defaultActivate = () => { this.setState( {actionDone:false, role:"", actionString:"MAIN", overviewId:"", 
-  orderviewActive:false, managerOrderHistoryActive:false, createRestaurantActive: false, user: {userId: null,
-    firstName: null,
-    surName: null,
-    address: null,
-    postNumber: null,
-    isManager: false} }) } 
+  defaultActivate = () => { this.setState( {actionDone:false, actionString:"MAIN", overviewId:"", 
+  orderviewActive:false, managerOrderHistoryActive:false, createRestaurantActive: false }) } 
 
   createRestaurantActive = () => { this.setState( {actionDone:false, role:"MANAGER", createRestaurant: true, editRestaurantActive: false, actionString:"EDITCREATERESTAURANT"})}
 
@@ -117,7 +114,7 @@ class App extends React.Component {
 
   editRestaurantInfoActivate = () => { this.setState({actionDone:false, createRestaurant: false, editRestaurantActive: true, actionString:"EDITCREATERESTAURANT"})}
 
-  customerOrderHistoryviewActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"ORDERHISTORY"})}
+  customerOrderHistoryviewActivate = () => { this.setState( {actionDone:false, actionString:"ORDERHISTORY"})}
 
 
   previewOrderActivate = () => { this.setState( {actionDone:false, actionString:"ORDERPREVIEW", defaultScroll:true}); 
@@ -135,25 +132,31 @@ class App extends React.Component {
                   
                   
         
-        if(this.state.user.role === "MANAGER"){
-          axios({
-            method:'GET',
-            url:'https://voltti.herokuapp.com/bolt/getOrdersByRestaurantID/{id}',
-            params: {id: this.state.user.restaurantID}     // EN TIEDÄ ONKO OK - KORJATAAN.
-          }).then(function(res){
-            this.setState({orders:res.data})
-          });    
-        }
+        // if(this.state.role === "MANAGER"){
+        //   axios({
+        //     method:'GET',
+        //     url:'https://voltti.herokuapp.com/bolt/getOrdersByRestaurantID/{id}',
+        //     params: {id: this.state.Useri.restaurant.restaurantID}     // EN TIEDÄ ONKO OK - KORJATAAN.
+        //   }).then(function(res){
+        //     this.setState({orders:res.data})
+        //   });    
+        // }
         
-        if(this.state.user.role === "CUSTOMER"){
-          axios({
-            method:'GET',
-            url:'https://voltti.herokuapp.com/bolt/getOrderByUserID/{id}',
-            params: {id: this.state.user.userID}
-          }).then(function(res){
-            this.setState({orders:res.data})
-          });  
-        }
+        // if(this.state.role === "CUSTOMER"){
+        //   axios({
+        //     method:'GET',
+        //     url:'https://voltti.herokuapp.com/bolt/getOrderByUserID/{id}',
+        //     params: {id: "61b7a9cfa0760e48f09aae00"}
+        //   }).then(function(res){
+        //     console.log("RES")
+        //     console.log(res)
+            
+        //     //this.setState({orders:res.data})
+        //   });  
+        // }
+
+        
+                                        
 
         if (Cookies.get('jwtToken')) {
           //  console.log("käyttäjä on vielä tunnistautunut jwttokenilla " + Cookies.get('jwtToken'));
@@ -166,21 +169,39 @@ class App extends React.Component {
 
                   fetch(
                     `https://voltti.herokuapp.com/bolt/getUser/${userCred}`)
-                                .then((res) => res.json())
+                                .then((res) => res.json() )
                                 .then((json) => {
+                                  console.log(json)
                                     this.setState({
                                         Useri: {
-                                          userID: json.userID,
+                                          userID: json.UserID,
                                           fname: json.fname,
                                           lname: json.lname,
                                           address: json.address,
                                           postNum: json.postNum,
                                           role:Cookies.get('Role'),
                                           Restaurant:{}
-                                        },
+                                        }, userID:json.UserID
                                        
                                     });
                                 })
+                                console.log(this.state.userID)
+                                const orderContainer = []
+
+        fetch(
+          'https://voltti.herokuapp.com/bolt/getOrderByUserID/61b7a9cfa0760e48f09aae00')
+                      .then((res) => res.json())
+                      .then((json) => {
+
+                        json.map((index) => orderContainer.push({"orderID":index.orderID,
+                        "userID":index.userID,"address":index.adress,
+                        "postNumber":index.postNumber,"restaurantID":index.restaurantID,
+                        "productsOrdered":index.products.map((product, i) => {
+                        <dl key={i}><dt><b>{product.quantity}</b> x <b>{product.productID}.</b> {product.name} <b>-</b> {product.price} €</dt></dl>
+                      }),"orderStatus":index.orderStatus,"totalCost":index.totalCost})
+                      )})
+
+                      this.setState({orders:orderContainer})
 
            
 
@@ -205,17 +226,6 @@ class App extends React.Component {
             
             }
             else{
-              //console.log(this.state.Useri)
-              //console.log(Cookies.get('jwtToken'))
-              //console.log(Cookies.get('username'))
-              //console.log(Cookies.get('Role'))
-              // if(this.state.actionString === "ORDERHISTORY"){this.setState({actionString:this.state.actionString})}
-              // if(this.state.actionString === "MAIN"){this.setState({actionString:this.state.actionString})} 
-              // if(this.state.actionString === "ORDERPREVIEW"){this.setState({actionString:this.state.actionString})} 
-              // if(this.state.actionString === "EDITCUSTOMER"){this.setState({actionString:this.state.actionString})} 
-              // if(this.state.actionString === "ORDERS"){this.setState({actionString:this.state.actionString})} 
-              // if(this.state.actionString === "EDITCREATERESTAURANT"){this.setState({actionString:this.state.actionString})} 
-              // if(this.state.actionString === "EDITCREATERESTAURANTMENU"){this.setState({actionString:this.state.actionString})} 
               
             }
           }
@@ -508,290 +518,288 @@ class App extends React.Component {
       </>
 
 
-
-
     
   return (
-
-
 
     <>
 
       {(() => {
 
       // PITÄÄ MIETTIÄ JWT:N JA PALAUTETUN USER DATAN KANSSA TOIMIMAAN:
-        switch(this.state.Useri.Role){
-          case "CUSTOMER":
-              switch(this.state.actionString){
-                case "MAIN":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      defaultUserModeActive: false, 
-                      defaultUserBarActive: false,
-                      defaultUserBarWithoutSearchBar: false,
-                      orderPreviewActive:false,
-                      customerBarActive: true ,
-                      sideBarActive: true,
-                      shoppingCartQuickviewActive: true,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false,  
-                      searchResultsActive: true, 
-                      editUserActive:false,
-                      orderviewActive:false,
-                      actionDone:true
-                    });
-                }
-                case "ORDERHISTORY":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      customerBarActive: false,
-                      customerEditBarActive: true,
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false, 
-                      orderPreviewActive:false, 
-                      customerOrderHistoryActive: true,
-                      searchResultsActive: false,
-                      actionDone:true
-                      ,orderviewActive:true
-                      ,editUserActive:false
-                    });
-                  }
-
-                case "ORDERPREVIEW":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      orderPreviewActive:true,
-                      customerBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      customerEditBarActive: true,
-                      customerOrderHistoryActive: false,
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false,
-                      searchResultsActive: false,
-                      orderviewActive:false,
-                      editUserActive:false,
-                      actionDone:true
-                    });
-                  }
-
-
-                case "EDITCUSTOMER":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                    customerOrderHistoryActive: false,
+      switch(this.state.role){
+        case "CUSTOMER":
+            switch(this.state.actionString){
+              case "MAIN":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    defaultUserModeActive: false, 
+                    defaultUserBarActive: false,
+                    defaultUserBarWithoutSearchBar: false,
                     orderPreviewActive:false,
-                    editUserActive:true,
+                    customerBarActive: true ,
+                    sideBarActive: true,
+                    shoppingCartQuickviewActive: true,
+                    customerEditBarActive: false,
+                    customerOrderHistoryActive: false,  
+                    searchResultsActive: true, 
+                    editUserActive:false,
+                    orderviewActive:false,
+                    actionDone:true
+                  });
+              }
+              case "ORDERHISTORY":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    customerBarActive: false,
+                    customerEditBarActive: true,
                     containerActive: true,
                     shoppingCartQuickviewActive: false, 
-                    customerEditBarActive: true,
-                    customerBarActive: false,
+                    orderPreviewActive:false, 
+                    customerOrderHistoryActive: true,
                     searchResultsActive: false,
-                    orderviewActive:false,
-                    actionDone:true,
-                    });
-                  }
-                default:
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      customerBarActive: false,
-                      customerEditBarActive: true,
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false, 
-                      orderPreviewActive:false, 
-                      customerOrderHistoryActive: true,
-                      searchResultsActive: false,
-                      actionDone:true
-                      ,orderviewActive:true
-                      ,editUserActive:false
-                    });
-                }
-
-              }
-            
-          case "MANAGER":
-              switch(this.state.actionString){
-                case "MAIN":
-                  if(this.state.actionDone === false){
-                  return this.setState({
-                      defaultUserBarActive: false,
-                      defaultBarWithoutSearchActive: false,
-                      containerActive: false,
-                      managerBarActive: true,    
-                      orderviewActive:false,
-                      createRestaurant: false,
-                      editRestaurantActive: false,
-                      editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
+                    actionDone:true
+                    ,orderviewActive:true
+                    ,editUserActive:false
                   });
                 }
-                case "ORDERS":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      containerActive: false,
-                      managerBarActive: true,
-                      orderviewActive:false,
-                      createRestaurant: false,
-                      editRestaurantActive: false,
-                      editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
-                    });
-                  }
 
-                case "ORDERHISTORY":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false, 
-                      managerOrderHistoryActive: true,
-                      searchResultsActive: false,
-                      managerBarActive: true,
-                      orderviewActive:true,
-                      createRestaurant: false,
-                      editRestaurantActive: false,
-                      editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
-                    });
-                  }
-
-                case "EDITCREATERESTAURANT":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false, 
-                      managerOrderHistoryActive: false,
-                      searchResultsActive: false,
-                      managerBarActive: true,
-                      orderviewActive:false,
-                      editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
-                    });
-                  }
-
-                case "EDITCREATERESTAURANTMENU":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false, 
-                      managerOrderHistoryActive: false,
-                      searchResultsActive: false,
-                      managerBarActive: true,
-                      orderviewActive:false,
-                      editRestaurantMenuActive:true,
-                      editRestaurantActive: false,
-                      editRestaurantMenuQuickviewActive: true,
-                      createRestaurant: false,
-                      actionDone:true
-                    });
-                  }
-                default:
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      managerOrderHistoryActive: false,
-                      containerActive: false,
-                      managerBarActive: true,
-                      orderviewActive:false,
-                      createRestaurant: false,
-                      editRestaurantMenuActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      editRestaurantActive: false,
-                      actionDone:true
-                    });
-                  }
-
-              }
-
-          default:
-              switch(this.state.actionString){
-                case "MAIN":
-                  if(this.state.actionDone === false){
+              case "ORDERPREVIEW":
+                if(this.state.actionDone === false){
                   return this.setState({
-                      customerModeActive: false,
-                      managerModeActive: false,
-                      managerBarActive: false,
-                      customerBarActive: false ,
-                      sideBarActive: true,
-                      containerActive: true,
-                      defaultUserBarActive: true,
-                      defaultBarWithoutSearchActive: false,
-                      shoppingCartQuickviewActive: true, 
-                      searchResultsActive: true,
-                      customerEditBarActive: false,
-                      orderPreviewActive:false,
-                      customerOrderHistoryActive: false,
-                      managerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
-                      orderviewActive:false,
-                      createRestaurant: false,
-                      editRestaurantActive: false,
-                      editRestaurantMenuActive:false,
-                      editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
-                      });
-                  }
+                    orderPreviewActive:true,
+                    customerBarActive: false,
+                    defaultBarWithoutSearchActive: false,
+                    customerEditBarActive: true,
+                    customerOrderHistoryActive: false,
+                    containerActive: true,
+                    shoppingCartQuickviewActive: false,
+                    searchResultsActive: false,
+                    orderviewActive:false,
+                    editUserActive:false,
+                    actionDone:true
+                  });
+                }
 
-                  case "ORDERPREVIEW":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      orderPreviewActive:true,
-                      defaultUserBarActive: false,
-                      defaultBarWithoutSearchActive: true,
-                      containerActive: true,
-                      shoppingCartQuickviewActive: false,
-                      searchResultsActive: false,
-                      orderviewActive: false,
-                      actionDone:true
 
+              case "EDITCUSTOMER":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                  customerOrderHistoryActive: false,
+                  orderPreviewActive:false,
+                  editUserActive:true,
+                  containerActive: true,
+                  shoppingCartQuickviewActive: false, 
+                  customerEditBarActive: true,
+                  customerBarActive: false,
+                  searchResultsActive: false,
+                  orderviewActive:false,
+                  actionDone:true,
+                  });
+                }
+              default:
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    defaultUserModeActive: false, 
+                    defaultUserBarActive: false,
+                    defaultUserBarWithoutSearchBar: false,
+                    customerBarActive: true ,
+                    sideBarActive: true,
+                    shoppingCartQuickviewActive: true,
+                    customerEditBarActive: false,
+                    customerOrderHistoryActive: false, 
+                    searchResultsActive: true,
+                    orderviewActive:false,
+                    editUserActive:false,
+                    actionDone:true
+                  });
+              }
+
+            }
+          
+        case "MANAGER":
+            switch(this.state.actionString){
+              case "MAIN":
+                if(this.state.actionDone === false){
+                return this.setState({
+                    defaultUserBarActive: false,
+                    defaultBarWithoutSearchActive: false,
+                    containerActive: false,
+                    managerBarActive: true,    
+                    orderviewActive:false,
+                    createRestaurant: false,
+                    editRestaurantActive: false,
+                    editRestaurantMenuActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
+                });
+              }
+              case "ORDERS":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    containerActive: false,
+                    managerBarActive: true,
+                    orderviewActive:false,
+                    createRestaurant: false,
+                    editRestaurantActive: false,
+                    editRestaurantMenuActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
+                  });
+                }
+
+              case "ORDERHISTORY":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    containerActive: true,
+                    shoppingCartQuickviewActive: false, 
+                    managerOrderHistoryActive: true,
+                    searchResultsActive: false,
+                    managerBarActive: true,
+                    orderviewActive:true,
+                    createRestaurant: false,
+                    editRestaurantActive: false,
+                    editRestaurantMenuActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
+                  });
+                }
+
+              case "EDITCREATERESTAURANT":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    containerActive: true,
+                    shoppingCartQuickviewActive: false, 
+                    managerOrderHistoryActive: false,
+                    searchResultsActive: false,
+                    managerBarActive: true,
+                    orderviewActive:false,
+                    editRestaurantMenuActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
+                  });
+                }
+
+              case "EDITCREATERESTAURANTMENU":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    containerActive: true,
+                    shoppingCartQuickviewActive: false, 
+                    managerOrderHistoryActive: false,
+                    searchResultsActive: false,
+                    managerBarActive: true,
+                    orderviewActive:false,
+                    editRestaurantMenuActive:true,
+                    editRestaurantActive: false,
+                    editRestaurantMenuQuickviewActive: true,
+                    createRestaurant: false,
+                    actionDone:true
+                  });
+                }
+              default:
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    managerOrderHistoryActive: false,
+                    containerActive: false,
+                    managerBarActive: true,
+                    orderviewActive:false,
+                    createRestaurant: false,
+                    editRestaurantMenuActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    editRestaurantActive: false,
+                    actionDone:true
+                  });
+                }
+
+            }
+
+        default:
+            switch(this.state.actionString){
+              case "MAIN":
+                if(this.state.actionDone === false){
+                return this.setState({
+                    customerModeActive: false,
+                    managerModeActive: false,
+                    managerBarActive: false,
+                    customerBarActive: false ,
+                    sideBarActive: true,
+                    containerActive: true,
+                    defaultUserBarActive: true,
+                    defaultBarWithoutSearchActive: false,
+                    shoppingCartQuickviewActive: true, 
+                    searchResultsActive: true,
+                    customerEditBarActive: false,
+                    orderPreviewActive:false,
+                    customerOrderHistoryActive: false,
+                    managerOrderHistoryActive: false,
+                    userBarWithoutSearchActive: false,
+                    orderviewActive:false,
+                    createRestaurant: false,
+                    editRestaurantActive: false,
+                    editRestaurantMenuActive:false,
+                    editUserActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
+                    });
+                }
+
+                case "ORDERPREVIEW":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    orderPreviewActive:true,
+                    defaultUserBarActive: false,
+                    defaultBarWithoutSearchActive: true,
+                    containerActive: true,
+                    shoppingCartQuickviewActive: false,
+                    searchResultsActive: false,
+                    orderviewActive: false,
+                    actionDone:true
+
+                  });
+                }
+                
+              case "LOGIN":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    actionDone:true
+                    });
+                }
+
+              case "REGISTER":
+                if(this.state.actionDone === false){
+                  return this.setState({
+                    actionDone:true
+                    });
+                }
+              default:
+                if(this.state.actionDone === false){
+                  return this.setState({ 
+                    customerModeActive: false,
+                    managerModeActive: false,
+                    managerBarActive: false,
+                    customerBarActive: false ,
+                    sideBarActive: true,
+                    containerActive: true,
+                    defaultUserBarActive: true,
+                    defaultBarWithoutSearchActive: false,
+                    shoppingCartQuickviewActive: true, 
+                    searchResultsActive: true,
+                    customerEditBarActive: false,
+                    orderPreviewActive:false,
+                    customerOrderHistoryActive: false,
+                    managerOrderHistoryActive: false,
+                    userBarWithoutSearchActive: false,
+                    orderviewActive:false,
+                    createRestaurant: false,
+                    editRestaurantActive: false,
+                    editRestaurantMenuActive:false,
+                    editUserActive:false,
+                    editRestaurantMenuQuickviewActive: false,
+                    actionDone:true
                     });
                   }
-                  
-                case "LOGIN":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      actionDone:true
-                      });
-                  }
 
-                case "REGISTER":
-                  if(this.state.actionDone === false){
-                    return this.setState({
-                      actionDone:true
-                      });
-                  }
-                default:
-                  if(this.state.actionDone === false){
-                    return this.setState({ 
-                      customerModeActive: false,
-                      managerModeActive: false,
-                      managerBarActive: false,
-                      customerBarActive: false ,
-                      sideBarActive: true,
-                      containerActive: true,
-                      defaultUserBarActive: true,
-                      defaultBarWithoutSearchActive: false,
-                      shoppingCartQuickviewActive: true, 
-                      searchResultsActive: true,
-                      customerEditBarActive: false,
-                      orderPreviewActive:false,
-                      customerOrderHistoryActive: false,
-                      managerOrderHistoryActive: false,
-                      userBarWithoutSearchActive: false,
-                      orderviewActive:false,
-                      createRestaurant: false,
-                      editRestaurantActive: false,
-                      editRestaurantMenuActive:false,
-                      editUserActive:false,
-                      editRestaurantMenuQuickviewActive: false,
-                      actionDone:true
-                      });
-                    }
-
-              }
             }
+          }
         })()}
 
       { output }

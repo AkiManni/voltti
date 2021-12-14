@@ -31,25 +31,38 @@ export default function ContentContainer(props){
       console.log("CONSOLE:");
       console.log(customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered)
       
-
-
       axios({
         method:'post',
         url:'https://voltti.herokuapp.com/bolt/addOrder',
         data: 
         {
-          userID: customerId,
-          restaurantID: restaurantId,
-          restaurantName:restaurantName,
-          customerName: customerName,
-          address: address,
-          postNumber: postnumber,
-          totalCost: totalCost,
-          products: productsOrdered,
-          // prepareTime: prepareTime,
-          // deliveryTime: deliveryTime 
+          "userID": customerId,
+          "restaurantID": restaurantId,
+          "restaurantName":restaurantName,
+          "customerName": customerName,
+          "address": address,
+          "postNumber": postnumber,
+          "products": productsOrdered
+          
         }
       });
+
+      // axios({
+      //   method:'post',
+      //   url:'https://voltti.herokuapp.com/bolt/addOrder',
+      //   data: 
+      //   {
+      //     "userID": customerId,
+      //     "restaurantID": restaurantId,
+      //     "restaurantName":restaurantName,
+      //     "customerName": customerName,
+      //     "address": address,
+      //     "postNumber": postnumber,
+      //     "totalCost": totalCost
+      //     //"products": productsOrdered
+          
+      //   }
+      // });
       
       // BACKEND ORDER POHJA:
       //----------------------
@@ -282,6 +295,7 @@ export default function ContentContainer(props){
         { props.editRestaurantActive ? <div>{ editRestaurantForm }</div> : <></>}
         { props.editRestaurantMenuActive ? <div>{ searchProductsByRestaurant }</div> : <></>}
         { props.managerOrderHistoryActive ? <div>{managerOrderHistoryOverview}</div> : <></>}
+        
         { props.orderPreviewActive ? <div>{orderPreview}</div> : <></>}
         { props.orderviewActive? <Orderview orders={props.orders} overviewId={props.overviewId}/> : <></>}
         { props.createRestaurant || props.editRestaurantActive? <CreateRestaurant addNewRestaurant = { props.addNewRestaurant } createRestaurant={props.createRestaurant}

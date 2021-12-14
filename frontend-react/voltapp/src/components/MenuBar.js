@@ -163,7 +163,7 @@ const logoutFunction = () =>{
         { props.defaultUserBarActive ? <div>{ defaultUserBar }</div> : <></> }
         { props.customerBarActive ? <div>{ customerBar }</div> : <></> }
         { props.customerEditBarActive ? <div>{customerBarWithoutSearchBar}</div> : <></> }
-        { props.defaultBarWithoutSearchActive? <div>{ defaultUserBarWithoutSearchBar }</div> : <></> }
+        { props.defaultBarWithoutSearchActive ? <div>{ defaultUserBarWithoutSearchBar }</div> : <></> }
         { props.managerBarActive ? <div>{ managerBar }</div> : <></> }
         { props.managerEditBarActive ? <div>{ managerEditBar }</div> : <></> }
         <img className= {styles.Logo} src={"voltLogo.png"} align="right" alt="default"/>
