@@ -497,20 +497,19 @@ class App extends React.Component {
 
     let loginBar = 
     <>
+
     <div>
     
       <Router>
 
-      <div>
-      <Navibar/>
+ 
       <Switch>
-      <Route path="/login" exact component={Login} />
+      <Route path="/" exact component={Login} />
       <Route path="/register" exact component={Register} />
-      <Route path="/" exact component={Home} />
-
+      <Route path="/home" exact component={Home} />
+    
         </Switch>
 
-      </div>
 
       </Router>
       
