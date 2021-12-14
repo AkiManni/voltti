@@ -85,11 +85,11 @@ class App extends React.Component {
   defaultScrollActivate = () => { 
     if(this.state.defaultScroll === false){this.setState({ defaultScroll: true })} else{ this.setState({ defaultScroll: false })}}
   
-  customerActivate = () => { this.setState( {actionDone:false, role:"CUSTOMER", actionString:"MAIN", createRestaurantActive: false, 
+  customerActivate = () => { this.setState( {actionDone:false, actionString:"MAIN", createRestaurantActive: false, 
 
   }) }
 
-  managerActivate = () => {  this.setState( {actionDone:false, role:"MANAGER", actionString:"MAIN"})}
+  managerActivate = () => {  this.setState( {actionDone:false, actionString:"MAIN"})}
 
   getRestaurantBalance = () => {
     
@@ -162,12 +162,7 @@ class App extends React.Component {
           if(Cookies.get('jwtToken')){
             if(this.state.Useri.username === "" && this.state.isLogged === false){
 
-              
-
-
                   var userCred = Cookies.get('username')
-                  
-                //fetch(`https://example.com/foo?bar=${encodedValue}`);
 
                   fetch(
                     `https://voltti.herokuapp.com/bolt/getUser/${userCred}`)
@@ -175,6 +170,7 @@ class App extends React.Component {
                                 .then((json) => {
                                     this.setState({
                                         Useri: {
+                                          userID: json.userID,
                                           fname: json.fname,
                                           lname: json.lname,
                                           address: json.address,
@@ -185,32 +181,8 @@ class App extends React.Component {
                                        
                                     });
                                 })
-                  console.log("tässä")
-                  console.log(this.state.Useri)
 
-              // axios.get("https://voltti.herokuapp.com/bolt/getUser/name", {
-              //   transformResponse: [(response) => (console.log(JSON.parse(response)))], 
-              // })
-
-
-              // axios({
-              //   method:'GET',
-              //   url:'https://voltti.herokuapp.com/bolt/getUser/name',
-              //   params: {name:temp}}).then(function(res){
-              //   //   this.setState({
-              //   //     Useri:{
-              //   //     fname:res.data.fname,
-              //   //     lname:res.data.lname,
-              //   //     address:res.data.address,
-              //   //     postNum:res.data.postNum,
-              //   //     username:Cookies.get('username'),
-              //   //     Role:Cookies.get('Role'),
-              //   //     Restaurant:{}
-              //   //   }
-              //   // })
-              //   console.log(res.data.error)
-              //   })  
-                
+           
 
 
               this.setState(
@@ -237,11 +209,19 @@ class App extends React.Component {
               //console.log(Cookies.get('jwtToken'))
               //console.log(Cookies.get('username'))
               //console.log(Cookies.get('Role'))
-              
+              // if(this.state.actionString === "ORDERHISTORY"){this.setState({actionString:this.state.actionString})}
+              // if(this.state.actionString === "MAIN"){this.setState({actionString:this.state.actionString})} 
+              // if(this.state.actionString === "ORDERPREVIEW"){this.setState({actionString:this.state.actionString})} 
+              // if(this.state.actionString === "EDITCUSTOMER"){this.setState({actionString:this.state.actionString})} 
+              // if(this.state.actionString === "ORDERS"){this.setState({actionString:this.state.actionString})} 
+              // if(this.state.actionString === "EDITCREATERESTAURANT"){this.setState({actionString:this.state.actionString})} 
+              // if(this.state.actionString === "EDITCREATERESTAURANTMENU"){this.setState({actionString:this.state.actionString})} 
               
             }
           }
           }
+
+          
 
   }
 
@@ -613,18 +593,16 @@ class App extends React.Component {
                 default:
                   if(this.state.actionDone === false){
                     return this.setState({
-                      defaultUserModeActive: false, 
-                      defaultUserBarActive: false,
-                      defaultUserBarWithoutSearchBar: false,
-                      customerBarActive: true ,
-                      sideBarActive: true,
-                      shoppingCartQuickviewActive: true,
-                      customerEditBarActive: false,
-                      customerOrderHistoryActive: false, 
-                      searchResultsActive: true,
-                      orderviewActive:false,
-                      editUserActive:false,
+                      customerBarActive: false,
+                      customerEditBarActive: true,
+                      containerActive: true,
+                      shoppingCartQuickviewActive: false, 
+                      orderPreviewActive:false, 
+                      customerOrderHistoryActive: true,
+                      searchResultsActive: false,
                       actionDone:true
+                      ,orderviewActive:true
+                      ,editUserActive:false
                     });
                 }
 
