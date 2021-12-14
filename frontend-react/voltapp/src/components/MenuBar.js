@@ -12,7 +12,6 @@ export default function MenuBar(props){
         props.onSearchFieldChange(event);
       }
 
-<<<<<<< HEAD
      
 
  
@@ -22,8 +21,6 @@ export default function MenuBar(props){
 
    
       };
-=======
->>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     const defaultActivate = () => {
         props.defaultActivate();
     }
@@ -67,8 +64,7 @@ export default function MenuBar(props){
     const loginActivate = () => { 
         props.loginActivate();
     }
-<<<<<<< HEAD
-const testi = () =>{
+const logoutFunction = () =>{
     logout();
     window.location.href="/";
     /*
@@ -80,9 +76,6 @@ const testi = () =>{
 
     else{
 
-=======
-    
->>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
 
         logout();
         window.location.reload();
@@ -123,15 +116,11 @@ const testi = () =>{
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-<<<<<<< HEAD
        
-        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
+        <button className={styles.menuButton} onClick={() => loginActivate(), logoutFunction}>Log Out </button>
  
        
     
-=======
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
->>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     </div>
     </>
 
@@ -145,11 +134,7 @@ const testi = () =>{
         <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
-<<<<<<< HEAD
-        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
-=======
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
->>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
+        <button className={styles.menuButton} onClick={() => loginActivate(), logoutFunction}>Log Out </button>
     </div>
     </>
 
@@ -166,13 +151,9 @@ const testi = () =>{
         <button className={styles.menuButton} onClick={() =>  { managerOrderOverviewActivate() }}>Orders</button> 
         <button className={styles.menuButton} onClick={() =>  { managerOrderHistoryActivate() }}>Order History </button>
         <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
-        <button className={styles.mesnuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
+        <button className={styles.menuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
         <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
-<<<<<<< HEAD
-        <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
-=======
-        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
->>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
+        <button className={styles.menuButton} onClick={() => loginActivate(), logoutFunction}>Log Out </button>
     </div>
     </>
 
