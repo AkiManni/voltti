@@ -401,6 +401,10 @@ List<String> roles = userDetails.getAuthorities().stream()
     @PostMapping("/addOrder")
     public Order addOrder(@RequestBody Order order) {
         Order o = order;
+        List<Product> p = o.getProducts();
+        for (Product product : p) {
+            o.addTotalCost(product.getPrice());
+        }
         o.setOrderID(generateID(4));
         o.setOrderStatus(Order.status.PLACED);
         o.setTimes(new StatusTime(getTime()));
