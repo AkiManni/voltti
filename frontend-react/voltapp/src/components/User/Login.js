@@ -4,6 +4,8 @@ import { authenticateUser } from "../../services/index";
 import { Form, Button, FormGroup, FormControl, ControlLabel } from "react-bootstrap";
 import { Alert } from "react-bootstrap";
 import { useCookies } from "react-cookie";
+import Cookies from 'js-cookie';
+
 const Login = (props) => {
   const [error, setError] = useState();
   const [show, setShow] = useState(true);
@@ -12,6 +14,9 @@ const Login = (props) => {
     loginCredential: "",
     loginPassword: "",
   };
+
+  
+  
 
   const [user, setUser] = useState(initialState);
   const [cookies, setCookie, removeCookie] = useCookies(["jwtToken"]);
@@ -26,9 +31,11 @@ const Login = (props) => {
     dispatch(authenticateUser(user.loginCredential, user.loginPassword, setCookie, removeCookie))
       .then((response) => {
         console.log(response.data);
-         return props.history.push("/");
+         return props.history.push("/home");
                
       })
+
+   
       .catch((error) => {
         //jos kirjautuminen ei onnistunut
         console.log("virhe👌" +error);
@@ -37,6 +44,11 @@ const Login = (props) => {
         setError("  Invalid loginCredential and loginPassword");
       });
   };
+
+  const Registeruser = () => {
+    return props.history.push("/register");
+          
+ }
 
   const resetLoginForm = () => {
     setUser(initialState);
@@ -98,6 +110,18 @@ const Login = (props) => {
         disabled={user.loginCredential.length === 0 || user.loginPassword.length === 0}
       >
         Login
+      </Button>{" "}
+
+      <Button
+      style={{marginLeft: '20px'} }
+        class="btn btn-primary my-1"
+        size="sm"
+        type="button"
+        variant="success"
+        onClick={Registeruser}
+        
+      >
+        Register
       </Button>{" "}
     </Form>
 

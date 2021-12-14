@@ -418,16 +418,14 @@ class App extends React.Component {
     
       <Router>
 
-      <div>
-      <Navibar/>
+ 
       <Switch>
-      <Route path="/login" exact component={Login} />
+      <Route path="/" exact component={Login} />
       <Route path="/register" exact component={Register} />
-      <Route path="/" exact component={Home} />
-
+      <Route path="/home" exact component={Home} />
+    
         </Switch>
 
-      </div>
 
       </Router>
       
@@ -468,7 +466,7 @@ class App extends React.Component {
           />
           
 
-          {this.state.loginActive? <div>{loginBar}</div> : <></>}
+          {this.state.loginActive?  <div>{loginBar}</div> : <></>}
 
           <div className="wrapper">
           { elementContainer }
