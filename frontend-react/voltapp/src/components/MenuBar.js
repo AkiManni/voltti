@@ -1,13 +1,10 @@
 import React from 'react';
 import styles from './MenuBar.module.css';
-import { logoutUser } from "../services/index";
-import { useDispatch, useSelector } from "react-redux";
-import {Link} from 'react-router-dom'
-import {BrowserRouter} from "react-router-dom";
 
 
 
 export default function MenuBar(props){
+
     const onSearchFieldChange = (event) => {
 
         console.log('Keyboard event');
@@ -15,6 +12,7 @@ export default function MenuBar(props){
         props.onSearchFieldChange(event);
       }
 
+<<<<<<< HEAD
      
 
  
@@ -24,6 +22,8 @@ export default function MenuBar(props){
 
    
       };
+=======
+>>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     const defaultActivate = () => {
         props.defaultActivate();
     }
@@ -66,8 +66,8 @@ export default function MenuBar(props){
 
     const loginActivate = () => { 
         props.loginActivate();
-        
     }
+<<<<<<< HEAD
 const testi = () =>{
     logout();
     window.location.href="/";
@@ -80,6 +80,9 @@ const testi = () =>{
 
     else{
 
+=======
+    
+>>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
 
         logout();
         window.location.reload();
@@ -95,20 +98,16 @@ const testi = () =>{
         <div className={styles.defaultSearchBar}>
         Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
-        <button className={styles.menuButton} onClick={() => customerActivate()}>Customer</button>
-        <button className={styles.menuButton} onClick={() => managerActivate()}>Manager</button>
-        
-        <button className={styles.menuButton} renderAs ={"/login"} onClick={() => loginActivate() }>Login/Register</button>
+
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
     </div>
     </>
-
-
 
     let defaultUserBarWithoutSearchBar = 
     <>
         <div className={styles.defaultSearchBarWithoutSearch}>
         <button className={styles.menuButton} onClick={() => defaultActivate()}>Search Products</button>
-        <button className={styles.menuButton} renderAs ={"/login"}    onClick={() => loginActivate() }>Login/Register</button>
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
     </div>
     </>
 
@@ -117,17 +116,22 @@ const testi = () =>{
     <div className={styles.userInformation}>
         <li><b>{props.Useri.fname + " " + props.Useri.lname}</b></li>
         <li>{props.Useri.address + ", " + props.Useri.postNum}</li>
+        <li>{props.Useri.role}</li>
     </div>
     <div className={styles.defaultSearchBar}>
         Search: <input className={styles.searchfield} type="text"  placeholder="foodname, restaurant or restaurant type" 
         onChange={ onSearchFieldChange } value={ props.productSearchString }/> <input className={styles.priceStageSlider} type="range" min="1" max="30"/> € - €€€€ 
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
+<<<<<<< HEAD
        
         <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
  
        
     
+=======
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
+>>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     </div>
     </>
 
@@ -141,7 +145,11 @@ const testi = () =>{
         <button className={styles.menuButton} onClick={() => customerActivate()}>Search Products</button>
         <button className={styles.menuButton} onClick={() => customerOrderHistoryviewActivate()}>Order History</button> 
         <button className={styles.menuButton} onClick={() => customerEditInfoActivate()}>Edit Customer Info</button> 
+<<<<<<< HEAD
         <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
+=======
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
+>>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     </div>
     </>
 
@@ -151,7 +159,7 @@ const testi = () =>{
     <div className={styles.managerInformation}>
         <li><b>{props.restaurant.restaurantName}</b></li>
         <li>{props.restaurant.address + ", " + props.restaurant.postNumber}</li>
-        <li>Balance: <b className={styles.balance}>{props.Useri.Restaurant.restaurantBalance}</b> €</li>
+        {/* <li>Balance: <b className={styles.balance}>{props.Useri.Restaurant.restaurantBalance}</b> €</li> */}
     </div></div>
     
         <div className={styles.defaultSearchBar}>
@@ -160,7 +168,11 @@ const testi = () =>{
         <button className={styles.menuButton} onClick={() => { createRestaurantActive() }}>Create Restaurant </button>
         <button className={styles.mesnuButton} onClick={() => { editRestaurantInfoActivate() }}>Edit Restaurant Info</button> 
         <button className={styles.menuButton}onClick={() => { editRestaurantMenuActive() }}>Edit Restaurant Menu</button> 
+<<<<<<< HEAD
         <button className={styles.menuButton} onClick={() => loginActivate(), testi}>Log Out </button>
+=======
+        <button className={styles.menuButton} onClick={() => loginActivate()}>Login Menu</button>
+>>>>>>> ed332dd871a94b08a265bd9f0383955e6c7160f6
     </div>
     </>
 

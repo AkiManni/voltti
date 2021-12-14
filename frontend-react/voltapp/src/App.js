@@ -124,14 +124,48 @@ class App extends React.Component {
   }
 
   dataUpdater = () => {
+
+    
+    fetch(
+      `https://voltti.herokuapp.com/bolt/getProduct`)
+                  .then((res) => res.json())
+                  .then((json) => 
+                      this.setState({items:json})
+                  )
+                  
+
+                // public @Bean MongoClient mongoClient() {
+                //     return MongoClients.create("mongodb+srv://dbUser2:d3UQ21lsA6JynShY@cluster0.hetwd.mongodb.net/bolt");
+                // }
+            
+                // public @Bean MongoTemplate mongoTemplate() {
+                //     return new MongoTemplate(mongoClient(), "bolt");
+                // }
+
+                  fetch(
+                    `https://voltti.herokuapp.com/bolt/getUser/${userCred}`)
+                                .then((res) => res.json())
+                                .then((json) => {
+                                    this.setState({
+                                        Useri: {
+                                          fname: json.fname,
+                                          lname: json.lname,
+                                          address: json.address,
+                                          postNum: json.postNum,
+                                          role:Cookies.get('Role'),
+                                          Restaurant:{}
+                                        },
+                                       
+                                    });
+                                })         
         
-        axios({      
-          method:'GET',
-          url:'https://voltti.herokuapp.com/bolt/getProduct'}) 
-          .then(res => {
-            this.setState({items:res.data})
+        // axios({      
+        //   method:'GET',
+        //   url:'https://voltti.herokuapp.com/bolt/getProduct'}) 
+        //   .then(res => {
+        //     this.setState({items:res.data})
           
-        })
+        // })
         
         if(this.state.user.role === "MANAGER"){
           axios({
@@ -160,6 +194,56 @@ class App extends React.Component {
           if(Cookies.get('jwtToken')){
             if(this.state.Useri.username === "" && this.state.isLogged === false){
 
+              
+
+
+                  var userCred = Cookies.get('username')
+                  
+                //fetch(`https://example.com/foo?bar=${encodedValue}`);
+
+                  fetch(
+                    `https://voltti.herokuapp.com/bolt/getUser/${userCred}`)
+                                .then((res) => res.json())
+                                .then((json) => {
+                                    this.setState({
+                                        Useri: {
+                                          fname: json.fname,
+                                          lname: json.lname,
+                                          address: json.address,
+                                          postNum: json.postNum,
+                                          role:Cookies.get('Role'),
+                                          Restaurant:{}
+                                        },
+                                       
+                                    });
+                                })
+                  console.log("tässä")
+                  console.log(this.state.Useri)
+
+              // axios.get("https://voltti.herokuapp.com/bolt/getUser/name", {
+              //   transformResponse: [(response) => (console.log(JSON.parse(response)))], 
+              // })
+
+
+              // axios({
+              //   method:'GET',
+              //   url:'https://voltti.herokuapp.com/bolt/getUser/name',
+              //   params: {name:temp}}).then(function(res){
+              //   //   this.setState({
+              //   //     Useri:{
+              //   //     fname:res.data.fname,
+              //   //     lname:res.data.lname,
+              //   //     address:res.data.address,
+              //   //     postNum:res.data.postNum,
+              //   //     username:Cookies.get('username'),
+              //   //     Role:Cookies.get('Role'),
+              //   //     Restaurant:{}
+              //   //   }
+              //   // })
+              //   console.log(res.data.error)
+              //   })  
+                
+
 
               this.setState(
                 {
@@ -181,12 +265,11 @@ class App extends React.Component {
             
             }
             else{
-              console.log(this.state.Useri)
-              console.log(Cookies.get('jwtToken'))
-              console.log(Cookies.get('username'))
-              console.log(Cookies.get('Role'))
+              //console.log(this.state.Useri)
+              //console.log(Cookies.get('jwtToken'))
+              //console.log(Cookies.get('username'))
+              //console.log(Cookies.get('Role'))
               
-              console.log(this.state.role)
               
             }
           }
@@ -351,7 +434,7 @@ class App extends React.Component {
         <ContentContainer 
           items = { this.state.items}
           Restaurant = { this.state.restaurant}
-          Useri = { this.state.user }
+          Useri = { this.state.Useri }
           orders={this.state.orders} 
           overviewId={this.state.overviewId}
           tempOrder = {this.state.tempOrder}
@@ -418,14 +501,16 @@ class App extends React.Component {
     
       <Router>
 
- 
+      <div>
+      <Navibar/>
       <Switch>
-      <Route path="/" exact component={Login} />
+      <Route path="/login" exact component={Login} />
       <Route path="/register" exact component={Register} />
-      <Route path="/home" exact component={Home} />
-    
+      <Route path="/" exact component={Home} />
+
         </Switch>
 
+      </div>
 
       </Router>
       
@@ -466,7 +551,7 @@ class App extends React.Component {
           />
           
 
-          {this.state.loginActive?  <div>{loginBar}</div> : <></>}
+          {this.state.loginActive? <div>{loginBar}</div> : <></>}
 
           <div className="wrapper">
           { elementContainer }
