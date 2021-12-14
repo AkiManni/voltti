@@ -3,7 +3,7 @@ import axios from "axios";
 //määritetään springbootin localhost osoite
 import Cookies from 'js-cookie';
 import Navibar from "../../../components/User/Navibar";
-const AUTH_URL = "http://localhost:8080/bolt/kirjaudu";
+const AUTH_URL = "https://volttifrontti.herokuapp.com//bolt/kirjaudu";
 
 
 export const authenticateUser = (loginCredential, loginPassword, setCookie) => async (dispatch) => {
