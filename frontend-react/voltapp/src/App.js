@@ -466,25 +466,24 @@ class App extends React.Component {
     let loginBar = 
     <>
 
-    <div>
+
+<div>
     
-      <Router>
+    <Router>
 
-      <div>
-      <Navibar/>
-      <Switch>
-      <Route path="/login" exact component={Login} />
-      <Route path="/register" exact component={Register} />
-      <Route path="/" exact component={Home} />
 
-        </Switch>
+    <Switch>
+    <Route path="/" exact component={Login} />
+    <Route path="/register" exact component={Register} />
+    <Route path="/home" exact component={Home} />
+  
+      </Switch>
 
-      </div>
 
-      </Router>
-      
+    </Router>
+    
 
-    </div>
+  </div>
     </>
 
     let output = 
