@@ -133,13 +133,20 @@ class App extends React.Component {
                       this.setState({items:json})
                   )
                   
+<<<<<<< HEAD
+                // APPCONFIG
+=======
 
+>>>>>>> 6d1be38da1ff27cd84e9ec8e41edaf9137175b85
                 // public @Bean MongoClient mongoClient() {
                 //     return MongoClients.create("mongodb+srv://dbUser2:d3UQ21lsA6JynShY@cluster0.hetwd.mongodb.net/bolt");
                 // }
             
                 // public @Bean MongoTemplate mongoTemplate() {
                 //     return new MongoTemplate(mongoClient(), "bolt");
+<<<<<<< HEAD
+                // }       
+=======
                 // }
 
                   fetch(
@@ -166,6 +173,7 @@ class App extends React.Component {
         //     this.setState({items:res.data})
           
         // })
+>>>>>>> 6d1be38da1ff27cd84e9ec8e41edaf9137175b85
         
         if(this.state.user.role === "MANAGER"){
           axios({
@@ -307,29 +315,29 @@ class App extends React.Component {
     this.setState({overviewId: id, orderviewActive:true})
   }
 
-  addToOrder = (productID,restaurantID,restaurantName,foodName,photoPath,price,prepareTime) => {
+  addToOrder = (id,restaurantId,restaurantName,foodName,photoPath,price,prepareTime) => {
 
     let newTemplateOfOrder = [...this.state.tempOrder]
     var actionDone = false
     let idcheck
 
-    this.priceSaver(restaurantID,price);
+    this.priceSaver(restaurantId,price);
     
-    if(!newTemplateOfOrder.findIndex(index => index.id === productID) && actionDone === false)
+    if(!newTemplateOfOrder.findIndex(index => index.id === id) && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.id === productID)
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
         newTemplateOfOrder[idcheck].quantity += 1
         actionDone = true;
       }
 
-    if(!newTemplateOfOrder.findIndex(index => index.productID === productID) === false && newTemplateOfOrder.findIndex(index => index.productID === productID) === -1 && actionDone === false)
+    if(!newTemplateOfOrder.findIndex(index => index.id === id) === false && newTemplateOfOrder.findIndex(index => index.id === id) === -1 && actionDone === false)
       {
-        newTemplateOfOrder.push({"productID":productID,"restaurantId":restaurantID,"restaurantName":restaurantName,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
+        newTemplateOfOrder.push({"id":id,"restaurantId":restaurantId,"restaurantName":restaurantName,"foodName":foodName,"photoPath":photoPath,"price":price,"prepareTime":prepareTime, "quantity":1})
         actionDone = true;
       }
-    if(newTemplateOfOrder.findIndex(index => index.productID === productID) >=0 && actionDone === false)
+    if(newTemplateOfOrder.findIndex(index => index.id === id) >=0 && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.productID === productID)
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === id)
         newTemplateOfOrder[idcheck].quantity += 1
         actionDone = true;
       }
@@ -337,7 +345,7 @@ class App extends React.Component {
     this.setState({tempOrder:newTemplateOfOrder})
   }
 
-  reduceFromOrder = (productID, restaurantID) => {
+  reduceFromOrder = (id, restaurantID) => {
 
     let newTemplateOfOrder = [...this.state.tempOrder]
     let newTemplatePrices = [...this.state.orderPrices]
@@ -347,11 +355,11 @@ class App extends React.Component {
 
     let orderIdcheck = newTemplatePrices.findIndex(index => index.id === restaurantID)    // restaurant Id Pricelistiltä
 
-    if(newTemplateOfOrder.findIndex(index => index.productID === productID) >=0 && actionDone === false)
+    if(newTemplateOfOrder.findIndex(index => index.id === id) >=0 && actionDone === false)
       {
-        idcheck = newTemplateOfOrder.findIndex(index => index.productID === productID && index.restaurantId === restaurantID)
+        idcheck = newTemplateOfOrder.findIndex(index => index.id === id && index.restaurantId === restaurantID)
         newTemplateOfOrder[idcheck].quantity -= 1
-        tempResId = newTemplateOfOrder.findIndex(index => index.productID === productID )
+        tempResId = newTemplateOfOrder.findIndex(index => index.id === id )
         newTemplatePrices[orderIdcheck].price -= newTemplateOfOrder[tempResId].price;
 
         if(newTemplateOfOrder[idcheck].quantity === 0){
@@ -502,14 +510,16 @@ class App extends React.Component {
     
       <Router>
 
- 
+      <div>
+      <Navibar/>
       <Switch>
-      <Route path="/" exact component={Login} />
+      <Route path="/login" exact component={Login} />
       <Route path="/register" exact component={Register} />
-      <Route path="/home" exact component={Home} />
-    
+      <Route path="/" exact component={Home} />
+
         </Switch>
 
+      </div>
 
       </Router>
       

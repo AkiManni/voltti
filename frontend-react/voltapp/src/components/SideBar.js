@@ -13,8 +13,8 @@ export default function SideBar(props){
         props.confirmOrder(orderID)
     }
 
-    const reduceFromOrder = (value, restaurantId) => {
-       props.reduceFromOrder(value, restaurantId)
+    const reduceFromOrder = (productID, restaurantID) => {
+       props.reduceFromOrder(productID, restaurantID)
     }
 
     const previewOrderActivate = () => {
@@ -195,7 +195,7 @@ export default function SideBar(props){
 
         if (ref.hasOwnProperty(o.restaurantId)){
 
-          arr[ref[o.restaurantId]].push(<div className={styles.orderPreviewList} key={o.id}> 
+          arr[ref[o.restaurantId]].push(<div className={styles.orderPreviewList} key={o.productID}> 
           <button onClick={() => reduceFromOrder(o.id, o.restaurantId)}>-</button> <b>{o.quantity}</b> x {o.foodName} - {o.price} € </div>);
           
       }
@@ -204,7 +204,7 @@ export default function SideBar(props){
           ref[o.restaurantId] = arr.length;
           {arr.push([<div className={styles.orderPreviewListRestaurantName}><b>{o.restaurantName}</b></div>])}
           
-          arr.push([o].map((item) => <div className={styles.orderPreviewList} key={item.id}>
+          arr.push([o].map((item) => <div className={styles.orderPreviewList} key={item.productID}>
           <button onClick={() => reduceFromOrder(item.id, item.restaurantId)}>-</button> <b>{item.quantity}</b> x {item.foodName} - {item.price} € </div>));
           arr.push(<hr className={styles.orderHorizontal}/>);
           
