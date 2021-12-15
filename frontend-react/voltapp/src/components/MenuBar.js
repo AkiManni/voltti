@@ -1,9 +1,7 @@
 import React from 'react';
 import styles from './MenuBar.module.css';
 import { logoutUser } from "../services/index";
-import { useDispatch, useSelector } from "react-redux";
-import {Link} from 'react-router-dom'
-import {BrowserRouter} from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 
 export default function MenuBar(props){
@@ -38,10 +36,6 @@ export default function MenuBar(props){
 
     const customerEditInfoActivate = () => {
         props.customerEditInfoActivate()
-    }
-
-    const managerActivate = () => {
-        props.managerActivate();
     }
 
     const managerOrderOverviewActivate = () => {

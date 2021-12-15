@@ -28,8 +28,11 @@ export default function ContentContainer(props){
     }
 
   const makeOrder = (customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered) => {
-      //console.log(customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered, prepareTime, deliveryTime)
+      console.log("CONSOLE:");
+      console.log(customerId,restaurantId,restaurantName,customerName,address,postnumber,totalCost, productsOrdered)
       
+
+
       axios({
         method:'post',
         url:'https://voltti.herokuapp.com/bolt/addOrder',
@@ -96,7 +99,7 @@ export default function ContentContainer(props){
         for(const element of res){ 
         if(rId === element[0].restaurantId){
             
-                makeOrder(props.Useri.userID,element[0].restaurantID,element[0].restaurantName,props.Useri.fname + " " + 
+                makeOrder(props.Useri.userID,element[0].restaurantId,element[0].restaurantName,props.Useri.fname + " " + 
                 props.Useri.lname,props.Useri.address,props.Useri.postNum,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element)
                 //props.user.surName,alternativeAddress,alternativePostNumber,props.orderPrices.filter((item) => item.id === element[0].restaurantId).map(item => item.price+5),element,20,props.user.deliveryTime)
                 };

@@ -40,4 +40,8 @@ public class Order {
     public void addProducts(Product product) {
         this.products.add(product);
     }
+
+    public void addTotalCost(int price) {
+        this.totalCost += price;
+    }
 }

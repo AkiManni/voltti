@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import com.example.bolt.model.*;
 import com.example.bolt.repository.*;
@@ -207,6 +206,12 @@ List<String> roles = userDetails.getAuthorities().stream()
         return this.us.findByLoginCredential(loginCredential);
     }
 
+    @GetMapping("/getUserID/{loginCredential}")
+    public String getUserID(@PathVariable String loginCredential) {
+        Useri u = this.us.findByLoginCredential(loginCredential);
+        return u.getUserID();
+    }
+
     @PostMapping("/addUser")
     public Useri addUsers(@RequestBody Useri user) {
     	Useri u = user;
@@ -215,43 +220,55 @@ List<String> roles = userDetails.getAuthorities().stream()
         return u;
     }
 
+    @PostMapping("/editUser")
+    public Useri editUser(@RequestBody Useri user) {
+        Useri u = this.us.findById(user.getUserID()).orElse(null);
+        if (u != null) {
+            u = user;
+            this.us.save(u);
+        }
+        return u;
+    }
+
     @DeleteMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") String id) {
-        if (this.us.findById(id).isEmpty()) return "No user found.";
+        Useri u = this.us.findById(id).orElse(null);
+        if (u == null) return "No user found.";
         else {
+            this.re.deleteById(u.getRestaurantID());
             this.us.deleteById(id);
         }
         return "Deleted user " + id + ".";
     }
 
-    @PostMapping("/addRestaurantToUser")
-    public String addRestaurantToUser(@RequestBody Map<String, String> variables) {
-       Useri u = this.us.findById(variables.get("userID")).orElse(null);
-        Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
+    // @PostMapping("/addRestaurantToUser")
+    // public String addRestaurantToUser(@RequestBody Map<String, String> variables) {
+    //    Useri u = this.us.findById(variables.get("userID")).orElse(null);
+    //     Restaurant r = this.re.findById(variables.get("restaurantID")).orElse(null);
 
-        if (u == null) return "No user found.";
-      //  if (!u.isIsmanager()) return "This feature is not allowed for customers.";
-        else if (u.getRestaurant() != null) return "You already have restaurant.";
-        else if (r == null) return "No restaurant found.";
-        else {
-            u.setRestaurant(r);
-            this.us.save(u);
-            return u.toString();
-        }
-    }
+    //     if (u == null) return "No user found.";
+    //   //  if (!u.isIsmanager()) return "This feature is not allowed for customers.";
+    //     else if (u.getRestaurantID() != null) return "You already have restaurant.";
+    //     else if (r == null) return "No restaurant found.";
+    //     else {
+    //         u.setRestaurantID(r.getRestaurantID());
+    //         this.us.save(u);
+    //         return u.toString();
+    //     }
+    // }
 
-    @DeleteMapping("/deleteRestaurantFromUser/{userID}")
-    public String deleteRestaurantFromUser(@PathVariable String userID) {
-        Useri u = this.us.findById(userID).orElse(null);
+    // @DeleteMapping("/deleteRestaurantFromUser/{userID}")
+    // public String deleteRestaurantFromUser(@PathVariable String userID) {
+    //     Useri u = this.us.findById(userID).orElse(null);
 
-        if (u == null) return "No user found.";
-        else if (u.getRestaurant() == null) return "No restaurant found.";
-        else {
-            u.setRestaurant(null);
-            this.us.save(u);
-            return u.toString();
-        }
-    }
+    //     if (u == null) return "No user found.";
+    //     else if (u.getRestaurantID() == null) return "No restaurant found.";
+    //     else {
+    //         u.setRestaurantID(null);
+    //         this.us.save(u);
+    //         return u.toString();
+    //     }
+    // }
 
     ///////////////////////////////////////RESTAURANT///////////////////////////////////////////
 
@@ -260,9 +277,11 @@ List<String> roles = userDetails.getAuthorities().stream()
         return this.re.findAll();
     }
         
-    @PostMapping("/addRestaurant")
-    public Restaurant addRestaurant(@RequestBody Restaurant Restaurant) {
+    @PostMapping("/addRestaurant/{credential}")
+    public Restaurant addRestaurant(@PathVariable String credential, @RequestBody Restaurant Restaurant) {
         Restaurant r = Restaurant;
+        Useri u = this.us.findByLoginCredential(credential);
+        u.setRestaurantID(r.getRestaurantID());
         r.setRestaurantID(generateID(2));
         r.setName(r.getName().replace(" ", "_"));
         this.re.save(r);
@@ -273,6 +292,7 @@ List<String> roles = userDetails.getAuthorities().stream()
     public Restaurant editRestaurant(@RequestBody Restaurant restaurant) {
         Restaurant r = this.re.findById(restaurant.getRestaurantID()).orElse(null);
         if (r != null) {
+            r = restaurant;
             this.re.save(r);
         }
         return r;
@@ -280,8 +300,16 @@ List<String> roles = userDetails.getAuthorities().stream()
 
     @DeleteMapping("/deleteRestaurant/{id}")
     public String deleteRestaurant(@PathVariable("id") String id) {
-        if (this.re.findById(id).isEmpty()) return "No restaurant found.";
+        Restaurant r = this.re.findById(id).orElse(null);
+        if (r == null) return "No restaurant found.";
         else {
+            for (Useri u : this.us.findAll()) {
+                if (r.getRestaurantID() == u.getRestaurantID()) {
+                    u.setRestaurantID(null);
+                    this.us.save(u);
+                }
+
+            }
             this.re.deleteById(id);
         }
         return "Deleted restaurant " + id + ".";
@@ -390,6 +418,10 @@ List<String> roles = userDetails.getAuthorities().stream()
     @PostMapping("/addOrder")
     public Order addOrder(@RequestBody Order order) {
         Order o = order;
+        List<Product> p = o.getProducts();
+        for (Product product : p) {
+            o.addTotalCost(product.getPrice());
+        }
         o.setOrderID(generateID(4));
         o.setOrderStatus(Order.status.PLACED);
         o.setTimes(new StatusTime(getTime()));
